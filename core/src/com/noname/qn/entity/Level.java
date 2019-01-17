@@ -75,7 +75,7 @@ public class Level {
 
     public Level.State play(int direction){
         particule.move(direction);
-        if(isPositionInLevel(particule.getPosition()))
+        if(!isPositionInLevel(particule.getPosition()))
             return State.LOOSE;
         Enterable entered = squares.get(particule.getPosition());
         Level.State result = entered.enter(particule);
