@@ -4,22 +4,24 @@ import com.noname.qn.entity.square.ArrivalSquare;
 import com.noname.qn.service.Enterable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Level {
     private Particule particule;
 
-    private Map<Position, Enterable> squares = new HashMap<Position,Enterable>();
-    public Map<Position, Enterable> getSquares() {
+    private List<Enterable> squares = new ArrayList<>();
+    public List<Enterable> getSquares() {
         return squares;
     }
 
     public void addSquare(Enterable square) throws IllegalLevelInsertionException{
-        if(squares.containsKey(square.getPosition()) || !isPositionInLevel(square.getPosition()))
+        if(!isPositionInLevel(square.getPosition()))
             throw new IllegalLevelInsertionException(square.getPosition());
-        squares.put(square.getPosition(),square);
+        for(Enterable e : squares){
+            if (e.getPosition().hashCode()==square.getPosition().hashCode())
+                throw new IllegalLevelInsertionException(square.getPosition());
+        }
+        squares.add(square);
     }
 
     private int nbRows, nbColumns;
@@ -77,7 +79,11 @@ public class Level {
         particule.move(direction);
         if(!isPositionInLevel(particule.getPosition()))
             return State.LOOSE;
-        Enterable entered = squares.get(particule.getPosition());
+        Enterable entered = null;
+        for(Enterable e : squares){
+            if (e.getPosition().hashCode()==particule.getPosition().hashCode())
+                entered=e;
+        }
         Level.State result = entered.enter(particule);
         if(entered.getPosition().equals(arrival.getPosition()))
             result = State.WIN;
@@ -92,6 +98,6 @@ public class Level {
     }
 
     private boolean isPositionInLevel(Position p){
-        return p.getX()<nbRows && p.getX()>-1 && p.getY()<nbColumns && p.getY()>-1;
+        return p.getX()<nbColumns&& p.getX()>-1 && p.getY()<nbRows  && p.getY()>-1;
     }
 }

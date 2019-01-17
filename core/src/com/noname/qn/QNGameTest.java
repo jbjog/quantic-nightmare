@@ -9,36 +9,43 @@ import com.noname.qn.entity.square.TPSquare;
 import com.noname.qn.service.Enterable;
 import com.noname.qn.service.Movable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QNGameTest {
 
     private static Level createLevelTest() throws IllegalLevelInsertionException {
         Level level = new Level(3,4,new Position(0,0),new ArrivalSquare(new Position(2,2), Particule.State.CORPUSCULE));
+        List<Enterable> switcher1List = new ArrayList<>();
         BasicSquare b1 = new BasicSquare(new Position(0,0));
         level.addSquare(b1);
-        BasicSquare b2 = new BasicSquare(new Position(0,1));
+        BasicSquare b2 = new BasicSquare(new Position(1,0));
         level.addSquare(b2);
-        BasicSquare b3 = new TPSquare(new Position(0,2),new Position(1,0));
+        BasicSquare b3 = new TPSquare(new Position(2,0),new Position(0,1));
         level.addSquare(b3);
-        BasicSquare b4 = new BasicSquare(new Position(0,3));
-        level.addSquare(b4);
+        BasicSquare b4 = new BasicSquare(new Position(3,0));
+        switcher1List.add(b4);
 
 
-        b1 = new BasicSquare(new Position(1,0));
+        b1 = new BasicSquare(new Position(0,1));
         level.addSquare(b1);
         b2 = new BasicSquare(new Position(1,1));
         level.addSquare(b2);
-        b3 = new HoleSquare(new Position(1,2));
+        b3 = new HoleSquare(new Position(2,1));
         level.addSquare(b3);
-        b4 = new HoleSquare(new Position(1,3));
-        level.addSquare(b4);
+        b4 = new HoleSquare(new Position(3,1));
+        switcher1List.add(b4);
 
 
-        b1 = new BasicSquare(new Position(2,0));
+        b1 = new BasicSquare(new Position(0,2));
         level.addSquare(b1);
-        b2 = new BasicSquare(new Position(2,1));
+        b2 = new BasicSquare(new Position(1,2));
         level.addSquare(b2);
-        b4 = new HoleSquare(new Position(2,3));
-        level.addSquare(b4);
+        b4 = new HoleSquare(new Position(3,2));
+        switcher1List.add(b4);
+
+        Switcher sw = new Switcher(switcher1List);
+        level.addSwitcher(sw);
 
 
         return level;
@@ -48,7 +55,10 @@ public class QNGameTest {
         for (int i = 0; i < l.getNbRows(); i++) {
             for (int k = 0; k < 3 ; k++) {
                 for (int j = 0; j < l.getNbColumns(); j++) {
-                    displayEnterable(l,l.getSquares().get(new Position(i,j)),k);
+                    for(Enterable e : l.getSquares()){
+                        if (e.getPosition().hashCode()==(new Position(j,i)).hashCode())
+                            displayEnterable(l,e,k);
+                    }
                 }
                 System.out.println("");
             }
@@ -80,6 +90,7 @@ public class QNGameTest {
         try {
             testLevelWin();
             testLevelLoose();
+            testSwitcher();
         } catch (IllegalLevelInsertionException e) {
             e.printStackTrace();
         }
@@ -96,7 +107,7 @@ public class QNGameTest {
         assertLevelState(state, Level.State.WIN);
     }
     private static void testLevelLoose() throws IllegalLevelInsertionException {
-        System.out.println("testLevelLoose");
+        System.out.println("testLevelLoose : ");
         Level l = createLevelTest();
         l.play(Movable.RIGHT);
         l.play(Movable.RIGHT);
@@ -108,10 +119,19 @@ public class QNGameTest {
     private static void assertLevelState(Level.State got, Level.State expected) {
         if (got != expected) {
             throw new RuntimeException("Level state should be "+expected+" but got : " + got);
-        }
+        }else
+            System.out.println("Ok");
     }
 
-    private static void testWinLevel() {
-
+    private static void testSwitcher() throws IllegalLevelInsertionException {
+        Level l = createLevelTest();
+        displayLevel(l, Level.State.CONTINUE);
+        displayLevel(l,l.play(Movable.RIGHT));
+        displayLevel(l,l.play(Movable.RIGHT));
+        displayLevel(l,l.play(Movable.RIGHT));
+        displayLevel(l,l.play(Movable.DOWN));
+        Level.State state = l.play(Movable.RIGHT);
+        displayLevel(l,state);
+        assertLevelState(state, Level.State.WIN);
     }
 }
