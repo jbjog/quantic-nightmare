@@ -38,7 +38,7 @@ public class Level {
     ArrivalSquare arrival;
     private Particule.State ps;
 
-    private List<Switcher> switchers;
+    private List<Switcher> switchers = new ArrayList<>();
     public List<Switcher> getSwitchers() {
         return switchers;
     }
