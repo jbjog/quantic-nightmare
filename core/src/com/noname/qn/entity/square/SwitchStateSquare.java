@@ -5,23 +5,20 @@ import com.noname.qn.entity.Level;
 import com.noname.qn.entity.Particule;
 import com.noname.qn.entity.Position;
 
-public class TPSquare extends BasicSquare {
-    Position outPosition;
-    public TPSquare(Position position,Position outPosition) {
+public class SwitchStateSquare extends BasicSquare {
+    public SwitchStateSquare(Position position) {
         super(position);
-        this.outPosition = outPosition;
     }
 
     @Override
     public Level.State enter(Particule particule) {
         unhide();
-        particule.setPosition(outPosition);
+        particule.switchState();
         return Level.State.CONTINUE;
     }
 
     @Override
     protected Texture getSpecificTexture() {
-        return new Texture("tp_square.png");
+        return new Texture("switch_state_square.png");
     }
-
 }

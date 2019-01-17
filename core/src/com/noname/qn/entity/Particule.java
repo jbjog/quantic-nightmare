@@ -44,6 +44,14 @@ public class Particule implements Movable, Texturable {
         else
             return new Texture("wave.png");
     }
+
+    public void switchState(){
+        if (stateParticule == State.CORPUSCULE)
+            stateParticule = State.WAVE;
+        else
+            stateParticule = State.CORPUSCULE;
+    }
+
     public enum State {
         WAVE,CORPUSCULE
     }

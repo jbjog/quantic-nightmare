@@ -23,7 +23,9 @@ public class BasicSquare implements Enterable {
         return position;
     }
     @Override
-    public void setPosition(Position aPosition) {}
+    public void setPosition(Position p) {
+        position = p;
+    }
 
     private boolean hidden = true;
     @Override
