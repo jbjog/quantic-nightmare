@@ -8,38 +8,38 @@ import com.noname.qn.QNGame;
 
 public class MainMenuScreen implements Screen {
     private final QNGame game;
-
     private OrthographicCamera camera;
+    private StageMenuScreen screen;
+
 
     public MainMenuScreen(final QNGame game) {
         this.game = game;
-
+        screen = new StageMenuScreen(game);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(2, 1, 1, 1);
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to Quantic Nightmare", 100, 450);
-		game.font.draw(game.batch, "New Game", 350, 300);
-		game.font.draw(game.batch, "Continue", 350, 250);
-		game.font.draw(game.batch, "Options", 350, 200);
+		game.font.draw(game.batch, "Welcome to Quantic Nightmare", 270, 400);
+		game.font.draw(game.batch, "Play", 375, 300);
+		game.font.draw(game.batch, "Options", 375, 250);
+		game.font.draw(game.batch, "Quit", 375, 200);
 		game.batch.end();
 
-		if (Gdx.input.isTouched()) {
-		    game.setScreen(new StageMenuScreen(game));
+		if (Gdx.input.justTouched()) {
+            game.setScreen(screen);
 		    dispose();
         }
     }

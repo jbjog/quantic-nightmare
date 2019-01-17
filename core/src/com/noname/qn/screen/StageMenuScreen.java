@@ -25,21 +25,20 @@ public class StageMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Stages", 100, 450);
-        game.font.draw(game.batch, "Choose your Nightmare.", 100, 400);
+        game.font.draw(game.batch, "Choose your Nightmare.", 300, 400);
         game.batch.end();
 
-//		if (Gdx.input.isTouched()) {
-//		    game.setScreen(new GameScreen(game));
-//		    dispose();
-//        }
+		if (Gdx.input.justTouched()) {
+		    game.setScreen(new MainMenuScreen(game));
+		    dispose();
+        }
     }
 
     @Override
