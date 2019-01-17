@@ -62,10 +62,13 @@ public class Level {
 
     public Level.State play(int direction){
         particule.move(direction);
-        com.noname.qn.service.Enterable entered = squares.get(particule.getPosition());
+        Enterable entered = squares.get(particule.getPosition());
         Level.State result = entered.enter(particule);
         if(entered.getPosition().equals(endPosition))
             result = State.WIN;
+        for (Switcher s : switchers) {
+            s.switchEnterables();
+        }
         return result;
     }
 
