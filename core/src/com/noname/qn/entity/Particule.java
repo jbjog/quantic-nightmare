@@ -30,13 +30,17 @@ public class Particule implements Movable, Texturable {
     public void move(int direction) {
         switch (direction){
             case Movable.UP:
-                position.setY(position.getY()-1);
-            case Movable.DOWN:
-                position.setY(position.getY()+1);
-            case Movable.LEFT:
                 position.setX(position.getX()-1);
-            case Movable.RIGHT:
+                break;
+            case Movable.DOWN:
                 position.setX(position.getX()+1);
+                break;
+            case Movable.LEFT:
+                position.setY(position.getY()-1);
+                break;
+            case Movable.RIGHT:
+                position.setY(position.getY()+1);
+                break;
         }
     }
 
