@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.noname.qn.entity.Level;
+import com.noname.qn.entity.Particule;
+import com.noname.qn.entity.Position;
 
 public class QNGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -30,4 +33,8 @@ public class QNGame extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 	}
+/*
+	private Level createLevelTest(){
+		Level level = new Level(3,3,new Position(0,0),new Position(2,2), Particule.State.CORPUSCULE)
+	}*/
 }

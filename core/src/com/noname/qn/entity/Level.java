@@ -1,5 +1,6 @@
 package com.noname.qn.entity;
 
+import com.noname.qn.entity.square.ArrivalSquare;
 import com.noname.qn.service.Enterable;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Level {
 
     private int nbRows, nbColumns;
     private Position startPosition;
-    private Position endPosition;
+    ArrivalSquare arrival;
     private Particule.State ps;
 
     private List<Switcher> switchers;
@@ -42,11 +43,11 @@ public class Level {
         return tracker;
     }
 
-    public Level(int nbRows, int nbColumns, Position startPosition, Position endPosition, Particule.State ps) {
+    public Level(int nbRows, int nbColumns, Position startPosition, ArrivalSquare arrival, Particule.State ps) {
         this.nbRows = nbRows;
         this.nbColumns = nbColumns;
         this.startPosition = startPosition;
-        this.endPosition = endPosition;
+        this.arrival = arrival;
         reset();
     }
 
@@ -62,9 +63,11 @@ public class Level {
 
     public Level.State play(int direction){
         particule.move(direction);
+        if(isPositionInLevel(particule.getPosition()))
+                return State.LOOSE;
         Enterable entered = squares.get(particule.getPosition());
         Level.State result = entered.enter(particule);
-        if(entered.getPosition().equals(endPosition))
+        if(entered.getPosition().equals(arrival.getPosition()))
             result = State.WIN;
         for (Switcher s : switchers) {
             s.switchEnterables();
@@ -74,5 +77,9 @@ public class Level {
 
     public enum State {
         WIN,LOOSE,CONTINUE
+    }
+
+    private boolean isPositionInLevel(Position p){
+        return p.getX()<nbRows && p.getX()>-1 && p.getY()<nbColumns && p.getY()>-1;
     }
 }

@@ -6,10 +6,10 @@ import com.noname.qn.service.Texturable;
 
 public class Particule implements Movable, Texturable {
     private Position position;
-    private State stateParticule;
+    private State state;
 
-    public Particule(State stateParticule,Position position) {
-        this.stateParticule = stateParticule;
+    public Particule(State state, Position position) {
+        this.state = state;
         this.position = position;
     }
 
@@ -17,10 +17,13 @@ public class Particule implements Movable, Texturable {
     public Position getPosition() {
         return position;
     }
-
     @Override
     public void setPosition(Position aPosition) {
         position = aPosition;
+    }
+
+    public State getState() {
+        return state;
     }
 
     @Override
@@ -39,17 +42,17 @@ public class Particule implements Movable, Texturable {
 
     @Override
     public Texture getTexture() {
-        if(this.stateParticule == State.CORPUSCULE)
+        if(this.state == State.CORPUSCULE)
             return new Texture("particule.png");
         else
             return new Texture("wave.png");
     }
 
     public void switchState(){
-        if (stateParticule == State.CORPUSCULE)
-            stateParticule = State.WAVE;
+        if (state == State.CORPUSCULE)
+            state = State.WAVE;
         else
-            stateParticule = State.CORPUSCULE;
+            state = State.CORPUSCULE;
     }
 
     public enum State {

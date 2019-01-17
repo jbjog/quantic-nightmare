@@ -18,7 +18,7 @@ public class SwitchStateSquare extends BasicSquare {
     }
 
     @Override
-    protected Texture getSpecificTexture() {
+    public Texture getTexture() {
         return new Texture("switch_state_square.png");
     }
 }
