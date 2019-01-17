@@ -17,12 +17,23 @@ public class Level {
     }
 
     public void addSquare(Enterable square) throws IllegalLevelInsertionException{
-        if(squares.containsKey(square.getPosition()))
+        if(squares.containsKey(square.getPosition()) || !isPositionInLevel(square.getPosition()))
             throw new IllegalLevelInsertionException(square.getPosition());
         squares.put(square.getPosition(),square);
     }
 
     private int nbRows, nbColumns;
+
+    public Particule getParticule() {
+        return particule;
+    }
+    public int getNbRows() {
+        return nbRows;
+    }
+    public int getNbColumns() {
+        return nbColumns;
+    }
+
     private Position startPosition;
     ArrivalSquare arrival;
     private Particule.State ps;
@@ -43,11 +54,12 @@ public class Level {
         return tracker;
     }
 
-    public Level(int nbRows, int nbColumns, Position startPosition, ArrivalSquare arrival, Particule.State ps) {
+    public Level(int nbRows, int nbColumns, Position startPosition, ArrivalSquare arrival) throws IllegalLevelInsertionException{
         this.nbRows = nbRows;
         this.nbColumns = nbColumns;
         this.startPosition = startPosition;
         this.arrival = arrival;
+        addSquare(arrival);
         reset();
     }
 
@@ -64,7 +76,7 @@ public class Level {
     public Level.State play(int direction){
         particule.move(direction);
         if(isPositionInLevel(particule.getPosition()))
-                return State.LOOSE;
+            return State.LOOSE;
         Enterable entered = squares.get(particule.getPosition());
         Level.State result = entered.enter(particule);
         if(entered.getPosition().equals(arrival.getPosition()))
