@@ -1,9 +1,9 @@
 package com.noname.qn.entity.square;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.noname.qn.entity.Level;
-import com.noname.qn.entity.Particule;
 import com.noname.qn.entity.Position;
+import com.noname.qn.service.Playable;
+import com.noname.qn.service.Player;
 
 public class TPSquare extends BasicSquare {
     Position outPosition;
@@ -13,10 +13,10 @@ public class TPSquare extends BasicSquare {
     }
 
     @Override
-    public Level.State enter(Particule particule) {
+    public Playable.State enter(Player p) {
         unhide();
-        particule.setPosition(outPosition);
-        return Level.State.CONTINUE;
+        p.setPosition(outPosition);
+        return Playable.State.CONTINUE;
     }
 
     @Override

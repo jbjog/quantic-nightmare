@@ -1,7 +1,9 @@
 package com.noname.qn.entity;
 
+import com.noname.qn.service.Positionable;
+
 public class IllegalLevelInsertionException extends Throwable {
-    public IllegalLevelInsertionException(Position position) {
-        super("Illegal Level Insertion at position : ("+position.getX()+","+position.getY()+")");
+    public IllegalLevelInsertionException(Positionable p) {
+        super("Illegal Level Insertion at position : ("+p.getPosition().getX()+","+p.getPosition().getY()+")");
     }
 }
