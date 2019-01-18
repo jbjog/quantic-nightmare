@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.noname.qn.QNGame;
 import com.noname.qn.screen.Screen;
+import com.noname.qn.utils.Fonts;
 
 public class OptionMenuHud implements Disposable {
     public QNGame game;
@@ -36,7 +37,7 @@ public class OptionMenuHud implements Disposable {
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
 
-        font = this.getFont();
+        font = Fonts.getDefaultFont();
         redStyle = new Label.LabelStyle(font, Color.RED);
         whiteStyle = new Label.LabelStyle(font, Color.WHITE);
 
@@ -72,16 +73,6 @@ public class OptionMenuHud implements Disposable {
     @Override
     public void dispose() {
         stage.dispose();
-    }
-
-    private BitmapFont getFont() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("theDarkFont.ttf"));
-
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.color = Color.WHITE;
-        parameter.size = 20;
-        font = generator.generateFont(parameter);
-        return font;
     }
 }
 
