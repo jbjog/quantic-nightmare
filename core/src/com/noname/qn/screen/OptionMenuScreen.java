@@ -5,18 +5,18 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.noname.qn.QNGame;
-import com.noname.qn.hud.StageMenuHud;
+import com.noname.qn.hud.OptionMenuHud;
 
-public class StageMenuScreen implements Screen {
+public class OptionMenuScreen implements Screen {
     private final QNGame game;
     private OrthographicCamera camera;
-    private StageMenuHud hud;
+    private OptionMenuHud hud;
 
-    public StageMenuScreen(final QNGame game) {
+    public OptionMenuScreen(final QNGame game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        hud = new StageMenuHud(game);
+        hud = new OptionMenuHud(game);
     }
 
     @Override
