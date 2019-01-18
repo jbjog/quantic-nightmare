@@ -1,9 +1,11 @@
 package com.noname.qn.service;
 
+import com.noname.qn.entity.Position;
+
 public interface Movable extends Positionable{
-    int UP=0;
-    int DOWN=1;
-    int LEFT=2;
-    int RIGHT=3;
-    void move(int direction);
+    enum Direction{
+        UP,DOWN,LEFT,RIGHT
+    }
+    void move(Direction direction);
+    void setPosition(Position p);
 }

@@ -1,9 +1,9 @@
 package com.noname.qn.entity.square;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.noname.qn.entity.Level;
-import com.noname.qn.entity.Particule;
 import com.noname.qn.entity.Position;
+import com.noname.qn.service.Playable;
+import com.noname.qn.service.Player;
 
 public class SwitchStateSquare extends BasicSquare {
     public SwitchStateSquare(Position position) {
@@ -11,10 +11,13 @@ public class SwitchStateSquare extends BasicSquare {
     }
 
     @Override
-    public Level.State enter(Particule particule) {
+    public Playable.State enter(Player p) {
         unhide();
-        particule.switchState();
-        return Level.State.CONTINUE;
+        if (p.getState() == Player.State.CORPUSCULE)
+            p.switchState(Player.State.WAVE);
+        else
+            p.switchState(Player.State.CORPUSCULE);
+        return Playable.State.CONTINUE;
     }
 
     @Override

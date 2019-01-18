@@ -1,10 +1,7 @@
 package com.noname.qn.entity;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.noname.qn.entity.square.BasicSquare;
 import com.noname.qn.service.Enterable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Switcher {

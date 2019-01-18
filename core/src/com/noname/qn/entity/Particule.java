@@ -1,10 +1,9 @@
 package com.noname.qn.entity;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.noname.qn.service.Movable;
-import com.noname.qn.service.Texturable;
+import com.noname.qn.service.Player;
 
-public class Particule implements Movable, Texturable {
+public class Particule implements Player {
     private Position position;
     private State state;
 
@@ -22,21 +21,26 @@ public class Particule implements Movable, Texturable {
         position = aPosition;
     }
 
+    @Override
     public State getState() {
         return state;
     }
 
     @Override
-    public void move(int direction) {
-        switch (direction){
-            case Movable.UP:
+    public void move(Direction d) {
+        switch (d){
+            case UP:
                 position.setY(position.getY()-1);
-            case Movable.DOWN:
+                break;
+            case DOWN:
                 position.setY(position.getY()+1);
-            case Movable.LEFT:
+                break;
+            case LEFT:
                 position.setX(position.getX()-1);
-            case Movable.RIGHT:
+                break;
+            case RIGHT:
                 position.setX(position.getX()+1);
+                break;
         }
     }
 
@@ -48,14 +52,9 @@ public class Particule implements Movable, Texturable {
             return new Texture("wave.png");
     }
 
-    public void switchState(){
-        if (state == State.CORPUSCULE)
-            state = State.WAVE;
-        else
-            state = State.CORPUSCULE;
+    @Override
+    public void switchState(Player.State state){
+        this.state = state;
     }
 
-    public enum State {
-        WAVE,CORPUSCULE
-    }
 }

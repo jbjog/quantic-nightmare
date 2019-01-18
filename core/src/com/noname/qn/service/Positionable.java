@@ -4,5 +4,4 @@ import com.noname.qn.entity.Position;
 
 public interface Positionable {
     Position getPosition();
-    void setPosition(Position p);
 }

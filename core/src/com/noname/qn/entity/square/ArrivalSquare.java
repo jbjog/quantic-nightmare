@@ -1,28 +1,28 @@
 package com.noname.qn.entity.square;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.noname.qn.entity.Level;
-import com.noname.qn.entity.Particule;
-import com.noname.qn.entity.Position;
+import com.noname.qn.service.Conditionable;
+import com.noname.qn.service.Playable;
+import com.noname.qn.service.Player;
 
 public class ArrivalSquare extends BasicSquare {
-    Particule.State arrivalState;
-    public ArrivalSquare(Position position, Particule.State state) {
-        super(position);
-        this.arrivalState = state;
+    private Conditionable c;
+    public ArrivalSquare(Conditionable c) {
+        super(c.getPosition());
+        this.c = c;
     }
     @Override
-    public Level.State enter(Particule particule) {
+    public Playable.State enter(Player p) {
         unhide();
-        if(particule.getState()==arrivalState)
-            return Level.State.WIN;
+        if(p.getState()==c.getState())
+            return Playable.State.WIN;
         else
-            return Level.State.LOOSE;
+            return Playable.State.LOOSE;
     }
 
     @Override
     public Texture getTexture() {
-        if (arrivalState == Particule.State.CORPUSCULE)
+        if (c.getState() == Player.State.CORPUSCULE)
             return new Texture("arrival_corpuscule_square.png");
         else
             return new Texture("arrival_wave_square.png");

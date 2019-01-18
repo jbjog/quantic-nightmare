@@ -1,6 +1,10 @@
 apply plugin: "java"
 
+<<<<<<< HEAD
 sourceCompatibility = 1.8
+=======
+sourceCompatibility = 8
+>>>>>>> entities
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
