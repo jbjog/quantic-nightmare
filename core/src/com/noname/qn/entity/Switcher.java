@@ -1,6 +1,6 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.Enterable;
+import com.noname.qn.service.domain.Enterable;
 
 import java.util.List;
 

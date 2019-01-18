@@ -1,7 +1,7 @@
 package com.noname.qn.entity;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.noname.qn.service.Player;
+import com.noname.qn.service.domain.Player;
 
 public class Particule implements Player {
     private Position position;

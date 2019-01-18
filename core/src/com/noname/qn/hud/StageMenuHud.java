@@ -1,56 +1,33 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.noname.qn.QNGame;
-import com.noname.qn.screen.Screen;
-import com.noname.qn.utils.Fonts;
+import com.noname.qn.service.gui.Gamer;
+import com.noname.qn.service.gui.ScreenChanger;
 
-public class StageMenuHud implements Disposable {
-    public QNGame game;
-    public Stage stage;
-    private Viewport viewport;
-    private BitmapFont font;
-
+public class StageMenuHud extends QNHud {
     private Texture myTexture;
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
 
-    private Label.LabelStyle redStyle;
-    private Label.LabelStyle whiteStyle;
     private Label titleLabel;
     private Label backLabel;
 
-    public StageMenuHud(QNGame game) {
-        this.game = game;
-        viewport = new FitViewport(800, 480, new OrthographicCamera());
-        stage = new Stage(viewport, game.batch);
-        Gdx.input.setInputProcessor(stage);
+    public StageMenuHud(Gamer screen) {
+        super(screen);
 
         myTexture = new Texture(Gdx.files.internal("1.png"));
         myTextureRegion = new TextureRegion(myTexture);
         myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         button = new ImageButton(myTexRegionDrawable);
-
-        font = Fonts.getDefaultFont();
-        redStyle = new Label.LabelStyle(font, Color.RED);
-        whiteStyle = new Label.LabelStyle(font, Color.WHITE);
 
         Table table = new Table();
         table.top();
@@ -70,14 +47,11 @@ public class StageMenuHud implements Disposable {
         backLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.changeScreen(Screen.HOME);
+                screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
             }
         });
     }
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
+
 }
 

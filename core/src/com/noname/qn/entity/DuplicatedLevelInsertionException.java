@@ -1,6 +1,6 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.Positionable;
+import com.noname.qn.service.domain.Positionable;
 
 public class DuplicatedLevelInsertionException extends IllegalLevelInsertionException {
     public DuplicatedLevelInsertionException(Positionable p) {

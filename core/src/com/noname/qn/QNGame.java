@@ -2,13 +2,11 @@ package com.noname.qn;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.noname.qn.screen.MainMenuScreen;
-import com.noname.qn.screen.OptionMenuScreen;
-import com.noname.qn.screen.Screen;
-import com.noname.qn.screen.StageMenuScreen;
+import com.noname.qn.screen.*;
+import com.noname.qn.service.gui.Gamable;
 
-public class QNGame extends Game {
-	public SpriteBatch batch;
+public class QNGame extends Game implements Gamable {
+	private SpriteBatch batch;
 	private MainMenuScreen mms;
 	private StageMenuScreen sms;
 	private OptionMenuScreen oms;
@@ -29,7 +27,8 @@ public class QNGame extends Game {
 		batch.dispose();
 	}
 
-	public void changeScreen(Screen screen){
+	@Override
+	public void changeScreen(Type screen){
 		switch(screen){
 			case HOME:
 				mms = new MainMenuScreen(this);
@@ -44,6 +43,11 @@ public class QNGame extends Game {
 				this.setScreen(oms);
 				break;
 		}
+	}
+
+	@Override
+	public SpriteBatch getBatch() {
+		return batch;
 	}
 /*
 	private Level createLevelTest(){

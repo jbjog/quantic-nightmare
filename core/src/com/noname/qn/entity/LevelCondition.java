@@ -1,8 +1,7 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.Positionable;
-import com.noname.qn.service.Conditionable;
-import com.noname.qn.service.Player;
+import com.noname.qn.service.domain.Conditionable;
+import com.noname.qn.service.domain.Player;
 
 public class LevelCondition {
     public static Conditionable createCondition(Position p , Player.State s ){

@@ -1,6 +1,6 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.Positionable;
+import com.noname.qn.service.domain.Positionable;
 
 public class OutOfBoundsLevelInsertionException extends IllegalLevelInsertionException {
     public OutOfBoundsLevelInsertionException(Positionable p,int nbRows,int nbColumns) {

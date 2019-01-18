@@ -1,4 +1,4 @@
-package com.noname.qn.service;
+package com.noname.qn.service.domain;
 
 import java.util.List;
 

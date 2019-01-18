@@ -1,12 +1,12 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.Conditionable;
-import com.noname.qn.service.Playable;
-import com.noname.qn.service.Player;
-import com.noname.qn.service.Tracker;
-import com.noname.qn.service.Positionable;
-import com.noname.qn.service.Enterable;
-import com.noname.qn.service.Movable.Direction;
+import com.noname.qn.service.domain.Conditionable;
+import com.noname.qn.service.domain.Playable;
+import com.noname.qn.service.domain.Player;
+import com.noname.qn.service.domain.Tracker;
+import com.noname.qn.service.domain.Positionable;
+import com.noname.qn.service.domain.Enterable;
+import com.noname.qn.service.domain.Movable.Direction;
 
 
 import java.util.ArrayList;

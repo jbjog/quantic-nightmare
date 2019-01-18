@@ -1,4 +1,4 @@
-package com.noname.qn.service;
+package com.noname.qn.service.domain;
 
 public interface Hideable extends Texturable{
     boolean isHidden();

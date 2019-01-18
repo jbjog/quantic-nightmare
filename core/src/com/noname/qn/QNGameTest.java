@@ -6,10 +6,10 @@ import com.noname.qn.entity.square.ArrivalSquare;
 import com.noname.qn.entity.square.BasicSquare;
 import com.noname.qn.entity.square.HoleSquare;
 import com.noname.qn.entity.square.TPSquare;
-import com.noname.qn.service.Conditionable;
-import com.noname.qn.service.Enterable;
-import com.noname.qn.service.Movable;
-import com.noname.qn.service.Playable;
+import com.noname.qn.service.domain.Conditionable;
+import com.noname.qn.service.domain.Enterable;
+import com.noname.qn.service.domain.Movable;
+import com.noname.qn.service.domain.Playable;
 
 import java.util.ArrayList;
 import java.util.List;
