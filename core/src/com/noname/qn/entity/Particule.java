@@ -2,9 +2,8 @@ package com.noname.qn.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.noname.qn.service.Player;
-import com.noname.qn.service.Texturable;
 
-public class Particule implements Player, Texturable {
+public class Particule implements Player {
     private Position position;
     private State state;
 
