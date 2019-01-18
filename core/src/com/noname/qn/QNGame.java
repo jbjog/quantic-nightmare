@@ -1,31 +1,15 @@
 package com.noname.qn;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.noname.qn.screen.MainMenuScreen;
 
 public class QNGame extends Game {
 	public SpriteBatch batch;
-	public BitmapFont font;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		font = new BitmapFont();
-		this.setScreen(new MainMenuScreen(this));
-		batch = new SpriteBatch();
-
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("theDarkFont.ttf"));
-
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.color = Color.WHITE;
-		parameter.size = 20;
-		font = generator.generateFont(parameter);
-
 		this.setScreen(new MainMenuScreen(this));
 	}
 

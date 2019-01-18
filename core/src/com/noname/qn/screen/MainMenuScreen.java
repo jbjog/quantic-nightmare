@@ -5,18 +5,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.noname.qn.QNGame;
+import com.noname.qn.hud.MainMenuHud;
 
 public class MainMenuScreen implements Screen {
     private final QNGame game;
     private OrthographicCamera camera;
-    private StageMenuScreen screen;
+    private MainMenuHud hud;
 
 
     public MainMenuScreen(final QNGame game) {
         this.game = game;
-        screen = new StageMenuScreen(game);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        hud = new MainMenuHud(game.batch);
     }
 
     @Override
@@ -29,19 +30,12 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to Quantic Nightmare", 270, 400);
-		game.font.draw(game.batch, "Play", 375, 300);
-		game.font.draw(game.batch, "Options", 375, 250);
-		game.font.draw(game.batch, "Quit", 375, 200);
 		game.batch.end();
 
-		if (Gdx.input.justTouched()) {
-            game.setScreen(screen);
-		    dispose();
-        }
+		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+		hud.stage.draw();
     }
 
     @Override

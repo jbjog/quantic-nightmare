@@ -32,7 +32,6 @@ public class StageMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Choose your Nightmare.", 300, 400);
         game.batch.end();
 
 		if (Gdx.input.justTouched()) {
