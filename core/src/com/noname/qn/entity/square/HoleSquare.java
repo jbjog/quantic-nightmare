@@ -6,8 +6,8 @@ import com.noname.qn.service.Playable;
 import com.noname.qn.service.Player;
 
 public class HoleSquare extends BasicSquare {
-    public HoleSquare(Position position) {
-        super(position);
+    public HoleSquare(int x,int y) {
+        super(x,y);
     }
 
     @Override

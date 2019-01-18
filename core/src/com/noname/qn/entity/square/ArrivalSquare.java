@@ -8,7 +8,7 @@ import com.noname.qn.service.Player;
 public class ArrivalSquare extends BasicSquare {
     private Conditionable c;
     public ArrivalSquare(Conditionable c) {
-        super(c.getPosition());
+        super(c.getPosition().getX(),c.getPosition().getY());
         this.c = c;
     }
     @Override

@@ -51,44 +51,48 @@ public class QNGameTest {
     }
 
     private static Level createLevelTest() throws IllegalLevelInsertionException {
+        //start at position 0,0 with State CORPUSCULE
         Particule startParticule = new Particule(Particule.State.CORPUSCULE, new Position(0,0));
+        //end if reach position 2,2 with State CORPUSCULE
         Conditionable endConditions = LevelCondition.createCondition(new Position(2,2), Particule.State.CORPUSCULE);
+
+        //create level with 3 rows 4 columns with above conditions
         Level level = new Level(3,4,startParticule,endConditions);
-        BasicSquare b1 = new BasicSquare(new Position(0,0));
-        level.addSquare(b1);
-        BasicSquare b2 = new BasicSquare(new Position(1,0));
-        level.addSquare(b2);
-        BasicSquare b3 = new TPSquare(new Position(2,0),new Position(0,1));
-        level.addSquare(b3);
 
+        //add line 1
+        level.addSquare(new BasicSquare( 0,0));
 
-        b1 = new BasicSquare(new Position(0,3));
-        level.addSquare(b1);
+        //force error : duplicated entry
+        try{
+            level.addSquare(new BasicSquare( 0,0));
+        }catch (IllegalLevelInsertionException e){
+            System.out.println(e.getMessage());
+        }
+        //force error : Out of Bounds entry
+        try{
+            level.addSquare(new BasicSquare( 0,3));
+        }catch (IllegalLevelInsertionException e){
+            System.out.println(e.getMessage());
+        }
 
+        level.addSquare(new BasicSquare(1,0));
+        level.addSquare(new TPSquare(2,0,0,1));
 
-        b1 = new BasicSquare(new Position(0,1));
-        level.addSquare(b1);
-        b2 = new BasicSquare(new Position(1,1));
-        level.addSquare(b2);
-        b3 = new HoleSquare(new Position(2,1));
-        level.addSquare(b3);
+        //add line 2
+        level.addSquare(new BasicSquare(0,1));
+        level.addSquare(new BasicSquare(1,1));
+        level.addSquare(new HoleSquare(2,1));
 
+        //add line 3
+        level.addSquare(new BasicSquare(0,2));
+        level.addSquare(new BasicSquare(1,2));
+        level.addSquare(new ArrivalSquare(endConditions));
 
-        b1 = new BasicSquare(new Position(0,2));
-        level.addSquare(b1);
-        b2 = new BasicSquare(new Position(1,2));
-        level.addSquare(b2);
-        b3 = new ArrivalSquare(endConditions);
-        level.addSquare(b3);
-
+        //add column 4 with a square switcher
         List<Enterable> switcher1List = new ArrayList<>();
-        BasicSquare b4 = new BasicSquare(new Position(3,0));
-        switcher1List.add(b4);
-        b4 = new HoleSquare(new Position(3,1));
-        switcher1List.add(b4);
-        b4 = new HoleSquare(new Position(3,2));
-        switcher1List.add(b4);
-
+        switcher1List.add(new BasicSquare(3,0));
+        switcher1List.add(new HoleSquare(3,1));
+        switcher1List.add(new HoleSquare(3,2));
         Switcher sw = new Switcher(switcher1List);
         level.addSwitcher(sw);
 

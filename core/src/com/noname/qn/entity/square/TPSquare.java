@@ -7,9 +7,9 @@ import com.noname.qn.service.Player;
 
 public class TPSquare extends BasicSquare {
     Position outPosition;
-    public TPSquare(Position position,Position outPosition) {
-        super(position);
-        this.outPosition = outPosition;
+    public TPSquare(int x,int y,int xOut,int yOut) {
+        super(x,y);
+        this.outPosition = new Position(xOut,yOut);
     }
 
     @Override
