@@ -6,8 +6,8 @@ import com.noname.qn.service.Playable;
 import com.noname.qn.service.Player;
 
 public class SwitchStateSquare extends BasicSquare {
-    public SwitchStateSquare(Position position) {
-        super(position);
+    public SwitchStateSquare(int x,int y) {
+        super(x,y);
     }
 
     @Override

@@ -8,8 +8,8 @@ import com.noname.qn.service.Player;
 
 public class BasicSquare implements Enterable {
     private Position position;
-    public BasicSquare(Position position) {
-        this.position = position;
+    public BasicSquare(int x,int y) {
+        this.position = new Position(x,y);
     }
 
     @Override
