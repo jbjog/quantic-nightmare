@@ -62,6 +62,10 @@ public class QNGameTest {
         level.addSquare(b3);
 
 
+        b1 = new BasicSquare(new Position(0,3));
+        level.addSquare(b1);
+
+
         b1 = new BasicSquare(new Position(0,1));
         level.addSquare(b1);
         b2 = new BasicSquare(new Position(1,1));

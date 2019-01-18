@@ -2,8 +2,11 @@ package com.noname.qn.entity;
 
 import com.noname.qn.service.Positionable;
 
-public class IllegalLevelInsertionException extends Throwable {
+public class IllegalLevelInsertionException extends Exception {
+    public IllegalLevelInsertionException(String message,Positionable p) {
+        super(message+" : ("+p.getPosition().getX()+","+p.getPosition().getY()+")");
+    }
     public IllegalLevelInsertionException(Positionable p) {
-        super("Illegal Level Insertion at position : ("+p.getPosition().getX()+","+p.getPosition().getY()+")");
+        this("Illegal Level Insertion at position",p);
     }
 }

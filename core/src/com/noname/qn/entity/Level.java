@@ -27,10 +27,10 @@ public class Level implements Playable, Tracker {
     }
     public void addSquare(Enterable square) throws IllegalLevelInsertionException{
         if(isPositionOutOfLevel(square))
-            throw new IllegalLevelInsertionException(square);
+            throw new OutOfBoundsLevelInsertionException(square,nbRows,nbColumns);
         for(Enterable e : squares){
             if (e.getPosition().hashCode()==square.getPosition().hashCode())
-                throw new IllegalLevelInsertionException(square);
+                throw new DuplicatedLevelInsertionException(square);
         }
         squares.add(square);
     }
