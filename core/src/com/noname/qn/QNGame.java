@@ -13,9 +13,6 @@ public class QNGame extends Game {
 	private StageMenuScreen sms;
 	private OptionMenuScreen oms;
 
-
-
-
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -35,15 +32,15 @@ public class QNGame extends Game {
 	public void changeScreen(Screen screen){
 		switch(screen){
 			case HOME:
-				if(mms == null) mms = new MainMenuScreen(this);
+				mms = new MainMenuScreen(this);
 				this.setScreen(mms);
 				break;
 			case PLAY:
-				if(sms == null) sms = new StageMenuScreen(this);
+				sms = new StageMenuScreen(this);
 				this.setScreen(sms);
 				break;
 			case OPTIONS:
-				if(oms == null) oms = new OptionMenuScreen(this);
+				oms = new OptionMenuScreen(this);
 				this.setScreen(oms);
 				break;
 		}
