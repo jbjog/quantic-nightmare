@@ -4,18 +4,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.domain.Player;
 
-public class SwitchStateSquare extends BasicSquare {
-    public SwitchStateSquare(int x,int y) {
+public class SwitchDualitySquare extends BasicSquare {
+    public SwitchDualitySquare(int x, int y) {
         super(x,y);
     }
 
     @Override
     public Playable.State enter(Player p) {
         unhide();
-        if (p.getState() == Player.State.CORPUSCULE)
-            p.switchState(Player.State.WAVE);
+        if (p.getDuality() == Player.Duality.CORPUSCULE)
+            p.switchDuality(Player.Duality.WAVE);
         else
-            p.switchState(Player.State.CORPUSCULE);
+            p.switchDuality(Player.Duality.CORPUSCULE);
         return Playable.State.CONTINUE;
     }
 

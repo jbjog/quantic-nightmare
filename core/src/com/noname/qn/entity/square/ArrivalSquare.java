@@ -14,7 +14,7 @@ public class ArrivalSquare extends BasicSquare {
     @Override
     public Playable.State enter(Player p) {
         unhide();
-        if(p.getState()==c.getState())
+        if(p.getDuality()==c.getDuality())
             return Playable.State.WIN;
         else
             return Playable.State.LOOSE;
@@ -22,7 +22,7 @@ public class ArrivalSquare extends BasicSquare {
 
     @Override
     public Texture getTexture() {
-        if (c.getState() == Player.State.CORPUSCULE)
+        if (c.getDuality() == Player.Duality.CORPUSCULE)
             return new Texture("arrival_corpuscule_square.png");
         else
             return new Texture("arrival_wave_square.png");

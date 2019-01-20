@@ -1,30 +1,36 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.domain.Conditionable;
-import com.noname.qn.service.domain.Playable;
-import com.noname.qn.service.domain.Player;
-import com.noname.qn.service.domain.Tracker;
-import com.noname.qn.service.domain.Positionable;
-import com.noname.qn.service.domain.Enterable;
+import com.noname.qn.service.domain.*;
 import com.noname.qn.service.domain.Movable.Direction;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level implements Playable, Tracker {
+public class Level implements Levelable {
     private int nbRows, nbColumns;
     private Player player;
     private Conditionable startCondition;
     private Conditionable endCondition;
-    private List<Positionable> tracker= new ArrayList<>();
-
+    private List<Turn>  tracker= new ArrayList<>();
     private List<Switcher> switchers = new ArrayList<>();
-
     private List<Enterable> squares = new ArrayList<>();
+
+    public Level(int nbRows, int nbColumns, Player startPlayer , Conditionable endCondition){
+        this.nbRows = nbRows;
+        this.nbColumns = nbColumns;
+        this.player = startPlayer;
+        this.startCondition = LevelCondition.createCondition(startPlayer.getPosition(),startPlayer.getDuality());
+        this.endCondition = endCondition;
+        reset();
+    }
+
+    @Override
     public List<Enterable> getSquares() {
         return squares;
     }
+
+    @Override
     public void addSquare(Enterable square) throws IllegalLevelInsertionException{
         if(isPositionOutOfLevel(square))
             throw new OutOfBoundsLevelInsertionException(square,nbRows,nbColumns);
@@ -35,21 +41,22 @@ public class Level implements Playable, Tracker {
         squares.add(square);
     }
 
-
+    @Override
     public Player getPlayer() {
         return player;
     }
+
+    @Override
     public int getNbRows() {
         return nbRows;
     }
+
+    @Override
     public int getNbColumns() {
         return nbColumns;
     }
 
-
-    public List<Switcher> getSwitchers() {
-        return switchers;
-    }
+    @Override
     public void addSwitcher(Switcher s) throws IllegalLevelInsertionException{
         for (Enterable e:s.getEnterables()) {
             addSquare(e);
@@ -58,36 +65,24 @@ public class Level implements Playable, Tracker {
     }
 
     @Override
-    public List<Positionable> getTracker() {
+    public List<Turn>  getTracker() {
         return tracker;
-    }
-
-    public Level(int nbRows, int nbColumns, Player startPlayer , Conditionable endCondition){
-        this.nbRows = nbRows;
-        this.nbColumns = nbColumns;
-        this.player = startPlayer;
-        this.startCondition = LevelCondition.createCondition(startPlayer.getPosition(),startPlayer.getState());
-        this.endCondition = endCondition;
-        reset();
     }
 
     @Override
     public void reset(){
         tracker.clear();
         player.setPosition(startCondition.getPosition());
-        player.switchState(startCondition.getState());
-        track(player);
-    }
-
-    private void track(Positionable p){
-        tracker.add(p);
+        player.switchDuality(startCondition.getDuality());
     }
 
     @Override
     public Playable.State play(Direction d){
         player.move(d);
-        if(isPositionOutOfLevel(player))
+        if(isPositionOutOfLevel(player)) {
+            track(d,Playable.State.LOOSE);
             return Playable.State.LOOSE;
+        }
         Enterable entered = null;
         for(Enterable e : squares){
             if (e.getPosition().hashCode()== player.getPosition().hashCode())
@@ -99,7 +94,12 @@ public class Level implements Playable, Tracker {
         for (Switcher s : switchers) {
             s.switchEnterables();
         }
+        track(d,result);
         return result;
+    }
+
+    private void track(Direction d, State s){
+        tracker.add(new Turn(d,s));
     }
 
     private boolean isPositionOutOfLevel(Positionable p){

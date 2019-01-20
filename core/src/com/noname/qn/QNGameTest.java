@@ -6,10 +6,8 @@ import com.noname.qn.entity.square.ArrivalSquare;
 import com.noname.qn.entity.square.BasicSquare;
 import com.noname.qn.entity.square.HoleSquare;
 import com.noname.qn.entity.square.TPSquare;
-import com.noname.qn.service.domain.Conditionable;
-import com.noname.qn.service.domain.Enterable;
-import com.noname.qn.service.domain.Movable;
-import com.noname.qn.service.domain.Playable;
+import com.noname.qn.service.domain.*;
+import com.noname.qn.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +49,10 @@ public class QNGameTest {
     }
 
     private static Level createLevelTest() throws IllegalLevelInsertionException {
-        //start at position 0,0 with State CORPUSCULE
-        Particule startParticule = new Particule(Particule.State.CORPUSCULE, new Position(0,0));
-        //end if reach position 2,2 with State CORPUSCULE
-        Conditionable endConditions = LevelCondition.createCondition(new Position(2,2), Particule.State.CORPUSCULE);
+        //start at position 0,0 with Duality CORPUSCULE
+        Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(0,0));
+        //end if reach position 2,2 with Duality CORPUSCULE
+        Conditionable endConditions = LevelCondition.createCondition(new Position(2,2), Player.Duality.CORPUSCULE);
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(3,4,startParticule,endConditions);
@@ -104,8 +102,8 @@ public class QNGameTest {
     public static void main (String []args){
         try {
             testLevelWin();
-            testLevelLoose();
-            testSwitcher();
+            //testLevelLoose();
+            //testSwitcher();
         } catch (IllegalLevelInsertionException e) {
             e.printStackTrace();
         }
@@ -119,6 +117,12 @@ public class QNGameTest {
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.DOWN);
         Playable.State state = l.play(Movable.Direction.RIGHT);
+        for(Turn t :l.getTracker()){
+            System.out.println(t.toString());
+            try{
+                t.getTexture();
+            }catch(Exception e){}
+        }
         assertLevelState(state, Playable.State.WIN);
     }
     private static void testLevelLoose() throws IllegalLevelInsertionException {
@@ -128,6 +132,12 @@ public class QNGameTest {
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
         Playable.State state = l.play(Movable.Direction.RIGHT);
+        for(Turn t :l.getTracker()){
+            System.out.println(t.toString());
+            try{
+                t.getTexture();
+            }catch(Exception e){}
+        }
         assertLevelState(state, Playable.State.LOOSE);
     }
 

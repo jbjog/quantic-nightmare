@@ -5,10 +5,10 @@ import com.noname.qn.service.domain.Player;
 
 public class Particule implements Player {
     private Position position;
-    private State state;
+    private Duality duality;
 
-    public Particule(State state, Position position) {
-        this.state = state;
+    public Particule(Duality duality, Position position) {
+        this.duality = duality;
         this.position = position;
     }
 
@@ -22,8 +22,8 @@ public class Particule implements Player {
     }
 
     @Override
-    public State getState() {
-        return state;
+    public Duality getDuality() {
+        return duality;
     }
 
     @Override
@@ -46,15 +46,15 @@ public class Particule implements Player {
 
     @Override
     public Texture getTexture() {
-        if(this.state == State.CORPUSCULE)
+        if(this.duality == Duality.CORPUSCULE)
             return new Texture("particule.png");
         else
             return new Texture("wave.png");
     }
 
     @Override
-    public void switchState(Player.State state){
-        this.state = state;
+    public void switchDuality(Duality duality){
+        this.duality = duality;
     }
 
 }
