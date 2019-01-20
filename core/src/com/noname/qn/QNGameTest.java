@@ -4,12 +4,10 @@ package com.noname.qn;
 import com.noname.qn.entity.*;
 import com.noname.qn.entity.square.*;
 import com.noname.qn.service.domain.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.noname.qn.utils.LevelBuilder;
 
 public class QNGameTest {
-    private static void displayLevel(Level l, Playable.State st){
+    private static void displayLevel(Levelable l, Playable.State st){
         for (int i = 0; i < l.getNbRows(); i++) {
             for (int k = 0; k < 3 ; k++) {
                 for (int j = 0; j < l.getNbColumns(); j++) {
@@ -25,7 +23,7 @@ public class QNGameTest {
         System.out.println(st);
         System.out.println("*************************************************");
     }
-    private static void displayEnterable(Level l, Enterable enterable, int lg) {
+    private static void displayEnterable(Levelable l, Enterable enterable, int lg) {
         String s = "-";
         if(enterable instanceof ArrivalSquare)
             s="*";
@@ -50,57 +48,6 @@ public class QNGameTest {
         }
     }
 
-    private static Level createLevelTest() throws IllegalLevelInsertionException {
-        //start at position 0,0 with Duality CORPUSCULE
-        Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(0,0));
-        //end if reach position 2,2 with Duality CORPUSCULE
-        Conditionable endConditions = LevelCondition.createCondition(new Position(2,2), Player.Duality.CORPUSCULE);
-
-        //create level with 3 rows 4 columns with above conditions
-        Level level = new Level(3,4,startParticule,endConditions);
-
-        //add line 1
-        level.addSquare(new BasicSquare( 0,0));
-
-        //force error : duplicated entry
-        try{
-            level.addSquare(new BasicSquare( 0,0));
-        }catch (IllegalLevelInsertionException e){
-
-        }
-        //force error : Out of Bounds entry
-        try{
-            level.addSquare(new BasicSquare( 0,3));
-        }catch (IllegalLevelInsertionException e){
-
-        }
-
-        level.addSquare(new BasicSquare(1,0));
-        level.addSquare(new TPSquare(2,0,0,1));
-
-        //add line 2
-        level.addSquare(new BasicSquare(0,1));
-        level.addSquare(new BasicSquare(1,1));
-        level.addSquare(new HoleSquare(2,1));
-
-        //add line 3
-        level.addSquare(new SwitchDualitySquare(0,2));
-        level.addSquare(new BasicSquare(1,2));
-        level.addSquare(new ArrivalSquare(endConditions));
-
-        //add column 4 with a square switcher
-        List<Enterable> switcher1List = new ArrayList<>();
-        switcher1List.add(new BasicSquare(3,0));
-        switcher1List.add(new HoleSquare(3,1));
-        switcher1List.add(new HoleSquare(3,2));
-        SquareSwitcher sw = new SquareSwitcher(switcher1List);
-        level.addSwitcher(sw);
-
-
-        return level;
-    }
-
-
     public static void main (String []args){
         try {
             testLevelWin();
@@ -114,7 +61,7 @@ public class QNGameTest {
     }
 
     private static void testLevelWin() throws IllegalLevelInsertionException {
-        Level l = createLevelTest();
+        Levelable l = LevelBuilder.createLevelTest();
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
@@ -130,7 +77,7 @@ public class QNGameTest {
     }
     private static void testLevelLoose() throws IllegalLevelInsertionException {
         System.out.println("testLevelLoose : ");
-        Level l = createLevelTest();
+        Levelable l = LevelBuilder.createLevelTest();
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
@@ -152,7 +99,7 @@ public class QNGameTest {
     }
 
     private static void testSwitcher() throws IllegalLevelInsertionException {
-        Level l = createLevelTest();
+        Levelable l = LevelBuilder.createLevelTest();
         displayLevel(l, Playable.State.CONTINUE);
         displayLevel(l,l.play(Movable.Direction.RIGHT));
         displayLevel(l,l.play(Movable.Direction.RIGHT));
@@ -163,7 +110,7 @@ public class QNGameTest {
         assertLevelState(state, Playable.State.WIN);
     }
     private static void testDualitySwitcherLoose() throws IllegalLevelInsertionException {
-        Level l = createLevelTest();
+        Levelable l = LevelBuilder.createLevelTest();
         displayLevel(l, Playable.State.CONTINUE);
         displayLevel(l,l.play(Movable.Direction.DOWN));
         displayLevel(l,l.play(Movable.Direction.DOWN));
