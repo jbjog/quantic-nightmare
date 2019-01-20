@@ -1,7 +1,6 @@
 package com.noname.qn.service.domain;
 
 import com.noname.qn.entity.IllegalLevelInsertionException;
-import com.noname.qn.entity.Switcher;
 
 import java.util.List;
 

@@ -89,8 +89,6 @@ public class Level implements Levelable {
                 entered=e;
         }
         Playable.State result = entered.enter(player);
-        if(entered.getPosition().equals(endCondition.getPosition()))
-            result = Playable.State.WIN;
         for (Switcher s : switchers) {
             s.switchEnterables();
         }
