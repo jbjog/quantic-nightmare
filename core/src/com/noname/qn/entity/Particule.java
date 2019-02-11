@@ -18,7 +18,7 @@ public class Particule implements Player {
     }
     @Override
     public void setPosition(Position aPosition) {
-        position = aPosition;
+        position = new Position(aPosition.getX(),aPosition.getY());
     }
 
     @Override

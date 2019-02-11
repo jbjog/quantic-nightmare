@@ -30,7 +30,7 @@ public class BasicSquare implements Enterable {
 
     @Override
     public void setPosition(Position p) {
-        position = p;
+        position = new Position(p.getX(),p.getY());
     }
 
     private boolean hidden = true;
