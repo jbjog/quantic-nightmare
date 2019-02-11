@@ -35,13 +35,13 @@ public class MainMenuHud extends QNMenuHud {
 
         setFocus(playLabel);
 
-        table.add(titleLabel).width(275).height(200);
+        table.add(titleLabel).height(200);
         table.row();
-        table.add(playLabel).width(75);
+        table.add(playLabel);
         table.row();
-        table.add(optionLabel).width(75);
+        table.add(optionLabel);
         table.row();
-        table.add(quitLabel).width(75);
+        table.add(quitLabel);
 
         playLabel.addListener(new ClickListener() {
             @Override

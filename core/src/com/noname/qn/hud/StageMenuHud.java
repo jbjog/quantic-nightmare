@@ -4,11 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.noname.qn.entity.IllegalLevelInsertionException;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.FocusableImageButton;
 import com.noname.qn.utils.FocusableLabel;
 import com.noname.qn.utils.Fonts;
+import com.noname.qn.utils.LevelBuilder;
 
 public class StageMenuHud extends QNMenuHud {
     private FocusableImageButton level1;
@@ -52,13 +54,19 @@ public class StageMenuHud extends QNMenuHud {
         level1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Enter Level 1");
+                //System.out.println("Enter Level 1");
+                try {
+                    screen.getGamable().loadLevel(LevelBuilder.createLevelTest() );
+                } catch (IllegalLevelInsertionException e) {
+                    //TODO handle error
+                    e.printStackTrace();
+                }
             }
         });
         level2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Enter Level 2");
+                //System.out.println("Enter Level 2");
             }
         });
     }

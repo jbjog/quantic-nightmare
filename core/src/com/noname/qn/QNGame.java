@@ -3,6 +3,7 @@ package com.noname.qn;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.noname.qn.screen.*;
+import com.noname.qn.service.domain.Levelable;
 import com.noname.qn.service.gui.Gamable;
 
 public class QNGame extends Game implements Gamable {
@@ -10,6 +11,7 @@ public class QNGame extends Game implements Gamable {
 	private MainMenuScreen mms;
 	private StageMenuScreen sms;
 	private OptionMenuScreen oms;
+	private LevelScreen ls;
 
 	@Override
 	public void create () {
@@ -48,6 +50,12 @@ public class QNGame extends Game implements Gamable {
 	@Override
 	public SpriteBatch getBatch() {
 		return batch;
+	}
+
+	@Override
+	public void loadLevel(Levelable level) {
+		ls = new LevelScreen(this,level);
+		this.setScreen(ls);
 	}
 /*
 	private Level createLevelTest(){

@@ -38,6 +38,8 @@ public class Level implements Levelable {
             if (e.getPosition().hashCode()==square.getPosition().hashCode())
                 throw new DuplicatedLevelInsertionException(square);
         }
+        if(square.getPosition().equals(startCondition.getPosition()))
+            square.unhide();
         squares.add(square);
     }
 
