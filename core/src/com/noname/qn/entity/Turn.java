@@ -32,7 +32,6 @@ public class Turn extends Pair<Movable.Direction, Playable.State> implements Tex
         if(this.getElement2()== Playable.State.LOOSE)
             arrow=arrow+"_red";
         arrow = arrow+".png";
-        System.out.println(arrow);
         return new Texture(arrow);
     }
 }
