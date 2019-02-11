@@ -11,7 +11,7 @@ import com.noname.qn.service.gui.Gamer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QNMenuHud extends QNHud implements InputProcessor {
+public abstract class QNMenuHud extends QNHud implements InputProcessor {
     protected List<Focusable> focusables = new ArrayList<>();
     protected Focusable focused;
 
@@ -64,10 +64,15 @@ public class QNMenuHud extends QNHud implements InputProcessor {
                     }
                 }
                 return true;
+
+            case 131:
+                echaped();
+                return true;
             default:
                 return false;
         }
     }
+    abstract void echaped();
 
     @Override
     public boolean keyTyped(char character) {

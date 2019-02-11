@@ -52,5 +52,10 @@ public class OptionMenuHud extends QNMenuHud {
         });
     }
 
+    @Override
+    void echaped() {
+        screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
+    }
+
 }
 

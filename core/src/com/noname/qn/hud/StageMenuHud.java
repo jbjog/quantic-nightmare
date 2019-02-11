@@ -63,6 +63,10 @@ public class StageMenuHud extends QNMenuHud {
         });
     }
 
+    @Override
+    void echaped() {
+        screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
+    }
 
 }
 
