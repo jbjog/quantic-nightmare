@@ -1,60 +1,42 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.entity.IllegalLevelInsertionException;
+import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FocusableImageButton;
-import com.noname.qn.utils.FocusableLabel;
-import com.noname.qn.utils.Fonts;
-import com.noname.qn.utils.LevelBuilder;
+import com.noname.qn.utils.*;
 
 public class StageMenuHud extends QNMenuHud {
-    private FocusableImageButton level1;
-    private FocusableImageButton level2;
-
-    private Label titleLabel;
-    private FocusableLabel backLabel;
+    private FocusableTable displayedTable;
+    private FocusableTable stagesTable;
+    private FocusableTable soonAvailableTable;
 
     public StageMenuHud(Gamer screen) {
         super(screen);
 
-        level1 = new FocusableImageButton("1f.png","1.png");
-        level2 = new FocusableImageButton("2f.png","2.png");
-
-        Table table = new Table();
-        table.top();
-        table.setFillParent(true);
-
-        stage.addActor(table);
-
-        titleLabel = new Label("Choose your Nightmare", Fonts.getUnFocusStyle());
-        backLabel = new FocusableLabel("Back");
-
-        table.add(titleLabel).width(275).height(200);
-        table.row();
-        table.add(backLabel);
-        focusables.add(backLabel);
-        setFocus(backLabel);
-        table.row();
-        table.add(level1).size(40f, 40f);
-        focusables.add(level1);
-        table.add(level2).size(40f, 40f);
-        focusables.add(level2);
-
-        backLabel.addListener(new ClickListener() {
+        soonAvailableTable = new FocusableTable("This level will be soon available !!!");
+        soonAvailableTable.addLabel("Ok",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
+                echaped();
             }
         });
-        level1.addListener(new ClickListener() {
+
+        stagesTable = new FocusableTable("Choose your Nightmare");
+        setDisplayedTable(stagesTable);
+
+        stagesTable.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //System.out.println("Enter Level 1");
+                echaped();
+            }
+        });
+
+        stagesTable.addImageButton("1f.png","1.png",new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 try {
                     screen.getGamable().loadLevel(LevelBuilder.createLevelTest() );
                 } catch (IllegalLevelInsertionException e) {
@@ -62,18 +44,49 @@ public class StageMenuHud extends QNMenuHud {
                     e.printStackTrace();
                 }
             }
-        });
-        level2.addListener(new ClickListener() {
+        }).size(40f, 40f);
+        stagesTable.addImageButton("2f.png","2.png",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //System.out.println("Enter Level 2");
+                setDisplayedTable(soonAvailableTable);
             }
-        });
+        },false).size(40f, 40f);
+
+
+    }
+
+    private void setDisplayedTable(FocusableTable table) {
+        stage.clear();
+        stage.addActor(table);
+        displayedTable = table;
+    }
+
+    @Override
+    protected void setFocus(Focusable actor) {
+        displayedTable.setFocus(actor);
+    }
+
+    @Override
+    protected void setNextFocus() {
+        displayedTable.setNextFocus();
+    }
+
+    @Override
+    protected void setPreviousFocus() {
+        displayedTable.setPreviousFocus();
+    }
+
+    @Override
+    protected Focusable getFocused() {
+        return displayedTable.focused;
     }
 
     @Override
     void echaped() {
-        screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
+        if(displayedTable==stagesTable)
+            screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
+        else if(displayedTable == soonAvailableTable)
+            setDisplayedTable(stagesTable);
     }
 
 }

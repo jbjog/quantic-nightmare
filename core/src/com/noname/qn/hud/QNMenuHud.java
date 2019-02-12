@@ -8,12 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class QNMenuHud extends QNHud implements InputProcessor {
-    protected List<Focusable> focusables = new ArrayList<>();
-    protected Focusable focused;
 
     public QNMenuHud(Gamer screen) {
         super(screen);
@@ -22,29 +17,12 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
 
     }
 
-    protected void setFocus(Focusable actor){
-        focused = actor;
-        for (Focusable l :focusables){
-            l.setFocus(l.equals(actor));
-        }
-    }
-    protected void setNextFocus(){
-        int i = focusables.indexOf(focused);
-        if(i!=focusables.size()-1)
-            setFocus(focusables.get(i+1));
-        stage.draw();
-    }
-    protected void setPreviousFocus(){
-        int i = focusables.indexOf(focused);
-        if(i>0)
-            setFocus(focusables.get(i-1));
-        stage.draw();
+    abstract protected Focusable getFocused();
+    abstract protected void setFocus(Focusable actor);
+    abstract protected void setNextFocus();
+    abstract protected void setPreviousFocus();
+    abstract void echaped();
 
-    }
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode){
@@ -58,7 +36,7 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
                 return true;
             //Enter
             case 66:
-                for(EventListener e : focused.getListeners()){
+                for(EventListener e : getFocused().getListeners()){
                     if(e instanceof ClickListener){
                         ((ClickListener) e).clicked(null, 0, 0);
                     }
@@ -72,33 +50,30 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
                 return false;
         }
     }
-    abstract void echaped();
-
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
     @Override
     public boolean keyTyped(char character) {
         return false;
     }
-
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return false;
     }
-
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;
     }
-
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;
     }
-
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
     }
-
     @Override
     public boolean scrolled(int amount) {
         return false;

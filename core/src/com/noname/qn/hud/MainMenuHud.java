@@ -2,73 +2,89 @@ package com.noname.qn.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FocusableLabel;
-import com.noname.qn.utils.Fonts;
+import com.noname.qn.utils.FocusableTable;
 
 
 public class MainMenuHud extends QNMenuHud {
-    private FocusableLabel playLabel;
-    private FocusableLabel optionLabel;
-    private FocusableLabel quitLabel;
-    private Label titleLabel;
+    private FocusableTable displayedTable;
+    private FocusableTable mainTable;
+    private FocusableTable exitTable;
 
     public MainMenuHud(Gamer screen) {
         super(screen);
-        Table table = new Table();
-        table.top();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        playLabel = new FocusableLabel("Play");
-        optionLabel = new FocusableLabel("Option");
-        quitLabel = new FocusableLabel("Quit");
-        titleLabel = new Label("Welcome to Quantic Nightmare", Fonts.getUnFocusStyle());
-
-        focusables.add(playLabel);
-        focusables.add(optionLabel);
-        focusables.add(quitLabel);
-
-        setFocus(playLabel);
-
-        table.add(titleLabel).height(200);
-        table.row();
-        table.add(playLabel);
-        table.row();
-        table.add(optionLabel);
-        table.row();
-        table.add(quitLabel);
-
-        playLabel.addListener(new ClickListener() {
+        mainTable = new FocusableTable("Welcome to Quantic Nightmare",200);
+        setDisplayedTable(mainTable);
+        mainTable.addLabel("Play",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
             }
         });
-
-        optionLabel.addListener(new ClickListener() {
+        mainTable.addLabel("Option",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screen.getGamable().changeScreen(ScreenChanger.Type.OPTIONS);
             }
         });
+        mainTable.addLabel("Quit",new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                setDisplayedTable(exitTable);
+            }
+        });
 
-        quitLabel.addListener(new ClickListener() {
+        exitTable = new FocusableTable("Are you Sure?");
+        exitTable.addLabel("Yes",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
+        exitTable.addLabel("No",new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                setDisplayedTable(mainTable);
+            }
+        });
+
+    }
+
+    @Override
+    protected void setFocus(Focusable actor) {
+        displayedTable.setFocus(actor);
+    }
+
+    @Override
+    protected void setNextFocus() {
+        displayedTable.setNextFocus();
+    }
+
+    @Override
+    protected void setPreviousFocus() {
+        displayedTable.setPreviousFocus();
+    }
+
+    @Override
+    protected Focusable getFocused() {
+        return displayedTable.focused;
     }
 
     @Override
     void echaped() {
-        Gdx.app.exit();
+        if(displayedTable==exitTable)
+            setDisplayedTable(mainTable);
+        else if(displayedTable == mainTable)
+            setDisplayedTable(exitTable);
     }
 
+    private void setDisplayedTable(FocusableTable table){
+        stage.clear();
+        stage.addActor(table);
+        displayedTable = table;
+    }
 
 }
