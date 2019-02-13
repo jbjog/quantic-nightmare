@@ -36,11 +36,7 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
                 return true;
             //Enter
             case 66:
-                for(EventListener e : getFocused().getListeners()){
-                    if(e instanceof ClickListener){
-                        ((ClickListener) e).clicked(null, 0, 0);
-                    }
-                }
+                getFocused().getAction().clicked(null, 0, 0);
                 return true;
 
             case 131:

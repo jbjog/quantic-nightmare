@@ -3,6 +3,8 @@ package com.noname.qn.hud;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.entity.IllegalLevelInsertionException;
+import com.noname.qn.entity.UnknownLevelException;
+import com.noname.qn.service.domain.Levelable;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
@@ -38,8 +40,11 @@ public class StageMenuHud extends QNMenuHud {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 try {
-                    screen.getGamable().loadLevel(LevelBuilder.createLevelTest() );
+                    screen.getGamable().loadLevel(LevelFactory.createLevel(Levelable.Levels.TEST) );
                 } catch (IllegalLevelInsertionException e) {
+                    //TODO handle error
+                    e.printStackTrace();
+                }catch (UnknownLevelException e) {
                     //TODO handle error
                     e.printStackTrace();
                 }

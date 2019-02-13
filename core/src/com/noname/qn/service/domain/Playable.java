@@ -6,4 +6,5 @@ public interface Playable {
     }
     Playable.State play(Movable.Direction d);
     void reset();
+    Playable.State getLastState();
 }

@@ -5,6 +5,9 @@ import com.noname.qn.entity.IllegalLevelInsertionException;
 import java.util.List;
 
 public interface Levelable extends Tracker,Playable {
+    enum Levels{
+        TEST
+    }
     int getNbRows();
     int getNbColumns();
     Player getPlayer();

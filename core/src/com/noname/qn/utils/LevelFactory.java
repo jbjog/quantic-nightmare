@@ -10,10 +10,17 @@ import com.noname.qn.service.domain.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LevelBuilder {
-    private LevelBuilder() {}
+public class LevelFactory {
+    private LevelFactory() {}
 
-    public static Levelable createLevelTest() throws IllegalLevelInsertionException {
+    public static Levelable createLevel(Levelable.Levels levelNumber) throws IllegalLevelInsertionException, UnknownLevelException {
+        switch (levelNumber){
+            case TEST:
+                return createLevelTest();
+        }
+        throw new UnknownLevelException(levelNumber);
+    }
+    private static Levelable createLevelTest() throws IllegalLevelInsertionException {
         //start at position 0,0 with Duality CORPUSCULE
         Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(0,0));
         //end if reach position 2,2 with Duality CORPUSCULE

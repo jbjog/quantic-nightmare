@@ -1,63 +1,134 @@
 package com.noname.qn.hud;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.noname.qn.entity.Position;
 import com.noname.qn.entity.Turn;
 import com.noname.qn.service.domain.Enterable;
 import com.noname.qn.service.domain.Levelable;
 import com.noname.qn.service.domain.Movable;
 import com.noname.qn.service.domain.Playable;
+import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
+import com.noname.qn.utils.FocusableTable;
+import com.noname.qn.utils.Fonts;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LevelHud extends QNHud implements InputProcessor {
-
+public class LevelHud extends QNMenuHud{
+    private Table displayedTable;
     private Levelable level;
+    private Table main;
     private Table boardTable;
     private Table arrowTable;
+    private FocusableTable gameOverTable;
+    private Label gameOverState;
+    private FocusableTable successTable;
     private boolean paused = false;
     private List<Movable.Direction> moves = new ArrayList<>();
 
     public LevelHud(Gamer screen, Levelable level) {
         super(screen);
         this.level = level;
-        InputMultiplexer multiplexer = new InputMultiplexer(this, stage);
-        Gdx.input.setInputProcessor(multiplexer);
-
-        Table main = new Table();;
+        buildGameOverTable();
+        buildSuccessTable();
+        //table principale composé de la map et de la zones pour les flèches
+        main = new Table();
+        displayedTable=main;
         main.top();
         main.setFillParent(true);
 
         boardTable = new Table();
-        //stage.addActor(boardTable);
-
         arrowTable = new Table();
-        //arrowTable.bottom();
         main.add(boardTable);
         main.row();
         main.add(arrowTable);
         stage.addActor(main);
-
         display();
     }
+    //construction de l'ecran gameOver
+    private void buildGameOverTable(){
+        gameOverTable = new FocusableTable("GameOver",100);
+        gameOverTable.getTitleLabel().setStyle(Fonts.getBigRedStyle());
 
+        //ajout du message
+        gameOverTable.row();
+        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));;
+        gameOverTable.add(gameOverMessage).height(100).padBottom(20);
+        //ajout de l'etat final'
+        gameOverTable.row();
+        gameOverState = new Label("",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));
+        gameOverTable.add(gameOverState).height(100).padBottom(20);
+        //ajout d'un background gris transparent à l'écran
+        Pixmap bgTable = new Pixmap(1,1, Pixmap.Format.RGBA8888);
+        bgTable.setColor(new Color(0,0,0,0.4f));
+        bgTable.fill();
+        gameOverTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgTable))));
+
+        gameOverTable.addLabel("Retry",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                level.reset();
+                hideGameOverTable();
+            }
+        },true,true);
+        gameOverTable.addLabel("Quit",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
+            }
+        });
+    }
+
+
+    //affichage de l'ecran de Game Over par superposition au board du jeu
+    private void showGameOverTable(){
+        Stack s = new Stack();
+        s.setFillParent(true);
+        s.add(main);
+        s.add(gameOverTable);
+        Playable.State lastState = level.getLastState();
+        gameOverState.setAlignment(Align.center);
+        gameOverState.setText(lastState.toString());
+        switch (lastState){
+            case LOOSE:
+                gameOverState.getStyle().fontColor = Color.RED;
+                break;
+            case WIN:
+                gameOverState.getStyle().fontColor = Color.GREEN;
+                break;
+        }
+        stage.clear();
+        stage.addActor(s);
+        displayedTable=gameOverTable;
+    }
+    private void hideGameOverTable(){
+        stage.clear();
+        stage.addActor(main);
+        displayedTable=main;
+        display();
+
+    }
+    private void buildSuccessTable(){
+
+    }
     private void display() {
         displayBoard();
         displayArrows();
     }
 
+    //affiche les case et la particule
     private void displayBoard() {
-
         boardTable.clearChildren();
-
         for (int i = 0; i < level.getNbRows(); i++) {
             boardTable.row();
             for (int j = 0; j < level.getNbColumns(); j++) {
@@ -79,30 +150,71 @@ public class LevelHud extends QNHud implements InputProcessor {
             }
         }
     }
+
+    //affiche les flèches saisi par l'utilisateur
     private void displayArrows(){
         arrowTable.clearChildren();
-        for (Movable.Direction d : moves){
-            switch (d) {
-                case DOWN:
-                    arrowTable.add(new Image(new Texture("down.png")));
-                    break;
-                case UP:
-                    arrowTable.add(new Image(new Texture("up.png")));
-                    break;
-                case RIGHT:
-                    arrowTable.add(new Image(new Texture("right.png")));
-                    break;
-                case LEFT:
-                    arrowTable.add(new Image(new Texture("left.png")));
-                    break;
+        if(moves.isEmpty())
+            arrowTable.add(new Image(new Texture("black.png")));
+        else{
+            for (Movable.Direction d : moves){
+                switch (d) {
+                    case DOWN:
+                        arrowTable.add(new Image(new Texture("down.png")));
+                        break;
+                    case UP:
+                        arrowTable.add(new Image(new Texture("up.png")));
+                        break;
+                    case RIGHT:
+                        arrowTable.add(new Image(new Texture("right.png")));
+                        break;
+                    case LEFT:
+                        arrowTable.add(new Image(new Texture("left.png")));
+                        break;
+                }
+
             }
-
         }
-
     }
+
 
     @Override
     public boolean keyUp(int keycode) {
+        if(displayedTable==main)
+            return playingKeyUp(keycode);
+        else if(displayedTable==gameOverTable)
+            return super.keyUp(keycode);
+        return false;
+    }
+
+    private void executeMoves() {
+        //TODO delay turn execution
+        for (Movable.Direction d : moves) {
+            Playable.State result = level.play(d);
+           if (result == Playable.State.LOOSE)
+               break;
+            displayBoard();
+        }
+        endTry();
+    }
+    private void endTry(){
+        moves.clear();
+        paused = false;
+        displayBoard();
+        arrowTable.clearChildren();
+
+        if(level.getTracker().isEmpty())
+            arrowTable.add(new Image(new Texture("black.png")));
+        else{
+            for (Turn t : level.getTracker()){
+                arrowTable.add(new Image(t.getTexture()));
+            }
+        }
+        showGameOverTable();
+    }
+
+    //gestion du clavier lors du gamePlay
+    private boolean playingKeyUp(int keycode){
         if (!paused) {
             switch (keycode) {
                 //UP
@@ -131,7 +243,7 @@ public class LevelHud extends QNHud implements InputProcessor {
                     executeMoves();
                     break;
                 case 131:
-                    screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
+                    echaped();
                     break;
                 default:
                     return false;
@@ -141,57 +253,31 @@ public class LevelHud extends QNHud implements InputProcessor {
         else return false;
     }
 
-    private void executeMoves() {
-        //TODO delay turn execution
-        for (Movable.Direction d : moves) {
-               Playable.State result = level.play(d);
-               if (result == Playable.State.LOOSE)
-                   break;
-               display();
-        }
-        moves.clear();
-        paused = false;
-        System.out.println(level.getTracker().get(level.getTracker().size()-1));
-        displayBoard();
-        arrowTable.clearChildren();
-        for (Turn t : level.getTracker()){
-            arrowTable.add(new Image(t.getTexture()));
-        }
-    }
-
-
     @Override
-    public boolean keyDown(int keycode) {
-        return false;
+    protected Focusable getFocused() {
+        return gameOverTable.focused;
     }
 
     @Override
-    public boolean keyTyped(char character) {
-        return false;
+    protected void setFocus(Focusable actor) {
+        gameOverTable.setFocus(actor);
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+    protected void setNextFocus() {
+        gameOverTable.setNextFocus();
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+    protected void setPreviousFocus() {
+        gameOverTable.setPreviousFocus();
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
+    void echaped() {
+        if (displayedTable==main)
+            screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
+        else if(displayedTable==gameOverTable)
+            hideGameOverTable();
     }
 }

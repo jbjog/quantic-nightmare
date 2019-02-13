@@ -79,6 +79,13 @@ public class Level implements Levelable {
     }
 
     @Override
+    public State getLastState() {
+        if(getTracker().size()>0)
+            return getTracker().get(getTracker().size()-1).getElement2();
+        return State.CONTINUE;
+    }
+
+    @Override
     public Playable.State play(Direction d){
         player.move(d);
         if(isPositionOutOfLevel(player)) {

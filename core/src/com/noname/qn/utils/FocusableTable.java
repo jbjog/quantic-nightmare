@@ -14,29 +14,38 @@ public class FocusableTable extends Table {
     private List<Focusable> focusables = new ArrayList<>();
     public Focusable focused;
 
+    private Label titleLabel;
+    public Label getTitleLabel() {
+        return titleLabel;
+    }
 
-    public FocusableTable( String title) {
+    public FocusableTable(String title) {
         this(title,200);
     }
     public FocusableTable( String title, int titleHeight) {
         top();
         setFillParent(true);
-        add(new Label(title, Fonts.getUnFocusStyle())).height(titleHeight);
+        titleLabel = new Label(title, Fonts.getUnFocusStyle());
+        add(titleLabel).height(titleHeight);
+    }
+
+    public Cell<Actor> addLabel(String text, ClickListener event, boolean newLine,boolean focus){
+        FocusableLabel l = new FocusableLabel(text,event);
+        buildCommon(l,newLine,focus);
+        l.addListener(event);
+        return add(l);
     }
 
     public Cell<Actor> addLabel(String text, ClickListener event, boolean newLine){
-        FocusableLabel l = new FocusableLabel(text);
-        buildCommon(l,newLine);
-        l.addListener(event);
-        return add(l);
+        return this.addLabel(text,event,true,false);
     }
     public Cell<Actor> addLabel(String text, ClickListener event){
         return this.addLabel(text,event,true);
     }
 
     public Cell<Actor> addImageButton(String focusFilePath,String unFocusFilePath, ClickListener event, boolean newLine){
-        FocusableImageButton i = new FocusableImageButton(focusFilePath,unFocusFilePath);
-        buildCommon(i,newLine);
+        FocusableImageButton i = new FocusableImageButton(focusFilePath,unFocusFilePath,event);
+        buildCommon(i,newLine,false);
         i.addListener(event);
         return add(i);
     }
@@ -44,11 +53,11 @@ public class FocusableTable extends Table {
         return this.addImageButton(focusFilePath,unFocusFilePath,event,true);
     }
 
-    private void buildCommon(Focusable f,boolean newLine){
+    private void buildCommon(Focusable f,boolean newLine,boolean focus){
         if(newLine)
             row();
         focusables.add(f);
-        if(getCells().size==1)
+        if(getCells().size==1 || focus)
             setFocus(f);
     }
 
