@@ -76,7 +76,11 @@ public class Level implements Levelable {
         tracker.clear();
         player.setPosition(startCondition.getPosition());
         player.switchDuality(startCondition.getDuality());
-    }
+        for (Enterable e: getSquares()) {
+            if(!e.getPosition().equals(startCondition.getPosition()))
+                    e.hide();
+            }
+        }
 
     @Override
     public State getLastState() {

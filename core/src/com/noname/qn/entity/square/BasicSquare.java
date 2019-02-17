@@ -44,6 +44,11 @@ public class BasicSquare implements Enterable {
         hidden = false;
     }
 
+    @Override
+    public void hide() {
+        hidden = true;
+    }
+
 
     protected Texture getSpecificTexture() {
         return new Texture("basic_square.png");

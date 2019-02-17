@@ -26,7 +26,7 @@ import java.util.List;
 
 public class LevelHud extends QNMenuHud{
     private Table displayedTable;
-    private Levelable level;
+    final private Levelable level;
     private Table main;
     private Table boardTable;
     private Table arrowTable;
@@ -96,9 +96,11 @@ public class LevelHud extends QNMenuHud{
         s.setFillParent(true);
         s.add(main);
         s.add(gameOverTable);
-        Playable.State lastState = level.getLastState();
         gameOverState.setAlignment(Align.center);
+
+        Playable.State lastState = level.getLastState();
         gameOverState.setText(lastState.toString());
+        //choix de la couleur selon l'état
         switch (lastState){
             case LOOSE:
                 gameOverState.getStyle().fontColor = Color.RED;
@@ -136,7 +138,6 @@ public class LevelHud extends QNMenuHud{
                 Stack s = new Stack();
                 for (Enterable e : level.getSquares()) {
                     if (e.getPosition().equals(new Position(j, i))) {
-                        //new Image();
                         s.add(new Image(e.getTexture()));
                         found = true;
                     }
@@ -177,32 +178,47 @@ public class LevelHud extends QNMenuHud{
         }
     }
 
-
     @Override
     public boolean keyUp(int keycode) {
+        //gestion du clavier pendant le game play
         if(displayedTable==main)
             return playingKeyUp(keycode);
+        //gestion du clavier lors des menus classiques
         else if(displayedTable==gameOverTable)
             return super.keyUp(keycode);
         return false;
     }
 
-    private void executeMoves() {
-        //TODO delay turn execution
-        for (Movable.Direction d : moves) {
-            Playable.State result = level.play(d);
-           if (result == Playable.State.LOOSE)
-               break;
+    //execute le prochain déplacement
+    private void nextMove(){
+        Playable.State result = Playable.State.CONTINUE;
+        if(moves.size()>0){
+            result = level.play(moves.get(0));
+            moves.remove(0);
             displayBoard();
         }
-        endTry();
+        //si plus de déplacement ou que la partie est perdu affichage du game over
+        if(moves.size()==0 || result == Playable.State.LOOSE)
+            endTry();
     }
+
+    private void executeMoves() {
+        /*for (Movable.Direction d : moves) {
+            Playable.State result = level.play(d);
+            if (result == Playable.State.LOOSE)
+                break;
+            displayBoard();
+        }
+        endTry();*/
+    }
+
     private void endTry(){
         moves.clear();
         paused = false;
+        //affichages des cases
         displayBoard();
         arrowTable.clearChildren();
-
+        //affichage du tracker des déplacements
         if(level.getTracker().isEmpty())
             arrowTable.add(new Image(new Texture("black.png")));
         else{
@@ -240,8 +256,9 @@ public class LevelHud extends QNMenuHud{
                 //Enter
                 case 66:
                     paused = true;
-                    executeMoves();
+                    nextMove();
                     break;
+                //Echap
                 case 131:
                     echaped();
                     break;
@@ -250,7 +267,14 @@ public class LevelHud extends QNMenuHud{
             }
             return true;
         }
-        else return false;
+        else{
+            switch (keycode) {
+                case 66:
+                    nextMove();
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
