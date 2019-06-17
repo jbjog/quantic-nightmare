@@ -1,6 +1,7 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.noname.qn.service.gui.Focusable;
@@ -24,20 +25,16 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode){
-            //UP
-            case 19:
+            case Input.Keys.UP:
                 setPreviousFocus();
                 return true;
-            //DOWN
-            case 20:
+            case Input.Keys.DOWN:
                 setNextFocus();
                 return true;
-            //Enter
-            case 66:
+            case Input.Keys.ENTER:
                 getFocused().getAction().clicked(null, 0, 0);
                 return true;
-
-            case 131:
+            case Input.Keys.ESCAPE:
                 escaped();
                 return true;
             default:
