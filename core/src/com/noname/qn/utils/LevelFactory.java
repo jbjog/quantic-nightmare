@@ -26,8 +26,8 @@ public class LevelFactory {
     private static Levelable createLevel2() throws IllegalLevelInsertionException {
         //start at position 0,0 with Duality CORPUSCULE
         Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(1,0));
-        //end if reach position 2,2 with Duality CORPUSCULE
-        Conditionable endConditions = LevelCondition.createCondition(new Position(4,4), Player.Duality.CORPUSCULE);
+        //end if reach position 2,2 with Duality WAVE
+        Conditionable endConditions = LevelCondition.createCondition(new Position(4,4), Player.Duality.WAVE);
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(5,5,startParticule,endConditions);
@@ -36,33 +36,35 @@ public class LevelFactory {
         level.addSquare(new HoleSquare(0,0));
         level.addSquare(new BasicSquare(1,0));
         level.addSquare(new HoleSquare(2,0));
-        Enterable arrivalTP = new BasicSquare(3,0);
-        level.addSquare(arrivalTP);
+        Enterable arrivalTP1 = new BasicSquare(3,0);
+        level.addSquare(arrivalTP1);
         level.addSquare(new BasicSquare(4,0));
 
         //add line 2
-        level.addSquare(new BasicSquare(0,1));
+        //level.addSquare(new BasicSquare(0,1));
         level.addSquare(new BasicSquare(1,1));
-        level.addSquare(new BasicSquare(2,1));
+        level.addSquare(new HoleSquare(2,1));
         level.addSquare(new HoleSquare(3,1));
         level.addSquare(new BasicSquare(4,1));
 
         //add line 3
-        level.addSquare(new BasicSquare(0,2));
-        level.addSquare(new TPSquare(1,2,arrivalTP));
+        Enterable arrivalTP2 = new BasicSquare(4,3);
+        level.addSquare(arrivalTP2);
+        level.addSquare(new TPSquare(0,2,arrivalTP2));
+        level.addSquare(new TPSquare(1,2,arrivalTP1));
         level.addSquare(new BasicSquare(2,2));
         level.addSquare(new BasicSquare(3,2));
         level.addSquare(new BasicSquare(4,2));
 
         //add line 4
         level.addSquare(new BasicSquare(0,3));
-        level.addSquare(new BasicSquare(1,3));
+        level.addSquare(new HoleSquare(1,3));
         level.addSquare(new SwitchDualitySquare(2,3));
-        level.addSquare(new BasicSquare(3,3));
-        level.addSquare(new BasicSquare(4,3));
+        level.addSquare(new HoleSquare(3,3));
+
 
         //add line 5
-        level.addSquare(new HoleSquare(0,4));
+        level.addSquare(new BasicSquare(0,4));
         level.addSquare(new BasicSquare(1,4));
         level.addSquare(new BasicSquare(2,4));
         level.addSquare(new HoleSquare(3,4));
