@@ -34,7 +34,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(5,5,startParticule,endConditions);
-
+        level.setMinimumMoves(13);
         //add line 1
         level.addSquare(new HoleSquare(0,0));
         level.addSquare(new BasicSquare(1,0));
@@ -85,7 +85,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(3,4,startParticule,endConditions);
-
+        level.setMinimumMoves(4);
         //add line 1
         level.addSquare(new BasicSquare( 0,0));
         level.addSquare(new BasicSquare(1,0));
@@ -124,6 +124,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(11,11,startParticule,endConditions);
+        level.setMinimumMoves(38);
 
         //add line 1
         level.addSquare(new BasicSquare( 4,0));

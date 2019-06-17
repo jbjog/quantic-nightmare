@@ -40,6 +40,7 @@ public class LevelHud extends QNMenuHud{
     private Table displayedTable;
     final private Levelable level;
     private Table main;
+    private Table introTable;
     private Table boardTable;
     private Table arrowTable;
     private FocusableTable gameOverTable;
@@ -69,8 +70,12 @@ public class LevelHud extends QNMenuHud{
         main.top();
         main.setFillParent(true);
 
+        introTable = new Table();
+        introTable.add(new Label("Nombre de coup minimum : "+level.getMinimumMoves(),new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE)));
         boardTable = new Table();
         arrowTable = new Table();
+        main.add(introTable);
+        main.row();
         main.add(boardTable);
         main.row();
         main.add(arrowTable);
@@ -84,7 +89,7 @@ public class LevelHud extends QNMenuHud{
 
         //ajout du message
         gameOverTable.row();
-        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));;
+        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));
         gameOverTable.add(gameOverMessage).height(100).padBottom(20);
         //ajout de l'etat final'
         gameOverTable.row();

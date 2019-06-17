@@ -11,4 +11,6 @@ public interface Levelable extends Tracker,Playable {
     void addSwitcher(Switcher s)throws IllegalLevelInsertionException;
     List<Enterable> getSquares();
     void addSquare(Enterable square) throws IllegalLevelInsertionException;
+    int getMinimumMoves();
+    void setMinimumMoves(int min);
 }

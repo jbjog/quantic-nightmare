@@ -15,6 +15,7 @@ public class Level implements Levelable {
     private List<Turn>  tracker= new ArrayList<>();
     private List<Switcher> switchers = new ArrayList<>();
     private List<Enterable> squares = new ArrayList<>();
+    private int minMoves;
 
     public Level(int nbRows, int nbColumns, Player startPlayer , Conditionable endCondition){
         this.nbRows = nbRows;
@@ -41,6 +42,15 @@ public class Level implements Levelable {
         if(square.getPosition().equals(startCondition.getPosition()))
             square.reveal();
         squares.add(square);
+    }
+
+    @Override
+    public int getMinimumMoves() {
+        return minMoves;
+    }
+    @Override
+    public void setMinimumMoves(int min) {
+        minMoves = min;
     }
 
     @Override
