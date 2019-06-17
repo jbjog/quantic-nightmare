@@ -52,7 +52,6 @@ public class LevelHud extends QNMenuHud{
     private static List<String> songs = Arrays.asList("cantina_theme.mp3", "chop_suey.mp3", "diptera_sonata.mp3","toxic.mp3","thunderstruck.mp3");
     private static int rand;
 
-
     public LevelHud(Gamer screen, Levelable level) {
         super(screen);
         MainMenuHud.musicMenu.dispose();
