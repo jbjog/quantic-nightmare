@@ -30,7 +30,7 @@ public class StageMenuHud extends QNMenuHud {
 
         stagesTable = new FocusableTable("Choose your Nightmare");
         setDisplayedTable(stagesTable);
-        int nbLevel = 2;
+        int nbLevel = 3;
         for (int i = 0; i < nbLevel; i++) {
             final int index = i+1;
             stagesTable.addImageButton(index+"f.png",index+".png",new ClickListener() {
