@@ -1,26 +1,32 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FocusableLabel;
 import com.noname.qn.utils.FocusableTable;
-import com.noname.qn.utils.Fonts;
 
 public class OptionMenuHud extends QNMenuHud {
     private FocusableTable table;
 
     public OptionMenuHud(Gamer screen) {
         super(screen);
-
         table = new FocusableTable("OPTIONS");
         stage.addActor(table);
         ClickListener voidListener = new ClickListener(){};
-        table.addLabel("Enable Sound",voidListener);
+        table.addLabel("Toggle Sound",new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+              if (enableMusic) {
+                  MainMenuHud.musicMenu.stop();
+                  enableMusic = false;
+              } else {
+                  MainMenuHud.musicMenu.play();
+                  enableMusic = true;
+              }
+          }
+        });
         table.addLabel("Enable Effects",voidListener);
         table.addLabel("Language",voidListener);
         table.addLabel("Back",new ClickListener() {

@@ -17,6 +17,7 @@ public class StageMenuHud extends QNMenuHud {
 
     public StageMenuHud(Gamer screen) {
         super(screen);
+        if (enableMusic) MainMenuHud.musicMenu.play();
 
         soonAvailableTable = new FocusableTable("This level will be soon available !!!");
         soonAvailableTable.addLabel("Ok",new ClickListener() {
