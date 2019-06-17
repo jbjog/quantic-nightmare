@@ -53,7 +53,16 @@ public class StageMenuHud extends QNMenuHud {
         stagesTable.addImageButton("2f.png","2.png",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                setDisplayedTable(soonAvailableTable);
+                //setDisplayedTable(soonAvailableTable);
+                try {
+                    screen.getGamable().loadLevel(LevelFactory.createLevel(Levelable.Levels.LEVEL_1) );
+                } catch (IllegalLevelInsertionException e) {
+                    //TODO handle error
+                    e.printStackTrace();
+                }catch (UnknownLevelException e) {
+                    //TODO handle error
+                    e.printStackTrace();
+                }
             }
         },false).size(40f, 40f);
 

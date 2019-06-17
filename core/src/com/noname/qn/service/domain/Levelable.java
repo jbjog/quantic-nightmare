@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Levelable extends Tracker,Playable {
     enum Levels{
-        TEST
+        TEST, LEVEL_1
     }
     int getNbRows();
     int getNbColumns();
