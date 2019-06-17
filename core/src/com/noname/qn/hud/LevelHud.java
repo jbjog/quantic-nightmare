@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.noname.qn.entity.Position;
 import com.noname.qn.entity.Turn;
 import com.noname.qn.service.domain.Enterable;
@@ -203,13 +204,25 @@ public class LevelHud extends QNMenuHud{
     }
 
     private void executeMoves() {
-        /*for (Movable.Direction d : moves) {
-            Playable.State result = level.play(d);
-            if (result == Playable.State.LOOSE)
-                break;
-            displayBoard();
+        for (int i = 0; i < moves.size(); i++) {
+            Movable.Direction d = moves.get(i);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    Playable.State lastState = level.getLastState();
+                    if (lastState == Playable.State.CONTINUE) {
+                        level.play(d);
+                        if (level.getTracker().size() == moves.size()) {
+                            endTry();
+                        }
+                    } else if (lastState == Playable.State.LOOSE || lastState == Playable.State.WIN) {
+                        endTry();
+                    }
+                    displayBoard();
+                }
+            }, i+1);
+
         }
-        endTry();*/
     }
 
     private void endTry(){
@@ -256,7 +269,8 @@ public class LevelHud extends QNMenuHud{
                 //Enter
                 case 66:
                     paused = true;
-                    nextMove();
+                    //nextMove();
+                    executeMoves();
                     break;
                 //Echap
                 case 131:
