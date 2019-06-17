@@ -1,5 +1,6 @@
 package com.noname.qn.hud;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.entity.IllegalLevelInsertionException;
@@ -29,12 +30,6 @@ public class StageMenuHud extends QNMenuHud {
         stagesTable = new FocusableTable("Choose your Nightmare");
         setDisplayedTable(stagesTable);
 
-        stagesTable.addLabel("Back",new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                escaped();
-            }
-        });
 
         stagesTable.addImageButton("1f.png","1.png",new ClickListener() {
             @Override
@@ -49,13 +44,20 @@ public class StageMenuHud extends QNMenuHud {
                     e.printStackTrace();
                 }
             }
-        }).size(40f, 40f);
+        },true).size(40f, 40f);
         stagesTable.addImageButton("2f.png","2.png",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 setDisplayedTable(soonAvailableTable);
             }
         },false).size(40f, 40f);
+
+        stagesTable.addLabel("Back",new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                escaped();
+            }
+        });
 
 
     }
@@ -94,5 +96,29 @@ public class StageMenuHud extends QNMenuHud {
             setDisplayedTable(stagesTable);
     }
 
+    @Override
+    public boolean keyUp(int keycode) {
+        boolean result = super.keyUp(keycode);
+        switch (keycode) {
+            case Input.Keys.UP:
+                for (int i = 0; i < 4 ; i++) {
+                    setPreviousFocus();
+                }
+                return true;
+            case Input.Keys.DOWN:
+                for (int i = 0; i < 4 ; i++) {
+                    setNextFocus();
+                }
+                return true;
+            case Input.Keys.LEFT:
+                setPreviousFocus();
+                return true;
+            case Input.Keys.RIGHT:
+                setNextFocus();
+                return true;
+        }
+        return result;
+
+    }
 }
 

@@ -49,9 +49,6 @@ public class FocusableTable extends Table {
         i.addListener(event);
         return add(i);
     }
-    public Cell<Actor> addImageButton(String focusFilePath,String unFocusFilePath, ClickListener event){
-        return this.addImageButton(focusFilePath,unFocusFilePath,event,true);
-    }
 
     private void buildCommon(Focusable f,boolean newLine,boolean focus){
         if(newLine)
