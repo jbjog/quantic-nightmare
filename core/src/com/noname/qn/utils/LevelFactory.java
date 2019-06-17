@@ -32,12 +32,15 @@ public class LevelFactory {
         //add line 1
         level.addSquare(new BasicSquare( 0,0));
         level.addSquare(new BasicSquare(1,0));
-        level.addSquare(new TPSquare(2,0,0,1));
 
         //add line 2
-        level.addSquare(new BasicSquare(0,1));
+        Enterable arrivalTP = new BasicSquare(0,1);
+        level.addSquare(arrivalTP);
         level.addSquare(new BasicSquare(1,1));
         level.addSquare(new HoleSquare(2,1));
+
+        //tp line 1
+        level.addSquare(new TPSquare(2,0,arrivalTP));
 
         //add line 3
         level.addSquare(new SwitchDualitySquare(0,2));
