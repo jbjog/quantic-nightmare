@@ -101,7 +101,7 @@ public class Level implements Levelable {
             if (e.getPosition().hashCode()== player.getPosition().hashCode())
                 entered=e;
         }
-        Playable.State result = entered.enter(player);
+        Playable.State result = entered != null ? entered.enter(player) : State.LOOSE;
         for (Switcher s : switchers) {
             s.switchEnterables();
         }
