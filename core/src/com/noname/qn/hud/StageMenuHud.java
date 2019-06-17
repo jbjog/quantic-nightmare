@@ -30,22 +30,25 @@ public class StageMenuHud extends QNMenuHud {
         stagesTable = new FocusableTable("Choose your Nightmare");
         setDisplayedTable(stagesTable);
 
-
-        stagesTable.addImageButton("1f.png","1.png",new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                try {
-                    screen.getGamable().loadLevel(LevelFactory.createLevel(Levelable.Levels.TEST) );
-                } catch (IllegalLevelInsertionException e) {
-                    //TODO handle error
-                    e.printStackTrace();
-                }catch (UnknownLevelException e) {
-                    //TODO handle error
-                    e.printStackTrace();
+        for (int i = 0; i < 2; i++) {
+            final int index = i+1;
+            stagesTable.addImageButton(index+"f.png",index+".png",new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    try {
+                        screen.getGamable().loadLevel(LevelFactory.createLevel(index) );
+                    } catch (IllegalLevelInsertionException e) {
+                        //TODO handle error
+                        e.printStackTrace();
+                    }catch (UnknownLevelException e) {
+                        //TODO handle error
+                        e.printStackTrace();
+                    }
                 }
-            }
-        },true).size(40f, 40f);
-        stagesTable.addImageButton("2f.png","2.png",new ClickListener() {
+            },i%5==0).size(40f, 40f);
+
+        }
+        /*stagesTable.addImageButton("2f.png","2.png",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //setDisplayedTable(soonAvailableTable);
@@ -59,7 +62,7 @@ public class StageMenuHud extends QNMenuHud {
                     e.printStackTrace();
                 }
             }
-        },false).size(40f, 40f);
+        },false).size(40f, 40f);*/
 
         stagesTable.addLabel("Back",new ClickListener() {
             @Override

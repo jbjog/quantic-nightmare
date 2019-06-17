@@ -13,17 +13,17 @@ import java.util.List;
 public class LevelFactory {
     private LevelFactory() {}
 
-    public static Levelable createLevel(Levelable.Levels levelNumber) throws IllegalLevelInsertionException, UnknownLevelException {
+    public static Levelable createLevel(int levelNumber) throws IllegalLevelInsertionException, UnknownLevelException {
         switch (levelNumber){
-            case TEST:
-                return createLevelTest();
-            case LEVEL_1:
-                return createLevelLevel1();
+            case 1:
+                return createLevel1();
+            case 2:
+                return createLevel2();
         }
         throw new UnknownLevelException(levelNumber);
     }
 
-    private static Levelable createLevelLevel1() throws IllegalLevelInsertionException {
+    private static Levelable createLevel2() throws IllegalLevelInsertionException {
         //start at position 0,0 with Duality CORPUSCULE
         Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(1,0));
         //end if reach position 2,2 with Duality CORPUSCULE
@@ -72,7 +72,7 @@ public class LevelFactory {
         return level;
 
     }
-    private static Levelable createLevelTest() throws IllegalLevelInsertionException {
+    private static Levelable createLevel1() throws IllegalLevelInsertionException {
         //start at position 0,0 with Duality CORPUSCULE
         Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(0,0));
         //end if reach position 2,2 with Duality CORPUSCULE

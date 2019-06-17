@@ -61,7 +61,7 @@ public class QNGameTest {
     }
 
     private static void testLevelWin() throws IllegalLevelInsertionException, UnknownLevelException {
-        Levelable l = LevelFactory.createLevel(Levelable.Levels.TEST);
+        Levelable l = LevelFactory.createLevel(1);
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
@@ -77,7 +77,7 @@ public class QNGameTest {
     }
     private static void testLevelLoose() throws IllegalLevelInsertionException, UnknownLevelException {
         System.out.println("testLevelLoose : ");
-        Levelable l = LevelFactory.createLevel(Levelable.Levels.TEST);
+        Levelable l = LevelFactory.createLevel(1);
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
         l.play(Movable.Direction.RIGHT);
@@ -99,7 +99,7 @@ public class QNGameTest {
     }
 
     private static void testSwitcher() throws IllegalLevelInsertionException, UnknownLevelException {
-        Levelable l = LevelFactory.createLevel(Levelable.Levels.TEST);
+        Levelable l = LevelFactory.createLevel(1);
         displayLevel(l, Playable.State.CONTINUE);
         displayLevel(l,l.play(Movable.Direction.RIGHT));
         displayLevel(l,l.play(Movable.Direction.RIGHT));
@@ -110,7 +110,7 @@ public class QNGameTest {
         assertLevelState(state, Playable.State.WIN);
     }
     private static void testDualitySwitcherLoose() throws IllegalLevelInsertionException, UnknownLevelException {
-        Levelable l = LevelFactory.createLevel(Levelable.Levels.TEST);
+        Levelable l = LevelFactory.createLevel(1);
         displayLevel(l, Playable.State.CONTINUE);
         displayLevel(l,l.play(Movable.Direction.DOWN));
         displayLevel(l,l.play(Movable.Direction.DOWN));

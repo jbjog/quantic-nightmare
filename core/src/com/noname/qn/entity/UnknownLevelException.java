@@ -1,12 +1,10 @@
 package com.noname.qn.entity;
 
-import com.noname.qn.service.domain.Levelable;
-
 public class UnknownLevelException extends Exception {
-    public UnknownLevelException(String message, Levelable.Levels levelNumber) {
-        super(message+" : "+levelNumber.toString());
+    public UnknownLevelException(String message, int levelNumber) {
+        super(message+" : "+levelNumber);
     }
-    public UnknownLevelException(Levelable.Levels levelNumber) {
+    public UnknownLevelException(int levelNumber) {
         this("Unknown Level",levelNumber);
     }
 }
