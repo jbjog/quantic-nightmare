@@ -3,8 +3,6 @@ package com.noname.qn.hud;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 
@@ -21,7 +19,7 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
     abstract protected void setFocus(Focusable actor);
     abstract protected void setNextFocus();
     abstract protected void setPreviousFocus();
-    abstract void echaped();
+    abstract void escaped();
 
     @Override
     public boolean keyUp(int keycode) {
@@ -40,7 +38,7 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
                 return true;
 
             case 131:
-                echaped();
+                escaped();
                 return true;
             default:
                 return false;

@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.noname.qn.service.domain.Player;
 
 public class Particule implements Player {
+    public static final Texture TEXTURE_CORPUSCULE = new Texture("particule.png");
+    public static final Texture TEXTURE_WAVE = new Texture("wave.png");
     private Position position;
     private Duality duality;
 
@@ -47,9 +49,9 @@ public class Particule implements Player {
     @Override
     public Texture getTexture() {
         if(this.duality == Duality.CORPUSCULE)
-            return new Texture("particule.png");
+            return TEXTURE_CORPUSCULE;
         else
-            return new Texture("wave.png");
+            return TEXTURE_WAVE;
     }
 
     @Override

@@ -1,15 +1,11 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FocusableLabel;
 import com.noname.qn.utils.FocusableTable;
-import com.noname.qn.utils.Fonts;
 
 public class OptionMenuHud extends QNMenuHud {
     private FocusableTable table;
@@ -52,7 +48,7 @@ public class OptionMenuHud extends QNMenuHud {
     }
 
     @Override
-    void echaped() {
+    void escaped() {
         screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
     }
 

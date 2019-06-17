@@ -5,18 +5,21 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.domain.Player;
 
 public class HoleSquare extends BasicSquare {
-    public HoleSquare(int x,int y) {
+
+    public static final Texture TEXTURE_HOLE_SQUARE = new Texture("hole_square.png");
+
+    public HoleSquare(int x, int y) {
         super(x,y);
     }
 
     @Override
     public Playable.State enter(Player p) {
-        unhide();
+        reveal();
         return Playable.State.LOOSE;
     }
 
     @Override
     protected Texture getSpecificTexture() {
-        return new Texture("hole_square.png");
+        return TEXTURE_HOLE_SQUARE;
     }
 }

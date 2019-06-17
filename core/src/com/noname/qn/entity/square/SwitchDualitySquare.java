@@ -5,13 +5,16 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.domain.Player;
 
 public class SwitchDualitySquare extends BasicSquare {
+
+    public static final Texture TEXTURE_SWITCH_STATE_SQUARE = new Texture("switch_state_square.png");
+
     public SwitchDualitySquare(int x, int y) {
         super(x,y);
     }
 
     @Override
     public Playable.State enter(Player p) {
-        unhide();
+        reveal();
         if (p.getDuality() == Player.Duality.CORPUSCULE)
             p.switchDuality(Player.Duality.WAVE);
         else
@@ -21,6 +24,6 @@ public class SwitchDualitySquare extends BasicSquare {
 
     @Override
     public Texture getTexture() {
-        return new Texture("switch_state_square.png");
+        return TEXTURE_SWITCH_STATE_SQUARE;
     }
 }

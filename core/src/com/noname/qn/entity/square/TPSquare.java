@@ -6,6 +6,7 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.domain.Player;
 
 public class TPSquare extends BasicSquare {
+    public static final Texture TEXTURE_TP_SQUARE = new Texture("tp_square.png");
     Position outPosition;
     public TPSquare(int x,int y,int xOut,int yOut) {
         super(x,y);
@@ -14,14 +15,14 @@ public class TPSquare extends BasicSquare {
 
     @Override
     public Playable.State enter(Player p) {
-        unhide();
+        reveal();
         p.setPosition(outPosition);
         return Playable.State.CONTINUE;
     }
 
     @Override
     protected Texture getSpecificTexture() {
-        return new Texture("tp_square.png");
+        return TEXTURE_TP_SQUARE;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.noname.qn.hud;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LevelHud extends QNMenuHud{
+    public static final Texture TEXTURE_BLACK = new Texture("black.png");
+    public static final Texture TEXTURE_DOWN = new Texture("down.png");
+    public static final Texture TEXTURE_UP = new Texture("up.png");
+    public static final Texture TEXTURE_RIGHT = new Texture("right.png");
+    public static final Texture TEXTURE_LEFT = new Texture("left.png");
+
     private Table displayedTable;
     final private Levelable level;
     private Table main;
@@ -146,7 +153,7 @@ public class LevelHud extends QNMenuHud{
                         s.add(new Image(level.getPlayer().getTexture()));
                 }
                 if (!found) {
-                    s.add(new Image(new Texture("black.png")));
+                    s.add(new Image(TEXTURE_BLACK));
                 }
                 boardTable.add(s);
             }
@@ -157,21 +164,21 @@ public class LevelHud extends QNMenuHud{
     private void displayArrows(){
         arrowTable.clearChildren();
         if(moves.isEmpty())
-            arrowTable.add(new Image(new Texture("black.png")));
+            arrowTable.add(new Image(TEXTURE_BLACK));
         else{
             for (Movable.Direction d : moves){
                 switch (d) {
                     case DOWN:
-                        arrowTable.add(new Image(new Texture("down.png")));
+                        arrowTable.add(new Image(TEXTURE_DOWN));
                         break;
                     case UP:
-                        arrowTable.add(new Image(new Texture("up.png")));
+                        arrowTable.add(new Image(TEXTURE_UP));
                         break;
                     case RIGHT:
-                        arrowTable.add(new Image(new Texture("right.png")));
+                        arrowTable.add(new Image(TEXTURE_RIGHT));
                         break;
                     case LEFT:
-                        arrowTable.add(new Image(new Texture("left.png")));
+                        arrowTable.add(new Image(TEXTURE_LEFT));
                         break;
                 }
 
@@ -199,7 +206,7 @@ public class LevelHud extends QNMenuHud{
             displayBoard();
         }
         //si plus de déplacement ou que la partie est perdu affichage du game over
-        if(moves.size()==0 || result == Playable.State.LOOSE)
+        if(moves.isEmpty() || result == Playable.State.LOOSE)
             endTry();
     }
 
@@ -220,7 +227,7 @@ public class LevelHud extends QNMenuHud{
                     }
                     displayBoard();
                 }
-            }, i+1);
+            }, i*0.5f);
 
         }
     }
@@ -233,7 +240,7 @@ public class LevelHud extends QNMenuHud{
         arrowTable.clearChildren();
         //affichage du tracker des déplacements
         if(level.getTracker().isEmpty())
-            arrowTable.add(new Image(new Texture("black.png")));
+            arrowTable.add(new Image(TEXTURE_BLACK));
         else{
             for (Turn t : level.getTracker()){
                 arrowTable.add(new Image(t.getTexture()));
@@ -244,51 +251,28 @@ public class LevelHud extends QNMenuHud{
 
     //gestion du clavier lors du gamePlay
     private boolean playingKeyUp(int keycode){
-        if (!paused) {
-            switch (keycode) {
-                //UP
-                case 19:
-                    moves.add(Movable.Direction.UP);
-                    display();
-                    break;
-                //DOWN
-                case 20:
-                    moves.add(Movable.Direction.DOWN);
-                    display();
-                    break;
-                //LEFT
-                case 21:
-                    moves.add(Movable.Direction.LEFT);
-                    display();
-                    break;
-                //RIGHT
-                case 22:
-                    moves.add(Movable.Direction.RIGHT);
-                    display();
-                    break;
-                //Enter
-                case 66:
-                    paused = true;
-                    //nextMove();
-                    executeMoves();
-                    break;
-                //Echap
-                case 131:
-                    echaped();
-                    break;
-                default:
-                    return false;
-            }
-            return true;
+        //nextMove();
+        if (paused) {
+            return false;
         }
-        else{
-            switch (keycode) {
-                case 66:
-                    nextMove();
-                    return true;
-            }
+        switch (keycode) {
+            case Input.Keys.UP:     moves.add(Movable.Direction.UP);    break;
+            case Input.Keys.DOWN:   moves.add(Movable.Direction.DOWN);  break;
+            case Input.Keys.LEFT:   moves.add(Movable.Direction.LEFT);  break;
+            case Input.Keys.RIGHT:  moves.add(Movable.Direction.RIGHT); break;
+            case Input.Keys.ENTER:
+                paused = true;
+                //nextMove();
+                executeMoves();
+                return true;
+            case Input.Keys.ESCAPE:
+                escaped();
+                return true;
+            default:
+                return false;
         }
-        return false;
+        displayArrows();
+        return true;
     }
 
     @Override
@@ -312,7 +296,7 @@ public class LevelHud extends QNMenuHud{
     }
 
     @Override
-    void echaped() {
+    void escaped() {
         if (displayedTable==main)
             screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
         else if(displayedTable==gameOverTable)

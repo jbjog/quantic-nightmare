@@ -74,7 +74,7 @@ public class MainMenuHud extends QNMenuHud {
     }
 
     @Override
-    void echaped() {
+    void escaped() {
         if(displayedTable==exitTable)
             setDisplayedTable(mainTable);
         else if(displayedTable == mainTable)

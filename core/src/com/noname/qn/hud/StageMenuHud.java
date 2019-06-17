@@ -22,7 +22,7 @@ public class StageMenuHud extends QNMenuHud {
         soonAvailableTable.addLabel("Ok",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                echaped();
+                escaped();
             }
         });
 
@@ -32,7 +32,7 @@ public class StageMenuHud extends QNMenuHud {
         stagesTable.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                echaped();
+                escaped();
             }
         });
 
@@ -87,7 +87,7 @@ public class StageMenuHud extends QNMenuHud {
     }
 
     @Override
-    void echaped() {
+    void escaped() {
         if(displayedTable==stagesTable)
             screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
         else if(displayedTable == soonAvailableTable)

@@ -39,7 +39,7 @@ public class Level implements Levelable {
                 throw new DuplicatedLevelInsertionException(square);
         }
         if(square.getPosition().equals(startCondition.getPosition()))
-            square.unhide();
+            square.reveal();
         squares.add(square);
     }
 
@@ -85,7 +85,7 @@ public class Level implements Levelable {
     @Override
     public State getLastState() {
         if(getTracker().size()>0)
-            return getTracker().get(getTracker().size()-1).getElement2();
+            return getTracker().get(getTracker().size()-1).getState();
         return State.CONTINUE;
     }
 

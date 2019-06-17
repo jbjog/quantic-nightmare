@@ -7,6 +7,8 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.domain.Player;
 
 public class BasicSquare implements Enterable {
+    public static final Texture TEXTURE_BASIC_SQUARE = new Texture("basic_square.png");
+    public static final Texture TEXTURE_HIDDEN_SQUARE = new Texture("hidden_square.png");
     private Position position;
     public BasicSquare(int x,int y) {
         this.position = new Position(x,y);
@@ -14,7 +16,7 @@ public class BasicSquare implements Enterable {
 
     @Override
     public Playable.State enter(Player p) {
-        unhide();
+        reveal();
         return Playable.State.CONTINUE;
     }
 
@@ -40,7 +42,7 @@ public class BasicSquare implements Enterable {
     }
 
     @Override
-    public void unhide() {
+    public void reveal() {
         hidden = false;
     }
 
@@ -51,13 +53,13 @@ public class BasicSquare implements Enterable {
 
 
     protected Texture getSpecificTexture() {
-        return new Texture("basic_square.png");
+        return TEXTURE_BASIC_SQUARE;
     }
 
     @Override
     public Texture getTexture() {
         if (isHidden())
-            return new Texture("hidden_square.png");
+            return TEXTURE_HIDDEN_SQUARE;
         else
             return getSpecificTexture();
     }
