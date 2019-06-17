@@ -1,6 +1,7 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
@@ -13,9 +14,13 @@ public class MainMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable mainTable;
     private FocusableTable exitTable;
+    public static Music musicMenu = Gdx.audio.newMusic(Gdx.files.internal("throne.mp3"));
 
     public MainMenuHud(Gamer screen) {
         super(screen);
+
+        if (enableMusic) musicMenu.play();
+
         mainTable = new FocusableTable("Welcome to Quantic Nightmare",200);
         setDisplayedTable(mainTable);
         mainTable.addLabel("Play",new ClickListener() {

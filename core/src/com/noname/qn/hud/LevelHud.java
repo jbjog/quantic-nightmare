@@ -1,6 +1,8 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +26,9 @@ import com.noname.qn.utils.FocusableTable;
 import com.noname.qn.utils.Fonts;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class LevelHud extends QNMenuHud{
     public static final Texture TEXTURE_BLACK = new Texture("black.png");
@@ -44,8 +48,19 @@ public class LevelHud extends QNMenuHud{
     private boolean paused = false;
     private List<Movable.Direction> moves = new ArrayList<>();
 
+    private Music musicLevel;
+    private static List<String> songs = Arrays.asList("cantina_theme.mp3", "chop_suey.mp3", "diptera_sonata.mp3","toxic.mp3","thunderstruck.mp3");
+    private static int rand;
+
+
     public LevelHud(Gamer screen, Levelable level) {
         super(screen);
+        MainMenuHud.musicMenu.dispose();
+        rand = (int)(Math.random() * songs.size()) ;
+        musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
+
+        if (enableMusic) musicLevel.play();
+
         this.level = level;
         buildGameOverTable();
         buildSuccessTable();
@@ -92,6 +107,7 @@ public class LevelHud extends QNMenuHud{
         gameOverTable.addLabel("Quit",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                musicLevel.dispose();
                 screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
             }
         });
@@ -297,8 +313,10 @@ public class LevelHud extends QNMenuHud{
 
     @Override
     void escaped() {
-        if (displayedTable==main)
+        if (displayedTable==main) {
+            musicLevel.dispose();
             screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
+        }
         else if(displayedTable==gameOverTable)
             hideGameOverTable();
     }

@@ -12,11 +12,21 @@ public class OptionMenuHud extends QNMenuHud {
 
     public OptionMenuHud(Gamer screen) {
         super(screen);
-
         table = new FocusableTable("OPTIONS");
         stage.addActor(table);
         ClickListener voidListener = new ClickListener(){};
-        table.addLabel("Enable Sound",voidListener);
+        table.addLabel("Toggle Sound",new ClickListener() {
+          @Override
+          public void clicked(InputEvent event, float x, float y) {
+              if (enableMusic) {
+                  MainMenuHud.musicMenu.stop();
+                  enableMusic = false;
+              } else {
+                  MainMenuHud.musicMenu.play();
+                  enableMusic = true;
+              }
+          }
+        });
         table.addLabel("Enable Effects",voidListener);
         table.addLabel("Language",voidListener);
         table.addLabel("Back",new ClickListener() {
