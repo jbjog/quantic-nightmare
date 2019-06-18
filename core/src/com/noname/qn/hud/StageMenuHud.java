@@ -43,14 +43,14 @@ public class StageMenuHud extends QNMenuHud {
         int nbLevel = 20;
         for (int i = 0; i < nbLevel; i++) {
             final int index = i+1;
-            String imagePath = index+".png";
+            String imagePath = "numbers/"+index+".png";
             try{
                 imagePath = getLevelImagePath(index);
 
             }catch (GdxRuntimeException e){
                 //default image is already define above
             }
-            stagesTable.addImageButton(index+"f.png",imagePath,new ClickListener() {
+            stagesTable.addImageButton("numbers/"+index+"f.png",imagePath,new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
@@ -159,7 +159,7 @@ public class StageMenuHud extends QNMenuHud {
         }else if(best.compareTo(GOLD)==0){
             result += "go";
         }
-        return result+".png";
+        return "numbers/" + result+".png";
     }
 }
 
