@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.noname.qn.entity.IllegalLevelInsertionException;
 import com.noname.qn.entity.UnknownLevelException;
 import com.noname.qn.service.domain.Levelable;
@@ -39,8 +40,14 @@ public class StageMenuHud extends QNMenuHud {
         int nbLevel = 20;
         for (int i = 0; i < nbLevel; i++) {
             final int index = i+1;
-            String imagePath = getLevelImagePath(index);
-            Cell<Actor> a = stagesTable.addImageButton(index+"f.png",imagePath,new ClickListener() {
+            String imagePath = index+".png";
+            try{
+                imagePath = getLevelImagePath(index);
+
+            }catch (GdxRuntimeException e){
+                //default image is already define above
+            }
+            stagesTable.addImageButton(index+"f.png",imagePath,new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
@@ -61,9 +68,8 @@ public class StageMenuHud extends QNMenuHud {
                             e.printStackTrace();
                     }
                 }
-            },i%5==0).size(40f, 40f);
+            },i%5==0).size(40f, 40f).pad(10);
         }
-
         stagesTable.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -71,8 +77,6 @@ public class StageMenuHud extends QNMenuHud {
             }
         }).colspan(nbLevel);
         stagesTable.getCell(stagesTable.getTitleLabel()).colspan(nbLevel);
-
-
     }
 
     private void setDisplayedTable(FocusableTable table) {
@@ -136,7 +140,9 @@ public class StageMenuHud extends QNMenuHud {
     private static String getLevelImagePath(int levelNumber){
         String result =levelNumber+"";
         //acces aux données pour connaitre le niveau
-        Levelable.Result best = new Levelable.Result((levelNumber%5+1)*10);
+        PlayerScore ps = FileHandling.readScore(levelNumber);
+        double percent = ps.getScore()==0 ? 0 : (double)ps.getMinMove()/ps.getScore();
+        Levelable.Result best =  Levelable.Result.getResultFromPercent(percent);
         if (best.compareTo(SUCCEED)==0){
                 result += "g";
         }else if(best.compareTo(BRONZE)==0){

@@ -74,7 +74,7 @@ public class Level implements Levelable {
 
     @Override
     public void setBestResult(int r) {
-        bestResult = bestResult==0 ? r : Math.min(bestResult,r);
+        bestResult = r;
     }
 
     @Override

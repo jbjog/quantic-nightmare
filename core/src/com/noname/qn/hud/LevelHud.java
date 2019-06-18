@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Timer;
 import com.noname.qn.entity.Position;
 import com.noname.qn.entity.Turn;
@@ -22,8 +23,10 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
+import com.noname.qn.utils.FileHandling;
 import com.noname.qn.utils.FocusableTable;
 import com.noname.qn.utils.Fonts;
+import com.noname.qn.utils.PlayerScore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +50,8 @@ public class LevelHud extends QNMenuHud{
     private boolean paused = false;
     private List<Movable.Direction> moves = new ArrayList<>();
 
+    private Label introLabel;
+
     private Music musicLevel;
     private static List<String> songs = Arrays.asList("cantina_theme.mp3", "chop_suey.mp3", "diptera_sonata.mp3","toxic.mp3","thunderstruck.mp3");
     private static int rand;
@@ -68,8 +73,16 @@ public class LevelHud extends QNMenuHud{
         main.top();
         main.setFillParent(true);
 
+        String lastScores="";
+        try{
+            PlayerScore ps = FileHandling.readScore(level.getLevelNumber());
+            lastScores = " - Best Try : "+ ps.getScore()+" moves";
+        }catch (GdxRuntimeException e){
+            //default lastScores is already define above
+        }
         Table introTable = new Table();
-        introTable.add(new Label(level.getName()+" - "+level.getMinimumMoves()+" moves",new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE)));
+        introLabel= new Label(level.getName()+" - "+level.getMinimumMoves()+" moves"+lastScores,new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
+        introTable.add(introLabel);
         boardTable = new Table();
         arrowTable = new Table();
         main.add(introTable);
@@ -126,11 +139,16 @@ public class LevelHud extends QNMenuHud{
 
         Playable.State lastState = level.getLastState();
         gameOverState.setText(lastState.toString());
-        //choix de la couleur selon l'état
         switch (lastState){
             case WIN:
                 int moves = level.getTracker().size();
-                level.setBestResult(moves);
+                //mise à jour du scores
+                if (level.getBestResult()==0 || level.getBestResult()>moves){
+                    level.setBestResult(moves);
+                    FileHandling.writeScore(level.getLevelNumber(),level.getMinimumMoves(),level.getBestResult());
+                    introLabel.setText(level.getName()+" - "+level.getMinimumMoves()+" moves - Best Try : "+moves+" moves");
+                }
+                //calcul du niveau de résultat
                 double percent = (double)level.getMinimumMoves()/moves;
                 Levelable.Result r = Levelable.Result.getResultFromPercent(percent);
                 if(r.compareTo(Levelable.Result.GOLD)==0)

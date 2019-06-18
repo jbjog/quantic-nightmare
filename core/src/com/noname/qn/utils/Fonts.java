@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 public class Fonts {
     // 	silver rgba(192,192,192 ,1 )  #C0C0C0
     // 	bronze rgba(205, 127, 50 ,1 )  #CD7F32
-    public static final Color SILVER = new Color(0.75f,0.75f,0.75f ,1);
+    public static final Color SILVER = new Color(0.8f,0.8f,0.8f ,1);
     public static final Color BRONZE = new Color(0.8f, 0.5f, 0.2f ,1);
 
     private Fonts(){}

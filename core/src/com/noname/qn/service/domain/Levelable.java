@@ -20,36 +20,11 @@ public interface Levelable extends Tracker,Playable {
     void setBestResult(int r);
 
     class Result implements Comparable<Result>{
-        public static final Result NONE = new Result(0){
-            @Override
-            public String toString() {
-                return "NONE";
-            }
-        };
-        public static final Result SUCCEED = new Result(0.1){
-            @Override
-            public String toString() {
-                return "SUCCEED";
-            }
-        };
-        public static final Result BRONZE = new Result(0.5){
-            @Override
-            public String toString() {
-                return "BRONZE";
-            }
-        };
-        public static final Result SILVER = new Result(0.8){
-            @Override
-            public String toString() {
-                return "SILVER";
-            }
-        };
-        public static final Result GOLD = new Result(1){
-            @Override
-            public String toString() {
-                return "GOLD";
-            }
-        };
+        public static final Result NONE = new Result(0);
+        public static final Result SUCCEED = new Result(0.1);
+        public static final Result BRONZE = new Result(0.5);
+        public static final Result SILVER = new Result(0.8);
+        public static final Result GOLD = new Result(1);
 
         private double percent;
         private Result(double percent){
@@ -69,33 +44,12 @@ public interface Levelable extends Tracker,Playable {
         }
         @Override
         public int compareTo(Result o) {
-            if(percent==o.percent)
+            if (percent == o.percent)
                 return 0;
-            else if(percent<o.percent)
+            else if (percent < o.percent)
                 return 1;
             else
                 return -1;
-        }
-        public static Result getFromString(String resultToString) throws InvalidLevelResultString {
-            switch (resultToString){
-                case "NONE":
-                    return NONE;
-                case "SUCCEED":
-                    return SUCCEED;
-                case "BRONZE":
-                    return BRONZE;
-                case "SILVER":
-                    return SILVER;
-                case "GOLD":
-                    return GOLD;
-            }
-            throw new InvalidLevelResultString(resultToString);
-        }
-
-        private static class InvalidLevelResultString extends Exception {
-            public InvalidLevelResultString(String resultToString) {
-                super("Invalid Level Result : "+resultToString);
-            }
         }
     }
 }
