@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Level implements Levelable {
-    private int nbRows, nbColumns;
+    private int nbRows, nbColumns,levelNumber,bestResult;
     private Player player;
     private Conditionable startCondition;
     private Conditionable endCondition;
@@ -16,13 +16,17 @@ public class Level implements Levelable {
     private List<Switcher> switchers = new ArrayList<>();
     private List<Enterable> squares = new ArrayList<>();
     private int minMoves;
-
-    public Level(int nbRows, int nbColumns, Player startPlayer , Conditionable endCondition){
+    private String name;
+    public Level(int levelNumber, int nbRows, int nbColumns, Player startPlayer , Conditionable endCondition){
         this.nbRows = nbRows;
         this.nbColumns = nbColumns;
         this.player = startPlayer;
         this.startCondition = LevelCondition.createCondition(startPlayer.getPosition(),startPlayer.getDuality());
         this.endCondition = endCondition;
+        this.levelNumber = levelNumber;
+        minMoves=0;
+        name="";
+        bestResult = 0;
         reset();
     }
 
@@ -54,8 +58,33 @@ public class Level implements Levelable {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name=name;
+    }
+
+    @Override
+    public int getBestResult() {
+        return bestResult;
+    }
+
+    @Override
+    public void setBestResult(int r) {
+        bestResult = bestResult==0 ? r : Math.min(bestResult,r);
+    }
+
+    @Override
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public int getLevelNumber() {
+        return levelNumber;
     }
 
     @Override

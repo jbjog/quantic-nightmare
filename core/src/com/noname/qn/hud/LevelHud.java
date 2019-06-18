@@ -28,7 +28,6 @@ import com.noname.qn.utils.Fonts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class LevelHud extends QNMenuHud{
     public static final Texture TEXTURE_BLACK = new Texture("black.png");
@@ -40,7 +39,6 @@ public class LevelHud extends QNMenuHud{
     private Table displayedTable;
     final private Levelable level;
     private Table main;
-    private Table introTable;
     private Table boardTable;
     private Table arrowTable;
     private FocusableTable gameOverTable;
@@ -70,8 +68,8 @@ public class LevelHud extends QNMenuHud{
         main.top();
         main.setFillParent(true);
 
-        introTable = new Table();
-        introTable.add(new Label("Nombre de coup minimum : "+level.getMinimumMoves(),new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE)));
+        Table introTable = new Table();
+        introTable.add(new Label(level.getName()+" - "+level.getMinimumMoves()+" moves",new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE)));
         boardTable = new Table();
         arrowTable = new Table();
         main.add(introTable);
@@ -93,7 +91,7 @@ public class LevelHud extends QNMenuHud{
         gameOverTable.add(gameOverMessage).height(100).padBottom(20);
         //ajout de l'etat final'
         gameOverTable.row();
-        gameOverState = new Label("",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));
+        gameOverState = new Label("",new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         gameOverTable.add(gameOverState).height(100).padBottom(20);
         //ajout d'un background gris transparent à l'écran
         Pixmap bgTable = new Pixmap(1,1, Pixmap.Format.RGBA8888);
@@ -130,12 +128,25 @@ public class LevelHud extends QNMenuHud{
         gameOverState.setText(lastState.toString());
         //choix de la couleur selon l'état
         switch (lastState){
+            case WIN:
+                int moves = level.getTracker().size();
+                level.setBestResult(moves);
+                double percent = (double)level.getMinimumMoves()/moves;
+                Levelable.Result r = Levelable.Result.getResultFromPercent(percent);
+                if(r.compareTo(Levelable.Result.GOLD)==0)
+                    gameOverState.getStyle().fontColor = Color.GOLD;
+                else if(r.compareTo(Levelable.Result.SILVER)==0)
+                    gameOverState.getStyle().fontColor = Fonts.SILVER;
+                else if(r.compareTo(Levelable.Result.BRONZE)==0)
+                    gameOverState.getStyle().fontColor = Fonts.BRONZE;
+                else
+                    gameOverState.getStyle().fontColor = Color.GREEN;
+                break;
             case LOOSE:
                 gameOverState.getStyle().fontColor = Color.RED;
                 break;
-            case WIN:
-                gameOverState.getStyle().fontColor = Color.GREEN;
-                break;
+            default:
+                gameOverState.getStyle().fontColor = Color.WHITE;
         }
         stage.clear();
         stage.addActor(s);
@@ -231,6 +242,8 @@ public class LevelHud extends QNMenuHud{
     }
 
     private void executeMoves() {
+        if(moves.isEmpty())
+            paused = false;
         for (int i = 0; i < moves.size(); i++) {
             Movable.Direction d = moves.get(i);
             Timer.schedule(new Timer.Task() {
@@ -248,7 +261,6 @@ public class LevelHud extends QNMenuHud{
                     displayBoard();
                 }
             }, i*0.5f);
-
         }
     }
 
@@ -266,6 +278,7 @@ public class LevelHud extends QNMenuHud{
                 arrowTable.add(new Image(t.getTexture()));
             }
         }
+
         showGameOverTable();
     }
 

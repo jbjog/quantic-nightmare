@@ -1,7 +1,9 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.entity.IllegalLevelInsertionException;
 import com.noname.qn.entity.UnknownLevelException;
@@ -11,17 +13,21 @@ import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.*;
 
+import java.lang.management.ManagementFactory;
+
+import static com.noname.qn.service.domain.Levelable.Result.*;
+
 public class StageMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable stagesTable;
-    private FocusableTable soonAvailableTable;
+    private FocusableTable messageTable;
 
     public StageMenuHud(Gamer screen) {
         super(screen);
         if (enableMusic) MainMenuHud.musicMenu.play();
 
-        soonAvailableTable = new FocusableTable("This level will be soon available !!!");
-        soonAvailableTable.addLabel("Ok",new ClickListener() {
+        messageTable = new FocusableTable("");
+        messageTable.addLabel("Ok",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 escaped();
@@ -30,22 +36,33 @@ public class StageMenuHud extends QNMenuHud {
 
         stagesTable = new FocusableTable("Choose your Nightmare");
         setDisplayedTable(stagesTable);
-        int nbLevel = 3;
+        int nbLevel = 20;
         for (int i = 0; i < nbLevel; i++) {
             final int index = i+1;
-            stagesTable.addImageButton(index+"f.png",index+".png",new ClickListener() {
+            String imagePath = getLevelImagePath(index);
+            Cell<Actor> a = stagesTable.addImageButton(index+"f.png",imagePath,new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
                         screen.getGamable().loadLevel(LevelFactory.createLevel(index));
-                    } catch (IllegalLevelInsertionException e) {
-                        //TODO handle error
-                        e.printStackTrace();
-                    }catch (UnknownLevelException e) {
-                        setDisplayedTable(soonAvailableTable);
+                    } catch (Exception e) {
+                        if(e instanceof IllegalLevelInsertionException){
+                            messageTable.getTitleLabel().setText("This level is broken !!!");
+                        }else if(e instanceof UnknownLevelException){
+                            messageTable.getTitleLabel().setText("This level will be soon available !!!");
+                        }else{
+                            messageTable.getTitleLabel().setText("An error has occurred !!!");
+                        }
+                        setDisplayedTable(messageTable);
+                        boolean isDebug =
+                                ManagementFactory.getRuntimeMXBean().
+                                        getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+                        if(isDebug)
+                            e.printStackTrace();
                     }
                 }
             },i%5==0).size(40f, 40f);
+            a.pad(10);
         }
 
         stagesTable.addLabel("Back",new ClickListener() {
@@ -89,7 +106,7 @@ public class StageMenuHud extends QNMenuHud {
     void escaped() {
         if(displayedTable==stagesTable)
             screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
-        else if(displayedTable == soonAvailableTable)
+        else if(displayedTable == messageTable)
             setDisplayedTable(stagesTable);
     }
 
@@ -115,7 +132,22 @@ public class StageMenuHud extends QNMenuHud {
                 return true;
         }
         return result;
+    }
 
+    private static String getLevelImagePath(int levelNumber){
+        String result =levelNumber+"";
+        //acces aux données pour connaitre le niveau
+        Levelable.Result best = new Levelable.Result((levelNumber%5+1)*10);
+        if (best.compareTo(SUCCEED)==0){
+                result += "g";
+        }else if(best.compareTo(BRONZE)==0){
+            result += "b";
+        }else if(best.compareTo(SILVER)==0){
+            result += "s";
+        }else if(best.compareTo(GOLD)==0){
+            result += "go";
+        }
+        return result+".png";
     }
 }
 

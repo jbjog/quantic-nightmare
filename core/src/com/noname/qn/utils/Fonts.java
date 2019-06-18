@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class Fonts {
+    // 	silver rgba(192,192,192 ,1 )  #C0C0C0
+    // 	bronze rgba(205, 127, 50 ,1 )  #CD7F32
+    public static final Color SILVER = new Color(0.75f,0.75f,0.75f ,1);
+    public static final Color BRONZE = new Color(0.8f, 0.5f, 0.2f ,1);
+
     private Fonts(){}
 
     public static BitmapFont getDefaultFont() {
@@ -31,7 +36,7 @@ public class Fonts {
     }
 
     public static BitmapFont getDefaultFont(int size, Color c) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("theDarkFont.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("PERRYGOT.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = c;
         parameter.size = size;

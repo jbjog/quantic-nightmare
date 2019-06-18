@@ -20,7 +20,7 @@ public class FocusableTable extends Table {
     }
 
     public FocusableTable(String title) {
-        this(title,200);
+        this(title,160);
     }
     public FocusableTable( String title, int titleHeight) {
         top();
