@@ -7,34 +7,31 @@ import com.badlogic.gdx.utils.Json;
 
 public class FileHandling {
 
-    public PlayerScore playerScore;
-
-    public void writeScore (int lvl, int score) {
+    public static void writeScore (int lvl, int  minMoves, int score) {
         // où ecrire
         FileHandle file = Gdx.files.local("save/score" + lvl+".json");
-        playerScore = new PlayerScore();
+        PlayerScore playerScore = new PlayerScore();
         Json json = new Json();
 
         playerScore.setLvl(lvl);
+        playerScore.setMinMove(minMoves);
         playerScore.setScore(score);
 
         String playerScores = json.toJson(playerScore);
         file.writeString(playerScores,false);
     }
 
-    public PlayerScore readScore(int numLvl) {
+    public static PlayerScore readScore(int numLvl) {
         // où lire
         FileHandle file = Gdx.files.local("save/score" + numLvl +".json");
         String scores = file.readString();
         Json json = new Json();
 
-        PlayerScore playerSave = json.fromJson(PlayerScore.class, scores);
-
-        return playerSave;
+        return json.fromJson(PlayerScore.class, scores);
     }
 }
 
 // exemple
 //fileHandling = new FileHandling();
-//fileHandling.writeScore(9,30);
-//fileHandling.readScore(9);
+////fileHandling.writeScore(9,30);
+////fileHandling.readScore(9);

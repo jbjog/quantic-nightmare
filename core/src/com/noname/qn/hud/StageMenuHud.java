@@ -1,8 +1,13 @@
 package com.noname.qn.hud;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.noname.qn.entity.IllegalLevelInsertionException;
 import com.noname.qn.entity.UnknownLevelException;
 import com.noname.qn.service.domain.Levelable;
@@ -11,17 +16,22 @@ import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.*;
 
+import java.lang.management.ManagementFactory;
+
+import static com.noname.qn.service.domain.Levelable.Result.*;
+
 public class StageMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable stagesTable;
     private FocusableTable soonAvailableTable;
+    private FocusableTable messageTable;
 
     public StageMenuHud(Gamer screen) {
         super(screen);
         if (enableMusic) MainMenuHud.musicMenu.play();
 
-        soonAvailableTable = new FocusableTable("This level will be soon available !!!");
-        soonAvailableTable.addLabel("Ok",new ClickListener() {
+        messageTable = new FocusableTable("");
+        messageTable.addLabel("Ok",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 escaped();
@@ -30,24 +40,39 @@ public class StageMenuHud extends QNMenuHud {
 
         stagesTable = new FocusableTable("Choose your Nightmare");
         setDisplayedTable(stagesTable);
-        int nbLevel = 4;
+        int nbLevel = 20;
         for (int i = 0; i < nbLevel; i++) {
             final int index = i+1;
-            stagesTable.addImageButton(index+"f.png",index+".png",new ClickListener() {
+            String imagePath = index+".png";
+            try{
+                imagePath = getLevelImagePath(index);
+
+            }catch (GdxRuntimeException e){
+                //default image is already define above
+            }
+            stagesTable.addImageButton(index+"f.png",imagePath,new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
                         screen.getGamable().loadLevel(LevelFactory.createLevel(index));
-                    } catch (IllegalLevelInsertionException e) {
-                        //TODO handle error
-                        e.printStackTrace();
-                    }catch (UnknownLevelException e) {
-                        setDisplayedTable(soonAvailableTable);
+                    } catch (Exception e) {
+                        if(e instanceof IllegalLevelInsertionException){
+                            messageTable.getTitleLabel().setText("This level is broken !!!");
+                        }else if(e instanceof UnknownLevelException){
+                            messageTable.getTitleLabel().setText("This level will be soon available !!!");
+                        }else{
+                            messageTable.getTitleLabel().setText("An error has occurred !!!");
+                        }
+                        setDisplayedTable(messageTable);
+                        boolean isDebug =
+                                ManagementFactory.getRuntimeMXBean().
+                                        getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+                        if(isDebug)
+                            e.printStackTrace();
                     }
                 }
-            },i%5==0).size(40f, 40f);
+            },i%5==0).size(40f, 40f).pad(10);
         }
-
         stagesTable.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,8 +80,6 @@ public class StageMenuHud extends QNMenuHud {
             }
         }).colspan(nbLevel);
         stagesTable.getCell(stagesTable.getTitleLabel()).colspan(nbLevel);
-
-
     }
 
     private void setDisplayedTable(FocusableTable table) {
@@ -89,7 +112,7 @@ public class StageMenuHud extends QNMenuHud {
     void escaped() {
         if(displayedTable==stagesTable)
             screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
-        else if(displayedTable == soonAvailableTable)
+        else if(displayedTable == messageTable)
             setDisplayedTable(stagesTable);
     }
 
@@ -98,24 +121,45 @@ public class StageMenuHud extends QNMenuHud {
         boolean result = super.keyUp(keycode);
         switch (keycode) {
             case Input.Keys.UP:
+                if (enableEffects) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setPreviousFocus();
                 }
                 return true;
             case Input.Keys.DOWN:
+                if (enableEffects) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setNextFocus();
                 }
                 return true;
             case Input.Keys.LEFT:
+                if (enableEffects) effectSound.play();
                 setPreviousFocus();
                 return true;
             case Input.Keys.RIGHT:
+                if (enableEffects) effectSound.play();
                 setNextFocus();
                 return true;
         }
         return result;
+    }
 
+    private static String getLevelImagePath(int levelNumber){
+        String result =levelNumber+"";
+        //acces aux données pour connaitre le niveau
+        PlayerScore ps = FileHandling.readScore(levelNumber);
+        double percent = ps.getScore()==0 ? 0 : (double)ps.getMinMove()/ps.getScore();
+        Levelable.Result best =  Levelable.Result.getResultFromPercent(percent);
+        if (best.compareTo(SUCCEED)==0){
+                result += "g";
+        }else if(best.compareTo(BRONZE)==0){
+            result += "b";
+        }else if(best.compareTo(SILVER)==0){
+            result += "s";
+        }else if(best.compareTo(GOLD)==0){
+            result += "go";
+        }
+        return result+".png";
     }
 }
 

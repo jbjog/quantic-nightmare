@@ -1,6 +1,7 @@
 package com.noname.qn.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -8,19 +9,19 @@ import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.FocusableTable;
-import com.noname.qn.utils.FileHandling;
-
 
 public class MainMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable mainTable;
     private FocusableTable exitTable;
-    public static Music musicMenu = Gdx.audio.newMusic(Gdx.files.internal("throne.mp3"));
+    public static Music musicMenu = Gdx.audio.newMusic(Gdx.files.internal("effects/heartbeat.mp3"));
+    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/splat.mp3"));
 
     public MainMenuHud(Gamer screen) {
         super(screen);
 
         if (enableMusic) musicMenu.play();
+        musicMenu.setLooping(true);
 
 
         mainTable = new FocusableTable("Welcome to Quantic Nightmare",200);
@@ -93,5 +94,4 @@ public class MainMenuHud extends QNMenuHud {
         stage.addActor(table);
         displayedTable = table;
     }
-
 }

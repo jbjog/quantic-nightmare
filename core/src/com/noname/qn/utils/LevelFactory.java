@@ -35,7 +35,9 @@ public class LevelFactory {
         Conditionable endConditions = LevelCondition.createCondition(new Position(2,2), Player.Duality.CORPUSCULE);
 
         //create level with 3 rows 4 columns with above conditions
-        Level level = new Level(3,4,startParticule,endConditions);
+        Level level = new Level(1,3,4,startParticule,endConditions);
+        level.setName("Tuto");
+        level.setMinimumMoves(4);
 
         //add line 1
         level.addSquare(new BasicSquare( 0,0));
@@ -73,8 +75,9 @@ public class LevelFactory {
         Conditionable endConditions = LevelCondition.createCondition(new Position(4,4), Player.Duality.WAVE);
 
         //create level with 3 rows 4 columns with above conditions
-        Level level = new Level(5,5,startParticule,endConditions);
-
+        Level level = new Level(2,5,5,startParticule,endConditions);
+        level.setMinimumMoves(13);
+        level.setName("Unknown");
         //add line 1
         level.addSquare(new HoleSquare(0,0));
         level.addSquare(new BasicSquare(1,0));
@@ -91,7 +94,7 @@ public class LevelFactory {
         level.addSquare(new BasicSquare(4,1));
 
         //add line 3
-        Enterable arrivalTP2 = new ArrivalSquare(endConditions);
+        Enterable arrivalTP2 = new BasicSquare(4,3);
         level.addSquare(arrivalTP2);
         level.addSquare(new TPSquare(0,2,arrivalTP2));
         level.addSquare(new TPSquare(1,2,arrivalTP1));
@@ -104,6 +107,7 @@ public class LevelFactory {
         level.addSquare(new HoleSquare(1,3));
         level.addSquare(new SwitchDualitySquare(2,3));
         level.addSquare(new HoleSquare(3,3));
+
 
         //add line 5
         level.addSquare(new BasicSquare(0,4));
@@ -122,7 +126,9 @@ public class LevelFactory {
         Conditionable endConditions = LevelCondition.createCondition(new Position(8,7), Player.Duality.CORPUSCULE);
 
         //create level with 3 rows 4 columns with above conditions
-        Level level = new Level(11,11,startParticule,endConditions);
+        Level level = new Level(3,11,11,startParticule,endConditions);
+        level.setName("Nightmare");
+        level.setMinimumMoves(38);
 
         //add line 1
         level.addSquare(new BasicSquare( 4,0));
@@ -258,7 +264,9 @@ public class LevelFactory {
         Conditionable endConditions = LevelCondition.createCondition(new Position(16, 4), Player.Duality.CORPUSCULE);
 
         //create level with 3 rows 4 columns with above conditions
-        Level level = new Level(5, 17, startParticule, endConditions);
+        Level level = new Level(4,5, 17, startParticule, endConditions);
+        level.setName("E=MC2");
+        level.setMinimumMoves(18);
 
         //arrival TP
         Enterable arrivalTP1 = new BasicSquare(15,0);
