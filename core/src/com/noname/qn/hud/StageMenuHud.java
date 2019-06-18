@@ -62,7 +62,6 @@ public class StageMenuHud extends QNMenuHud {
                     }
                 }
             },i%5==0).size(40f, 40f);
-            a.pad(10);
         }
 
         stagesTable.addLabel("Back",new ClickListener() {

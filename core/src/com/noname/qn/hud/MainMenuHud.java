@@ -8,6 +8,7 @@ import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.FocusableTable;
+import com.noname.qn.utils.FileHandling;
 
 
 public class MainMenuHud extends QNMenuHud {
@@ -20,6 +21,7 @@ public class MainMenuHud extends QNMenuHud {
         super(screen);
 
         if (enableMusic) musicMenu.play();
+
 
         mainTable = new FocusableTable("Welcome to Quantic Nightmare",200);
         setDisplayedTable(mainTable);
