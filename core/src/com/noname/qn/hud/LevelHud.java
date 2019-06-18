@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Timer;
 import com.noname.qn.entity.Position;
 import com.noname.qn.entity.Turn;
@@ -22,13 +23,14 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
+import com.noname.qn.utils.FileHandling;
 import com.noname.qn.utils.FocusableTable;
 import com.noname.qn.utils.Fonts;
+import com.noname.qn.utils.PlayerScore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class LevelHud extends QNMenuHud{
     public static final Texture TEXTURE_BLACK = new Texture("black.png");
@@ -49,6 +51,8 @@ public class LevelHud extends QNMenuHud{
     private FocusableTable successTable;
     private boolean paused = false;
     private List<Movable.Direction> moves = new ArrayList<>();
+
+    private Label introLabel;
 
     private Music musicLevel;
     private static List<String> songs = Arrays.asList("music/diptera_sonata.mp3","music/the_exorcist.mp3","music/griffes_de_la_nuit.mp3","music/halloween_theme.mp3","music/scary_song.mp3","music/lavanville.mp3");
@@ -71,8 +75,20 @@ public class LevelHud extends QNMenuHud{
         main.top();
         main.setFillParent(true);
 
+        String lastScores="";
+        try{
+            PlayerScore ps = FileHandling.readScore(level.getLevelNumber());
+            lastScores = " - Best Try : "+ ps.getScore()+" moves";
+        }catch (GdxRuntimeException e){
+            //default lastScores is already define above
+        }
+        Table introTable = new Table();
+        introLabel= new Label(level.getName()+" - "+level.getMinimumMoves()+" moves"+lastScores,new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
+        introTable.add(introLabel);
         boardTable = new Table();
         arrowTable = new Table();
+        main.add(introTable);
+        main.row();
         main.add(boardTable);
         main.row();
         main.add(arrowTable);
@@ -86,11 +102,11 @@ public class LevelHud extends QNMenuHud{
 
         //ajout du message
         gameOverTable.row();
-        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));;
+        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));
         gameOverTable.add(gameOverMessage).height(100).padBottom(20);
         //ajout de l'etat final'
         gameOverTable.row();
-        gameOverState = new Label("",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));
+        gameOverState = new Label("",new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         gameOverTable.add(gameOverState).height(100).padBottom(20);
         //ajout d'un background gris transparent à l'écran
         Pixmap bgTable = new Pixmap(1,1, Pixmap.Format.RGBA8888);
@@ -125,14 +141,32 @@ public class LevelHud extends QNMenuHud{
 
         Playable.State lastState = level.getLastState();
         gameOverState.setText(lastState.toString());
-        //choix de la couleur selon l'état
         switch (lastState){
+            case WIN:
+                int moves = level.getTracker().size();
+                //mise à jour du scores
+                if (level.getBestResult()==0 || level.getBestResult()>moves){
+                    level.setBestResult(moves);
+                    FileHandling.writeScore(level.getLevelNumber(),level.getMinimumMoves(),level.getBestResult());
+                    introLabel.setText(level.getName()+" - "+level.getMinimumMoves()+" moves - Best Try : "+moves+" moves");
+                }
+                //calcul du niveau de résultat
+                double percent = (double)level.getMinimumMoves()/moves;
+                Levelable.Result r = Levelable.Result.getResultFromPercent(percent);
+                if(r.compareTo(Levelable.Result.GOLD)==0)
+                    gameOverState.getStyle().fontColor = Color.GOLD;
+                else if(r.compareTo(Levelable.Result.SILVER)==0)
+                    gameOverState.getStyle().fontColor = Fonts.SILVER;
+                else if(r.compareTo(Levelable.Result.BRONZE)==0)
+                    gameOverState.getStyle().fontColor = Fonts.BRONZE;
+                else
+                    gameOverState.getStyle().fontColor = Color.GREEN;
+                break;
             case LOOSE:
                 gameOverState.getStyle().fontColor = Color.RED;
                 break;
-            case WIN:
-                gameOverState.getStyle().fontColor = Color.GREEN;
-                break;
+            default:
+                gameOverState.getStyle().fontColor = Color.WHITE;
         }
         stage.clear();
         stage.addActor(s);
@@ -228,6 +262,8 @@ public class LevelHud extends QNMenuHud{
     }
 
     private void executeMoves() {
+        if(moves.isEmpty())
+            paused = false;
         for (int i = 0; i < moves.size(); i++) {
             Movable.Direction d = moves.get(i);
             Timer.schedule(new Timer.Task() {
@@ -249,7 +285,6 @@ public class LevelHud extends QNMenuHud{
                     displayBoard();
                 }
             }, i*0.5f);
-
         }
     }
 
@@ -267,6 +302,7 @@ public class LevelHud extends QNMenuHud{
                 arrowTable.add(new Image(t.getTexture()));
             }
         }
+
         showGameOverTable();
     }
 
