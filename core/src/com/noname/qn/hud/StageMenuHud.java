@@ -1,6 +1,8 @@
 package com.noname.qn.hud;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.entity.IllegalLevelInsertionException;
@@ -15,6 +17,7 @@ public class StageMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable stagesTable;
     private FocusableTable soonAvailableTable;
+    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/splat.mp3"));
 
     public StageMenuHud(Gamer screen) {
         super(screen);
@@ -98,19 +101,23 @@ public class StageMenuHud extends QNMenuHud {
         boolean result = super.keyUp(keycode);
         switch (keycode) {
             case Input.Keys.UP:
+                if (enableEffects) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setPreviousFocus();
                 }
                 return true;
             case Input.Keys.DOWN:
+                if (enableEffects) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setNextFocus();
                 }
                 return true;
             case Input.Keys.LEFT:
+                if (enableEffects) effectSound.play();
                 setPreviousFocus();
                 return true;
             case Input.Keys.RIGHT:
+                if (enableEffects) effectSound.play();
                 setNextFocus();
                 return true;
         }
