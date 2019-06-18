@@ -94,26 +94,4 @@ public class MainMenuHud extends QNMenuHud {
         stage.addActor(table);
         displayedTable = table;
     }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        switch (keycode){
-            case Input.Keys.UP:
-                if (enableEffects) effectSound.play();
-                setPreviousFocus();
-                return true;
-            case Input.Keys.DOWN:
-                if (enableEffects) effectSound.play();
-                setNextFocus();
-                return true;
-            case Input.Keys.ENTER:
-                getFocused().getAction().clicked(null, 0, 0);
-                return true;
-            case Input.Keys.ESCAPE:
-                escaped();
-                return true;
-            default:
-                return false;
-        }
-    }
 }

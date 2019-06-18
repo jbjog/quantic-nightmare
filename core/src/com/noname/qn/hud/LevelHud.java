@@ -65,6 +65,7 @@ public class LevelHud extends QNMenuHud{
         musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
 
         if (enableMusic) musicLevel.play();
+        musicLevel.setLooping(true);
 
         this.level = level;
         buildGameOverTable();

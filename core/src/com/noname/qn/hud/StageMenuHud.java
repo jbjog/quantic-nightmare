@@ -24,7 +24,6 @@ public class StageMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable stagesTable;
     private FocusableTable soonAvailableTable;
-    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/splat.mp3"));
     private FocusableTable messageTable;
 
     public StageMenuHud(Gamer screen) {
