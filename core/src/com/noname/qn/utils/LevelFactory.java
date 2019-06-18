@@ -19,6 +19,9 @@ public class LevelFactory {
                 return createLevel1();
             case 2:
                 return createLevel2();
+            case 3:
+                return createLevel3();
+
             case 4:
                 return createLevel4();
         }
@@ -236,6 +239,141 @@ public class LevelFactory {
         //level.addSquare(new BasicSquare( 16,4));
 
         return level;
+    }
 
+    private static Levelable createLevel3() throws IllegalLevelInsertionException {
+        //start at position 0,0 with Duality CORPUSCULE
+        Particule startParticule = new Particule(Player.Duality.CORPUSCULE, new Position(4,0));
+        //end if reach position 2,2 with Duality CORPUSCULE
+        Conditionable endConditions = LevelCondition.createCondition(new Position(8,7), Player.Duality.CORPUSCULE);
+
+        //create level with 3 rows 4 columns with above conditions
+        Level level = new Level(11,11,startParticule,endConditions);
+
+        //add line 1
+        level.addSquare(new BasicSquare( 4,0));
+
+        //add line 2
+        level.addSquare(new HoleSquare( 0,1));
+        level.addSquare(new HoleSquare(1,1));
+        level.addSquare(new BasicSquare( 2,1));
+        level.addSquare(new BasicSquare(3,1));
+        level.addSquare(new BasicSquare( 4,1));
+        level.addSquare(new BasicSquare(5,1));
+        level.addSquare(new BasicSquare(6,1));
+        level.addSquare(new BasicSquare( 7,1));
+        level.addSquare(new BasicSquare(8,1));
+        level.addSquare(new HoleSquare(9,1));
+        level.addSquare(new HoleSquare(10,1));
+
+        //add line 3
+        level.addSquare(new HoleSquare(0,2));
+        level.addSquare(new SwitchDualitySquare(1,2));
+        level.addSquare(new HoleSquare(2,2));
+        level.addSquare(new BasicSquare( 3,2));
+        level.addSquare(new BasicSquare( 4,2));
+        level.addSquare(new BasicSquare( 5,2));
+        level.addSquare(new HoleSquare( 6,2));
+        level.addSquare(new HoleSquare( 7,2));
+        level.addSquare(new BasicSquare( 8,2));
+        level.addSquare(new BasicSquare( 9,2));
+        level.addSquare(new SwitchDualitySquare(10,2));
+
+        //add TP arrival line 8
+        Enterable arrivalTP1 = new BasicSquare(1,7);
+        level.addSquare(arrivalTP1);
+
+        //add line 4
+        level.addSquare(new HoleSquare( 0,3));
+        level.addSquare(new HoleSquare( 1,3));
+        level.addSquare(new HoleSquare( 2,3));
+        level.addSquare(new BasicSquare( 3,3));
+        level.addSquare(new HoleSquare( 4,3));
+        level.addSquare(new HoleSquare( 5,3));
+        level.addSquare(new TPSquare(6,3,arrivalTP1));
+        level.addSquare(new HoleSquare( 7,3));
+        level.addSquare(new HoleSquare( 8,3));
+        level.addSquare(new HoleSquare( 9,3));
+        level.addSquare(new HoleSquare( 10,3));
+
+        //add line 5
+        level.addSquare(new HoleSquare( 0,4));
+        level.addSquare(new HoleSquare( 1,4));
+        level.addSquare(new HoleSquare( 2,4));
+        level.addSquare(new BasicSquare( 3,4));
+        level.addSquare(new BasicSquare( 4,4));
+        level.addSquare(new HoleSquare( 5,4));
+        level.addSquare(new BasicSquare( 6,4));
+        level.addSquare(new HoleSquare( 7,4));
+        level.addSquare(new HoleSquare( 8,4));
+        level.addSquare(new HoleSquare( 9,4));
+        Enterable arrivalTP2 = new BasicSquare(10,4);
+        level.addSquare(arrivalTP2);
+
+        //add line 6
+        level.addSquare(new HoleSquare( 0,5));
+        level.addSquare(new HoleSquare( 1,5));
+        level.addSquare(new HoleSquare( 2,5));
+        level.addSquare(new HoleSquare( 3,5));
+        level.addSquare(new BasicSquare( 4,5));
+        level.addSquare(new BasicSquare( 5,5));
+        level.addSquare(new BasicSquare( 6,5));
+        level.addSquare(new HoleSquare( 7,5));
+        level.addSquare(new HoleSquare( 8,5));
+        level.addSquare(new HoleSquare( 9,5));
+        level.addSquare(new HoleSquare( 10,5));
+
+        //add line 7
+
+        //add line 8
+        level.addSquare(new HoleSquare( 0,7));
+        level.addSquare(new TPSquare(2,7,arrivalTP2));
+        level.addSquare(new HoleSquare( 3,7));
+        level.addSquare(new HoleSquare( 4,7));
+        level.addSquare(new SwitchDualitySquare(5,7));
+        level.addSquare(new BasicSquare( 6,7));
+        level.addSquare(new BasicSquare( 7,7));
+        level.addSquare(new ArrivalSquare(endConditions));
+
+        //add line 9
+        level.addSquare(new HoleSquare( 0,8));
+        level.addSquare(new BasicSquare( 1,8));
+        level.addSquare(new BasicSquare( 2,8));
+        level.addSquare(new BasicSquare( 3,8));
+        level.addSquare(new HoleSquare( 4,8));
+        level.addSquare(new BasicSquare( 5,8));
+        level.addSquare(new HoleSquare( 6,8));
+        level.addSquare(new HoleSquare( 7,8));
+        level.addSquare(new HoleSquare( 8,8));
+        level.addSquare(new HoleSquare( 9,8));
+        level.addSquare(new HoleSquare( 10,8));
+
+        //add line 10
+        level.addSquare(new HoleSquare( 0,9));
+        level.addSquare(new HoleSquare( 1,9));
+        level.addSquare(new HoleSquare( 2,9));
+        level.addSquare(new BasicSquare( 3,9));
+        level.addSquare(new HoleSquare( 4,9));
+        level.addSquare(new BasicSquare( 5,9));
+        level.addSquare(new HoleSquare( 6,9));
+        level.addSquare(new HoleSquare( 7,9));
+        level.addSquare(new HoleSquare( 8,9));
+        level.addSquare(new HoleSquare( 9,9));
+        level.addSquare(new HoleSquare( 10,9));
+
+        //add line 11
+        level.addSquare(new HoleSquare( 0,10));
+        level.addSquare(new SwitchDualitySquare(1,10));
+        level.addSquare(new HoleSquare( 2,10));
+        level.addSquare(new BasicSquare( 3,10));
+        level.addSquare(new BasicSquare( 4,10));
+        level.addSquare(new BasicSquare( 5,10));
+        level.addSquare(new HoleSquare( 6,10));
+        level.addSquare(new HoleSquare( 7,10));
+        level.addSquare(new HoleSquare( 8,10));
+        level.addSquare(new HoleSquare( 9,10));
+        level.addSquare(new HoleSquare( 10,10));
+
+        return level;
     }
 }
