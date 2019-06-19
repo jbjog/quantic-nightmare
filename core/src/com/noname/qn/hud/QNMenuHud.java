@@ -11,12 +11,14 @@ import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 
 public abstract class QNMenuHud extends QNHud implements InputProcessor {
-    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/splat.mp3"));
+    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/pop.mp3"));
 
     public QNMenuHud(Gamer screen) {
         super(screen);
         InputMultiplexer multiplexer = new InputMultiplexer(this, stage);
         Gdx.input.setInputProcessor(multiplexer);
+
+        effectSound.setVolume(0.3f);
 
     }
 

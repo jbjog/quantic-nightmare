@@ -66,6 +66,8 @@ public class LevelHud extends QNMenuHud{
 
         if (enableMusic) musicLevel.play();
         musicLevel.setLooping(true);
+        musicLevel.setVolume(0.1f);
+        effectSound.setVolume(0.2f);
 
         this.level = level;
         buildGameOverTable();

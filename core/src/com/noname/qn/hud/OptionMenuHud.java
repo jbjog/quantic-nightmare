@@ -37,7 +37,7 @@ public class OptionMenuHud extends QNMenuHud {
                 }
             }
         });
-        table.addLabel("Language",voidListener);
+        //table.addLabel("Language",voidListener);
         table.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

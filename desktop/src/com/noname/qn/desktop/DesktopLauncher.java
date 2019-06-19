@@ -1,5 +1,6 @@
 package com.noname.qn.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.noname.qn.QNGame;
@@ -10,6 +11,7 @@ public class DesktopLauncher {
 		config.title = "Quantic NightMare";
 		config.width = 721;
 		config.height = 386;
+		config.addIcon("QN.png", Files.FileType.Internal);
 		new LwjglApplication(new QNGame(), config);
 	}
 }

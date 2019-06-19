@@ -23,7 +23,6 @@ public class MainMenuHud extends QNMenuHud {
         if (enableMusic) musicMenu.play();
         musicMenu.setLooping(true);
 
-
         mainTable = new FocusableTable("Welcome to Quantic Nightmare",200);
         setDisplayedTable(mainTable);
         mainTable.addLabel("Play",new ClickListener() {
