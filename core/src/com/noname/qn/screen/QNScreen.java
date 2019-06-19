@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.noname.qn.hud.QNHud;
 import com.noname.qn.service.gui.Gamable;
 import com.noname.qn.service.gui.Gamer;
@@ -12,6 +15,7 @@ public class QNScreen implements Screen, Gamer {
     private final Gamable game;
     protected OrthographicCamera camera;
     protected QNHud hud;
+
 
     public QNScreen(final Gamable game) {
         this.game = game;

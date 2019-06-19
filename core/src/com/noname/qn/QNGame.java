@@ -1,27 +1,53 @@
 package com.noname.qn;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.Timer;
+import java.util.TimerTask;
+import com.noname.qn.hud.MainMenuHud;
 import com.noname.qn.screen.*;
 import com.noname.qn.service.domain.Levelable;
 import com.noname.qn.service.gui.Gamable;
 
 public class QNGame extends Game implements Gamable {
 	private SpriteBatch batch;
+	private SplashScreen splash;
 	private MainMenuScreen mms;
 	private StageMenuScreen sms;
 	private OptionMenuScreen oms;
 	private LevelScreen ls;
+	private SplashScreen ss;
+	private static int SPLASH_MINIMUM_MILLIS = 1000;
+	private boolean bChange;
+	private Timer time;
+
+	public QNGame(){super();}
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		this.setScreen(new MainMenuScreen(this));
+		time = new Timer();
+		setScreen(new SplashScreen(this));
+		final int splash_start_time = (int)System.currentTimeMillis();
+		int splash_elapsed_time = (int)System.currentTimeMillis() - splash_start_time;
+
+		time.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				bChange = true;
+			}
+		}, (QNGame.SPLASH_MINIMUM_MILLIS - splash_elapsed_time), 1000);
 	}
 
 	@Override
 	public void render () {
 		super.render();
+		if (bChange){
+			QNGame.this.setScreen(new MainMenuScreen(this));
+			bChange = false;
+			time.cancel();
+		}
 	}
 
 	@Override
@@ -32,6 +58,10 @@ public class QNGame extends Game implements Gamable {
 	@Override
 	public void changeScreen(Type screen){
 		switch(screen){
+			case SPLASH:
+				ss = new SplashScreen(this);
+				this.setScreen(ss);
+				break;
 			case HOME:
 				mms = new MainMenuScreen(this);
 				this.setScreen(mms);
