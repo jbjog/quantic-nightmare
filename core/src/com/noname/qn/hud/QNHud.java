@@ -16,8 +16,6 @@ public class QNHud implements Disposable{
     protected Viewport viewport;
     protected BitmapFont font;
     public Stage stage;
-    public static boolean enableMusic = true;
-    public static boolean enableEffects = true;
     public FileHandling fileHandling;
 
     public QNHud(Gamer screen) {

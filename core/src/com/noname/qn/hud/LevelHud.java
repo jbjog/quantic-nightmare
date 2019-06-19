@@ -65,7 +65,7 @@ public class LevelHud extends QNMenuHud{
         rand = (int)(Math.random() * songs.size()) ;
         musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
 
-        if (enableMusic) musicLevel.play();
+        if (Preferences.isEnableMusic()) musicLevel.play();
         musicLevel.setLooping(true);
         musicLevel.setVolume(0.1f);
         effectSound.setVolume(0.2f);
@@ -321,7 +321,7 @@ public class LevelHud extends QNMenuHud{
                 @Override
                 public void run() {
                     Playable.State lastState = level.getLastState();
-                    if (enableEffects) effectSound.play();
+                    if (Preferences.isEnableEffects()) effectSound.play();
                     if (lastState == Playable.State.CONTINUE) {
                         level.play(d);
                         if (level.getTracker().size() == moves.size()) {
@@ -330,7 +330,7 @@ public class LevelHud extends QNMenuHud{
                     } else if (lastState == Playable.State.LOOSE || lastState == Playable.State.WIN) {
                         endTry();
                         effectSound.dispose();
-                        if (lastState == Playable.State.LOOSE && enableEffects ) effectSoundLose.play();
+                        if (lastState == Playable.State.LOOSE && Preferences.isEnableEffects() ) effectSoundLose.play();
                         Timer.instance().clear();
                     }
                     displayBoard();
