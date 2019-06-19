@@ -26,4 +26,9 @@ public class SwitchDualitySquare extends BasicSquare {
     public Texture getTexture() {
         return TEXTURE_SWITCH_STATE_SQUARE;
     }
+
+    @Override
+    public boolean isHidden() {
+        return false;
+    }
 }
