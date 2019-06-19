@@ -23,4 +23,9 @@ public class ArrivalSquare extends BasicSquare {
     public Texture getTexture() {
         return c.getDuality() == Player.Duality.CORPUSCULE ? TEXTURE_ARRIVAL_CORP : TEXTURE_ARRIVAL_WAVE;
     }
+
+    @Override
+    public boolean isHidden() {
+        return false;
+    }
 }
