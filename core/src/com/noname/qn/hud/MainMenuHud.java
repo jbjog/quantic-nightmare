@@ -15,7 +15,6 @@ public class MainMenuHud extends QNMenuHud {
     private FocusableTable mainTable;
     private FocusableTable exitTable;
     public static Music musicMenu = Gdx.audio.newMusic(Gdx.files.internal("effects/heartbeat.mp3"));
-    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/splat.mp3"));
 
     public MainMenuHud(Gamer screen) {
         super(screen);

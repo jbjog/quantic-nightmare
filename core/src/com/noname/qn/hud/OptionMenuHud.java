@@ -42,6 +42,8 @@ public class OptionMenuHud extends QNMenuHud {
         table.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                fileHandling.writePreferences(Preferences.isEnableMusic(),Preferences.isEnableEffects());
+                fileHandling.readPreferences();
                 screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
             }
         });

@@ -29,6 +29,30 @@ public class FileHandling {
 
         return json.fromJson(PlayerScore.class, scores);
     }
+
+    public static void writePreferences (boolean enableSound, boolean enableEffects) {
+        // où ecrire
+        FileHandle file = Gdx.files.local("preferences/pref.json");
+
+        Preferences.setEnableMusic(enableSound);
+        Preferences.setEnableEffects(enableEffects);
+
+        Json json = new Json();
+
+        String preferences = "{ enableSound: " + json.toJson(Preferences.isEnableMusic()) + ",enableEffects: " + json.toJson(Preferences.isEnableEffects()) + "}";
+        file.writeString(preferences,false);
+    }
+
+    public static Preferences readPreferences() {
+        // où lire
+        FileHandle file = Gdx.files.local("preferences/pref.json");
+        String prefs = file.readString();
+        Json json = new Json();
+
+        return json.fromJson(Preferences.class, prefs);
+
+
+    }
 }
 
 // exemple
