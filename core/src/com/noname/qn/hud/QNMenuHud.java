@@ -11,6 +11,7 @@ import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 
 public abstract class QNMenuHud extends QNHud implements InputProcessor {
+    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/splat.mp3"));
 
     public QNMenuHud(Gamer screen) {
         super(screen);
@@ -29,9 +30,11 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
     public boolean keyUp(int keycode) {
         switch (keycode){
             case Input.Keys.UP:
+                if (enableEffects) effectSound.play();
                 setPreviousFocus();
                 return true;
             case Input.Keys.DOWN:
+                if (enableEffects) effectSound.play();
                 setNextFocus();
                 return true;
             case Input.Keys.ENTER:

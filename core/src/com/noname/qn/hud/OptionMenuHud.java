@@ -27,7 +27,16 @@ public class OptionMenuHud extends QNMenuHud {
               }
           }
         });
-        table.addLabel("Enable Effects",voidListener);
+        table.addLabel("Toggle Effects",new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (enableEffects) {
+                    enableEffects = false;
+                } else {
+                    enableEffects = true;
+                }
+            }
+        });
         table.addLabel("Language",voidListener);
         table.addLabel("Back",new ClickListener() {
             @Override

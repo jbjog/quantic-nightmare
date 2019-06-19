@@ -1,6 +1,8 @@
 package com.noname.qn.hud;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -21,6 +23,7 @@ import static com.noname.qn.service.domain.Levelable.Result.*;
 public class StageMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable stagesTable;
+    private FocusableTable soonAvailableTable;
     private FocusableTable messageTable;
 
     public StageMenuHud(Gamer screen) {
@@ -40,14 +43,14 @@ public class StageMenuHud extends QNMenuHud {
         int nbLevel = 20;
         for (int i = 0; i < nbLevel; i++) {
             final int index = i+1;
-            String imagePath = index+".png";
+            String imagePath = "numbers/"+index+".png";
             try{
                 imagePath = getLevelImagePath(index);
 
             }catch (GdxRuntimeException e){
                 //default image is already define above
             }
-            stagesTable.addImageButton(index+"f.png",imagePath,new ClickListener() {
+            stagesTable.addImageButton("numbers/"+index+"f.png",imagePath,new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     try {
@@ -118,19 +121,23 @@ public class StageMenuHud extends QNMenuHud {
         boolean result = super.keyUp(keycode);
         switch (keycode) {
             case Input.Keys.UP:
+                if (enableEffects) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setPreviousFocus();
                 }
                 return true;
             case Input.Keys.DOWN:
+                if (enableEffects) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setNextFocus();
                 }
                 return true;
             case Input.Keys.LEFT:
+                if (enableEffects) effectSound.play();
                 setPreviousFocus();
                 return true;
             case Input.Keys.RIGHT:
+                if (enableEffects) effectSound.play();
                 setNextFocus();
                 return true;
         }
@@ -152,7 +159,7 @@ public class StageMenuHud extends QNMenuHud {
         }else if(best.compareTo(GOLD)==0){
             result += "go";
         }
-        return result+".png";
+        return "numbers/" + result+".png";
     }
 }
 

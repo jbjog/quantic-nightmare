@@ -36,6 +36,8 @@ public class LevelHud extends QNMenuHud{
     public static final Texture TEXTURE_UP = new Texture("up.png");
     public static final Texture TEXTURE_RIGHT = new Texture("right.png");
     public static final Texture TEXTURE_LEFT = new Texture("left.png");
+    public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/plop.mp3"));
+    public static  Music effectSoundLose = Gdx.audio.newMusic(Gdx.files.internal("effects/argh.mp3"));
 
     private Table displayedTable;
     final private Levelable level;
@@ -52,7 +54,7 @@ public class LevelHud extends QNMenuHud{
     private Label introLabel;
 
     private Music musicLevel;
-    private static List<String> songs = Arrays.asList("cantina_theme.mp3", "chop_suey.mp3", "diptera_sonata.mp3","toxic.mp3","thunderstruck.mp3");
+    private static List<String> songs = Arrays.asList("music/diptera_sonata.mp3","music/the_exorcist.mp3","music/griffes_de_la_nuit.mp3","music/halloween_theme.mp3","music/scary_song.mp3","music/lavanville.mp3");
     private static int rand;
 
     private int bonusNumber=3;
@@ -64,6 +66,7 @@ public class LevelHud extends QNMenuHud{
         musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
 
         if (enableMusic) musicLevel.play();
+        musicLevel.setLooping(true);
 
         this.level = level;
         buildGameOverTable();
@@ -316,6 +319,7 @@ public class LevelHud extends QNMenuHud{
                 @Override
                 public void run() {
                     Playable.State lastState = level.getLastState();
+                    if (enableEffects) effectSound.play();
                     if (lastState == Playable.State.CONTINUE) {
                         level.play(d);
                         if (level.getTracker().size() == moves.size()) {
@@ -323,6 +327,9 @@ public class LevelHud extends QNMenuHud{
                         }
                     } else if (lastState == Playable.State.LOOSE || lastState == Playable.State.WIN) {
                         endTry();
+                        effectSound.dispose();
+                        if (lastState == Playable.State.LOOSE && enableEffects ) effectSoundLose.play();
+                        Timer.instance().clear();
                     }
                     displayBoard();
                 }
