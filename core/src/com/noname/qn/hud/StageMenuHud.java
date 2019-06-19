@@ -19,12 +19,11 @@ import static com.noname.qn.service.domain.Levelable.Result.*;
 public class StageMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
     private FocusableTable stagesTable;
-    private FocusableTable soonAvailableTable;
     private FocusableTable messageTable;
 
     public StageMenuHud(Gamer screen) {
         super(screen);
-        if (Preferences.isEnableMusic()) MainMenuHud.musicMenu.play();
+        if (QNPreferences.getPref().isEnableMusic()) MainMenuHud.musicMenu.play();
 
         messageTable = new FocusableTable("");
         messageTable.addLabel("Ok",new ClickListener() {
@@ -53,11 +52,9 @@ public class StageMenuHud extends QNMenuHud {
                         screen.getGamable().loadLevel(LevelFactory.createLevel(index));
                     } catch (Exception e) {
                         if(e instanceof IllegalLevelInsertionException){
-                            messageTable.getTitleLabel().setText("This level is broken !!!");
+                            messageTable.getTitleLabel().setText(TextValues.LEVEL_BROKEN[QNPreferences.getPref().getLanguage()]);
                         }else if(e instanceof UnknownLevelException){
-                            messageTable.getTitleLabel().setText("This level will be soon available !!!");
-                        }else{
-                            messageTable.getTitleLabel().setText("An error has occurred !!!");
+                            messageTable.getTitleLabel().setText(TextValues.LEVEL_NOT_AVAILABLE[QNPreferences.getPref().getLanguage()]);
                         }
                         setDisplayedTable(messageTable);
                         boolean isDebug =
@@ -69,7 +66,7 @@ public class StageMenuHud extends QNMenuHud {
                 }
             },i%5==0).size(40f, 40f).pad(10);
         }
-        stagesTable.addLabel("Back",new ClickListener() {
+        stagesTable.addLabel(TextValues.BACK[QNPreferences.getPref().getLanguage()],new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 escaped();
@@ -117,23 +114,23 @@ public class StageMenuHud extends QNMenuHud {
         boolean result = super.keyUp(keycode);
         switch (keycode) {
             case Input.Keys.UP:
-                if (Preferences.isEnableEffects()) effectSound.play();
+                if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setPreviousFocus();
                 }
                 return true;
             case Input.Keys.DOWN:
-                if (Preferences.isEnableEffects()) effectSound.play();
+                if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                 for (int i = 0; i < 4 ; i++) {
                     setNextFocus();
                 }
                 return true;
             case Input.Keys.LEFT:
-                if (Preferences.isEnableEffects()) effectSound.play();
+                if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                 setPreviousFocus();
                 return true;
             case Input.Keys.RIGHT:
-                if (Preferences.isEnableEffects()) effectSound.play();
+                if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                 setNextFocus();
                 return true;
         }

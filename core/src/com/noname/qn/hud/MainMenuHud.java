@@ -8,7 +8,8 @@ import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.FocusableTable;
-import com.noname.qn.utils.Preferences;
+import com.noname.qn.utils.QNPreferences;
+import com.noname.qn.utils.TextValues;
 
 public class MainMenuHud extends QNMenuHud {
     private FocusableTable displayedTable;
@@ -20,38 +21,39 @@ public class MainMenuHud extends QNMenuHud {
     public MainMenuHud(Gamer screen) {
         super(screen);
 
-        if (Preferences.isEnableMusic()) musicMenu.play();
+        if (QNPreferences.getPref().isEnableMusic()) musicMenu.play();
         musicMenu.setLooping(true);
 
-        mainTable = new FocusableTable("Welcome to Quantic Nightmare",200);
+        mainTable = new FocusableTable(TextValues.WELCOME[QNPreferences.getPref().getLanguage()]+
+                TextValues.APP_NAME[QNPreferences.getPref().getLanguage()],200);
         setDisplayedTable(mainTable);
-        mainTable.addLabel("Play",new ClickListener() {
+        mainTable.addLabel(TextValues.PLAY[QNPreferences.getPref().getLanguage()],new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
             }
         });
-        mainTable.addLabel("Option",new ClickListener() {
+        mainTable.addLabel(TextValues.OPTION[QNPreferences.getPref().getLanguage()],new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screen.getGamable().changeScreen(ScreenChanger.Type.OPTIONS);
             }
         });
-        mainTable.addLabel("Quit",new ClickListener() {
+        mainTable.addLabel(TextValues.QUIT[QNPreferences.getPref().getLanguage()],new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 setDisplayedTable(exitTable);
             }
         });
 
-        exitTable = new FocusableTable("Are you Sure?");
-        exitTable.addLabel("Yes",new ClickListener() {
+        exitTable = new FocusableTable(TextValues.CONFIRM[QNPreferences.getPref().getLanguage()]);
+        exitTable.addLabel(TextValues.YES[QNPreferences.getPref().getLanguage()],new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
-        exitTable.addLabel("No",new ClickListener() {
+        exitTable.addLabel(TextValues.NO[QNPreferences.getPref().getLanguage()],new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 setDisplayedTable(mainTable);

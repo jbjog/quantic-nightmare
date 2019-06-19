@@ -36,7 +36,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(1,3,4,startParticule,endConditions);
-        level.setName("Tuto");
+        level.setName(TextValues.LEVEL1_NAME[QNPreferences.getPref().getLanguage()]);
         level.setMinimumMoves(4);
 
         //add line 1
@@ -77,7 +77,7 @@ public class LevelFactory {
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(2,5,5,startParticule,endConditions);
         level.setMinimumMoves(13);
-        level.setName("Unknown");
+        level.setName(TextValues.LEVEL2_NAME[QNPreferences.getPref().getLanguage()]);
         //add line 1
         level.addSquare(new HoleSquare(0,0));
         level.addSquare(new BasicSquare(1,0));
@@ -127,7 +127,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(3,11,11,startParticule,endConditions);
-        level.setName("Nightmare");
+        level.setName(TextValues.LEVEL3_NAME[QNPreferences.getPref().getLanguage()]);
         level.setMinimumMoves(38);
 
         //add line 1
@@ -265,7 +265,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(4,5, 17, startParticule, endConditions);
-        level.setName("E=MC2");
+        level.setName(TextValues.LEVEL4_NAME[QNPreferences.getPref().getLanguage()]);
         level.setMinimumMoves(18);
 
         //arrival TP

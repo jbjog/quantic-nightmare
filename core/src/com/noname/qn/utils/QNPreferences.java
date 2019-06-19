@@ -1,31 +1,48 @@
 package com.noname.qn.utils;
 
-public class Preferences {
-    private Preferences(){}
+public final class QNPreferences {
 
-    private static boolean enableEffects = true;
-    private static boolean enableMusic = true;
-    private static int language = TextValues.ENGLISH;
+    public static volatile QNPreferences instance = null;
 
+    private QNPreferences(){}
 
 
-    public static boolean isEnableEffects() {
+    public static QNPreferences getPref() {
+        if (instance == null) {
+            synchronized(QNPreferences.class) {
+                if (instance == null) {
+                    instance = new QNPreferences();
+                    instance.loadDataFromFile();
+                }
+            }
+        }
+        return instance;
+    }
+
+    private void loadDataFromFile() {
+    }
+
+
+    private boolean enableEffects = true;
+    private boolean enableMusic = true;
+    private int language = TextValues.ENGLISH;
+
+    public boolean isEnableEffects() {
         return enableEffects;
     }
-    public static void setEnableEffects(boolean enableEffects) {
-        Preferences.enableEffects = enableEffects;
+    public void setEnableEffects(boolean enableEffects) {
+        this.enableEffects = enableEffects;
     }
-    public static boolean isEnableMusic() {
+    public boolean isEnableMusic() {
         return enableMusic;
     }
-    public static void setEnableMusic(boolean enableMusic) {
-        Preferences.enableMusic = enableMusic;
+    public void setEnableMusic(boolean enableMusic) {
+        this.enableMusic = enableMusic;
     }
-
-    public static int getLanguage() {
+    public int getLanguage() {
         return language;
     }
-    public static void setLanguage(int language) {
-        Preferences.language = language;
+    public void setLanguage(int language) {
+        this.language = language;
     }
 }

@@ -65,7 +65,7 @@ public class LevelHud extends QNMenuHud{
         rand = (int)(Math.random() * songs.size()) ;
         musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
 
-        if (Preferences.isEnableMusic()) musicLevel.play();
+        if (QNPreferences.getPref().isEnableMusic()) musicLevel.play();
         musicLevel.setLooping(true);
         musicLevel.setVolume(0.1f);
         effectSound.setVolume(0.2f);
@@ -82,12 +82,12 @@ public class LevelHud extends QNMenuHud{
         String lastScores="";
         try{
             PlayerScore ps = FileHandling.readScore(level.getLevelNumber());
-            lastScores = " - Best Try : "+ ps.getScore()+" moves";
+            lastScores = " - "+TextValues.BEST_TRY[QNPreferences.getPref().getLanguage()]+" : "+ ps.getScore()+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage()];
         }catch (GdxRuntimeException e){
             //default lastScores is already define above
         }
         Table introTable = new Table();
-        introLabel= new Label(level.getName()+" - "+level.getMinimumMoves()+" moves"+lastScores,new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
+        introLabel= new Label(level.getName()+" - "+level.getMinimumMoves()+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage()]+lastScores,new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         introTable.add(introLabel);
         boardTable = new Table();
         arrowTable = new Table();
@@ -101,12 +101,12 @@ public class LevelHud extends QNMenuHud{
     }
     //construction de l'ecran gameOver
     private void buildGameOverTable(){
-        gameOverTable = new FocusableTable("GameOver",100);
+        gameOverTable = new FocusableTable(TextValues.GAMEOVER[QNPreferences.getPref().getLanguage()],100);
         gameOverTable.getTitleLabel().setStyle(Fonts.getBigRedStyle());
 
         //ajout du message
         gameOverTable.row();
-        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
+        Label gameOverMessage = new Label(TextValues.GAMEOVER_MESSAGE[QNPreferences.getPref().getLanguage()],new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         gameOverTable.add(gameOverMessage).height(100).padBottom(20);
         //ajout de l'etat final'
         gameOverTable.row();
@@ -118,14 +118,14 @@ public class LevelHud extends QNMenuHud{
         bgTable.fill();
         gameOverTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgTable))));
 
-        gameOverTable.addLabel("Retry",new ClickListener(){
+        gameOverTable.addLabel(TextValues.RETRY[QNPreferences.getPref().getLanguage()],new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 level.reset();
                 hideGameOverTable();
             }
         },true,true);
-        bonusLabel = gameOverTable.addLabel("Bonus ("+bonusNumber+")",new ClickListener(){
+        bonusLabel = gameOverTable.addLabel(TextValues.BONUS[QNPreferences.getPref().getLanguage()]+" ("+bonusNumber+")",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 level.reset();
@@ -136,7 +136,7 @@ public class LevelHud extends QNMenuHud{
             }
         },true,false);
 
-        gameOverTable.addLabel("Quit",new ClickListener(){
+        gameOverTable.addLabel(TextValues.QUIT[QNPreferences.getPref().getLanguage()],new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 musicLevel.dispose();
@@ -182,7 +182,7 @@ public class LevelHud extends QNMenuHud{
             }
         }, 2);
         bonusNumber--;
-        ((FocusableLabel)bonusLabel.getActor()).setText("Bonus ("+bonusNumber+")");
+        ((FocusableLabel)bonusLabel.getActor()).setText(TextValues.BONUS[QNPreferences.getPref().getLanguage()]+" ("+bonusNumber+")");
     }
 
 
@@ -195,7 +195,7 @@ public class LevelHud extends QNMenuHud{
         gameOverState.setAlignment(Align.center);
 
         Playable.State lastState = level.getLastState();
-        gameOverState.setText(lastState.toString());
+        gameOverState.setText(TextValues.getStateString(lastState));
         switch (lastState){
             case WIN:
                 int moves = level.getTracker().size();
@@ -203,7 +203,9 @@ public class LevelHud extends QNMenuHud{
                 if (level.getBestResult()==0 || level.getBestResult()>moves){
                     level.setBestResult(moves);
                     FileHandling.writeScore(level.getLevelNumber(),level.getMinimumMoves(),level.getBestResult());
-                    introLabel.setText(level.getName()+" - "+level.getMinimumMoves()+" moves - Best Try : "+moves+" moves");
+                    introLabel.setText(level.getName()+" - "+level.getMinimumMoves()+" "+
+                            TextValues.MOVES[QNPreferences.getPref().getLanguage()]+" - "+TextValues.BEST_TRY[QNPreferences.getPref().getLanguage()]+
+                            " : "+moves+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage()]);
                 }
                 //calcul du niveau de résultat
                 double percent = (double)level.getMinimumMoves()/moves;
@@ -325,7 +327,7 @@ public class LevelHud extends QNMenuHud{
                 @Override
                 public void run() {
                     Playable.State lastState = level.getLastState();
-                    if (Preferences.isEnableEffects()) effectSound.play();
+                    if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                     if (lastState == Playable.State.CONTINUE) {
                         level.play(d);
                         if (level.getTracker().size() == moves.size()) {
@@ -334,7 +336,7 @@ public class LevelHud extends QNMenuHud{
                     } else if (lastState == Playable.State.LOOSE || lastState == Playable.State.WIN) {
                         endTry();
                         effectSound.dispose();
-                        if (lastState == Playable.State.LOOSE && Preferences.isEnableEffects() ) effectSoundLose.play();
+                        if (lastState == Playable.State.LOOSE && QNPreferences.getPref().isEnableEffects() ) effectSoundLose.play();
                         Timer.instance().clear();
                     }
                     displayBoard();

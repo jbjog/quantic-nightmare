@@ -7,7 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
-import com.noname.qn.utils.Preferences;
+import com.noname.qn.utils.QNPreferences;
 
 public abstract class QNMenuHud extends QNHud implements InputProcessor {
     public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/pop.mp3"));
@@ -31,11 +31,11 @@ public abstract class QNMenuHud extends QNHud implements InputProcessor {
     public boolean keyUp(int keycode) {
         switch (keycode){
             case Input.Keys.UP:
-                if (Preferences.isEnableEffects()) effectSound.play();
+                if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                 setPreviousFocus();
                 return true;
             case Input.Keys.DOWN:
-                if (Preferences.isEnableEffects()) effectSound.play();
+                if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
                 setNextFocus();
                 return true;
             case Input.Keys.ENTER:
