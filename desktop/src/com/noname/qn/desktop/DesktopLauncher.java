@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.title = "Quantic NightMare";
 		config.width = 721;
 		config.height = 386;
-		config.addIcon("QN.png", Files.FileType.Internal);
+		config.addIcon("QN32.png", Files.FileType.Internal);
 		new LwjglApplication(new QNGame(), config);
 	}
 }
