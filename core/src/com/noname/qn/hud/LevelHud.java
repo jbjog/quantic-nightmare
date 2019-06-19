@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,10 +24,7 @@ import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FileHandling;
-import com.noname.qn.utils.FocusableTable;
-import com.noname.qn.utils.Fonts;
-import com.noname.qn.utils.PlayerScore;
+import com.noname.qn.utils.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +49,7 @@ public class LevelHud extends QNMenuHud{
     private FocusableTable successTable;
     private boolean paused = false;
     private List<Movable.Direction> moves = new ArrayList<>();
+    private Cell<Actor> bonusLabel;
 
     private Label introLabel;
 
@@ -58,14 +57,18 @@ public class LevelHud extends QNMenuHud{
     private static List<String> songs = Arrays.asList("music/diptera_sonata.mp3","music/the_exorcist.mp3","music/griffes_de_la_nuit.mp3","music/halloween_theme.mp3","music/scary_song.mp3","music/lavanville.mp3");
     private static int rand;
 
+    private int bonusNumber=3;
+
     public LevelHud(Gamer screen, Levelable level) {
         super(screen);
         MainMenuHud.musicMenu.dispose();
         rand = (int)(Math.random() * songs.size()) ;
         musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
 
-        if (enableMusic) musicLevel.play();
+        if (Preferences.isEnableMusic()) musicLevel.play();
         musicLevel.setLooping(true);
+        musicLevel.setVolume(0.1f);
+        effectSound.setVolume(0.2f);
 
         this.level = level;
         buildGameOverTable();
@@ -103,7 +106,7 @@ public class LevelHud extends QNMenuHud{
 
         //ajout du message
         gameOverTable.row();
-        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(25),Color.WHITE));
+        Label gameOverMessage = new Label("Votre tour se termine en etat",new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         gameOverTable.add(gameOverMessage).height(100).padBottom(20);
         //ajout de l'etat final'
         gameOverTable.row();
@@ -122,6 +125,17 @@ public class LevelHud extends QNMenuHud{
                 hideGameOverTable();
             }
         },true,true);
+        bonusLabel = gameOverTable.addLabel("Bonus ("+bonusNumber+")",new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                level.reset();
+                displayBoard();
+                hideGameOverTable();
+                if(bonusNumber>0)
+                    showRandomSquare();
+            }
+        },true,false);
+
         gameOverTable.addLabel("Quit",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -129,6 +143,46 @@ public class LevelHud extends QNMenuHud{
                 screen.getGamable().changeScreen(ScreenChanger.Type.PLAY);
             }
         });
+    }
+
+    private void showRandomSquare() {
+        List<Enterable> toShow = new ArrayList<Enterable>();
+        int hiddenSquareCount = 0;
+        for (Enterable e : level.getSquares()) {
+            if (e.isHidden()){
+                hiddenSquareCount++;
+            }
+        }
+        while(toShow.size()<3 && toShow.size() < hiddenSquareCount){
+            int row = (int)(Math.random()*level.getNbRows());
+            int col = (int)(Math.random()*level.getNbColumns());
+            Position p = new Position(col,row);
+            for (Enterable e : level.getSquares()) {
+                if (e.getPosition().equals(p) && !toShow.contains(e) && e.isHidden()){
+                    toShow.add(e);
+                }
+            }
+        }
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                for (Enterable e : toShow) {
+                    e.reveal();
+                }
+                displayBoard();
+            }
+        }, 1);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                for (Enterable e : toShow) {
+                    e.hide();
+                }
+                displayBoard();
+            }
+        }, 2);
+        bonusNumber--;
+        ((FocusableLabel)bonusLabel.getActor()).setText("Bonus ("+bonusNumber+")");
     }
 
 
@@ -271,7 +325,7 @@ public class LevelHud extends QNMenuHud{
                 @Override
                 public void run() {
                     Playable.State lastState = level.getLastState();
-                    if (enableEffects) effectSound.play();
+                    if (Preferences.isEnableEffects()) effectSound.play();
                     if (lastState == Playable.State.CONTINUE) {
                         level.play(d);
                         if (level.getTracker().size() == moves.size()) {
@@ -280,7 +334,7 @@ public class LevelHud extends QNMenuHud{
                     } else if (lastState == Playable.State.LOOSE || lastState == Playable.State.WIN) {
                         endTry();
                         effectSound.dispose();
-                        if (lastState == Playable.State.LOOSE && enableEffects ) effectSoundLose.play();
+                        if (lastState == Playable.State.LOOSE && Preferences.isEnableEffects() ) effectSoundLose.play();
                         Timer.instance().clear();
                     }
                     displayBoard();

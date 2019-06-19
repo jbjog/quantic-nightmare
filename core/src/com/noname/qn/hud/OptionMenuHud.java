@@ -6,6 +6,7 @@ import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.FocusableTable;
+import com.noname.qn.utils.Preferences;
 
 public class OptionMenuHud extends QNMenuHud {
     private FocusableTable table;
@@ -18,26 +19,23 @@ public class OptionMenuHud extends QNMenuHud {
         table.addLabel("Toggle Sound",new ClickListener() {
           @Override
           public void clicked(InputEvent event, float x, float y) {
-              if (enableMusic) {
+              if (Preferences.isEnableMusic()) {
                   MainMenuHud.musicMenu.stop();
-                  enableMusic = false;
               } else {
                   MainMenuHud.musicMenu.play();
-                  enableMusic = true;
               }
+              Preferences.setEnableMusic(!Preferences.isEnableMusic());
+              updateIcons();
           }
         });
         table.addLabel("Toggle Effects",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (enableEffects) {
-                    enableEffects = false;
-                } else {
-                    enableEffects = true;
-                }
+                Preferences.setEnableEffects(!Preferences.isEnableEffects());
+                updateIcons();
             }
         });
-        table.addLabel("Language",voidListener);
+        //table.addLabel("Language",voidListener);
         table.addLabel("Back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -46,6 +44,9 @@ public class OptionMenuHud extends QNMenuHud {
         });
     }
 
+    private void updateIcons(){
+
+    }
     @Override
     protected void setFocus(Focusable actor) {
         table.setFocus(actor);

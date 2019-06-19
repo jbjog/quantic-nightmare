@@ -18,7 +18,7 @@ public class Fonts {
         return getDefaultFont(20,Color.WHITE);
     }
 
-    public static BitmapFont getDefaultFont(int size) {
+    private static BitmapFont getDefaultFont(int size) {
         return getDefaultFont(size,Color.WHITE);
     }
 
