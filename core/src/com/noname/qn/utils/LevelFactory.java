@@ -114,7 +114,7 @@ public class LevelFactory {
         level.addSquare(new BasicSquare(1,4));
         level.addSquare(new BasicSquare(2,4));
         level.addSquare(new HoleSquare(3,4));
-        //level.addSquare(new ArrivalSquare(endConditions));
+        level.addSquare(new ArrivalSquare(endConditions));
 
         return level;
     }
