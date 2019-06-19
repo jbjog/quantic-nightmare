@@ -1,13 +1,10 @@
 package com.noname.qn.hud;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FocusableLabel;
 import com.noname.qn.utils.FocusableTable;
 import com.noname.qn.utils.Preferences;
 

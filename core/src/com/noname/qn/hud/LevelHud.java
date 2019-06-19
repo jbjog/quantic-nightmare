@@ -147,10 +147,16 @@ public class LevelHud extends QNMenuHud{
 
     private void showRandomSquare() {
         List<Enterable> toShow = new ArrayList<Enterable>();
-        while(toShow.size()<3){
+        int hiddenSquareCount = 0;
+        for (Enterable e : level.getSquares()) {
+            if (e.isHidden()){
+                hiddenSquareCount++;
+            }
+        }
+        while(toShow.size()<3 && toShow.size() < hiddenSquareCount){
             int row = (int)(Math.random()*level.getNbRows());
             int col = (int)(Math.random()*level.getNbColumns());
-            Position p = new Position(row,col);
+            Position p = new Position(col,row);
             for (Enterable e : level.getSquares()) {
                 if (e.getPosition().equals(p) && !toShow.contains(e) && e.isHidden()){
                     toShow.add(e);
@@ -162,8 +168,6 @@ public class LevelHud extends QNMenuHud{
             public void run() {
                 for (Enterable e : toShow) {
                     e.reveal();
-                    System.out.println(e.getPosition().getX()+"-"+e.getPosition().getY());
-                    System.out.println(e.getClass().getName());
                 }
                 displayBoard();
             }
