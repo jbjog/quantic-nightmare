@@ -1,5 +1,8 @@
 package com.noname.qn.service.domain;
 
+import com.noname.qn.parameters.TextValues;
+import com.noname.qn.service.gui.Gamable;
+
 public interface IQNPreferences {
     boolean isEnableEffects();
 
@@ -9,9 +12,13 @@ public interface IQNPreferences {
 
     void setEnableMusic(boolean enableMusic);
 
-    int getLanguage();
+    TextValues.Language getLanguage();
 
-    void setLanguage(int language);
+    void setLanguage(TextValues.Language language);
+
+    Gamable.Difficulty getDifficulty();
+
+    void setDifficulty(Gamable.Difficulty difficulty);
 
     void save();
 }

@@ -1,16 +1,19 @@
-package com.noname.qn.utils;
+package com.noname.qn.parameters;
 
 import com.noname.qn.service.domain.IQNPreferences;
+import com.noname.qn.service.gui.Gamable;
 
 public class QNPreferencesDTO implements IQNPreferences {
     private boolean enableEffects;
     private boolean enableMusic;
-    private int language;
+    private TextValues.Language language;
+    private Gamable.Difficulty difficulty;
 
     public QNPreferencesDTO() {
         enableEffects = true;
         enableMusic = true;
-        language = TextValues.ENGLISH;
+        language = TextValues.Language.ENGLISH;
+        difficulty = Gamable.Difficulty.EASY;
     }
 
     @Override
@@ -30,12 +33,20 @@ public class QNPreferencesDTO implements IQNPreferences {
         this.enableMusic = enableMusic;
     }
     @Override
-    public int getLanguage() {
+    public TextValues.Language getLanguage() {
         return language;
     }
     @Override
-    public void setLanguage(int language) {
+    public void setLanguage(TextValues.Language language) {
         this.language = language;
+    }
+    @Override
+    public Gamable.Difficulty getDifficulty() {
+        return difficulty;
+    }
+    @Override
+    public void setDifficulty(Gamable.Difficulty difficulty) {
+        this.difficulty=difficulty;
     }
     @Override
     public void save() {}

@@ -1,13 +1,14 @@
-package com.noname.qn.utils;
+package com.noname.qn.parameters;
 
 import com.noname.qn.service.domain.Playable;
+import com.noname.qn.service.gui.Gamable;
 
 public class TextValues {
 
-    public static final int ENGLISH = 0;
-    public static final int FRENCH= 1;
-    public static final int SPANISH= 2;
-    public static final int LANGUAGE_COUNT=3;
+    public enum Language{
+        ENGLISH,FRENCH,SPANISH
+    }
+
     public static final String[] LANGUAGE = new String[]{"Language", "Langue","Idioma"};
     public static final String[] LANGUAGE_NAME = new String[]{"English", "Français","Español"};
     public static final String[] APP_NAME = new String[]{"Quantic Nightmare", "Quantic Nightmare", "Quantic Nightmare"};
@@ -72,18 +73,35 @@ public class TextValues {
     public static final String[] LOOSE = new String[]{"Loose","Perdu","Perdido"};
     public static final String[] CONTINUE = new String[]{"Continue","Continuer","Continuar"};
     private TextValues(){}
-    public static String getStateString(Playable.State st){
+    public static String getStateString(Playable.State st,int language){
         switch (st){
             case WIN:
-                return TextValues.WIN[QNPreferences.getPref().getLanguage()];
+                return TextValues.WIN[language];
             case LOOSE:
-                return TextValues.LOOSE[QNPreferences.getPref().getLanguage()];
+                return TextValues.LOOSE[language];
             case CONTINUE:
-                return TextValues.CONTINUE[QNPreferences.getPref().getLanguage()];
+                return TextValues.CONTINUE[language];
         }
         return "";
     }
 
+    public static final String[] EASY =
+            new String[]{"Easy", "Facile","Fácil"};
+    public static final String[] NORMAL =
+            new String[]{"Normal", "Normal","Normal"};
+    public static final String[] NIGHTMARE =
+            new String[]{"Nightmare", "Cauchemar","Pesadilla"};
+    public static String getDifficultyString(Gamable.Difficulty d,int language){
+        switch (d){
+            case EASY:
+                return TextValues.EASY[language];
+            case NORMAL:
+                return TextValues.NORMAL[language];
+            case NIGHTMARE:
+                return TextValues.NIGHTMARE[language];
+        }
+        return "";
+    }
 
     public void t(){
         //

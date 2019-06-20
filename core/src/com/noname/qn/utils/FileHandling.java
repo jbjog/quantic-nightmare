@@ -5,6 +5,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.SerializationException;
+import com.noname.qn.parameters.PlayerScoreDTO;
+import com.noname.qn.parameters.QNPreferencesDTO;
 import com.noname.qn.service.domain.IQNPreferences;
 
 
@@ -13,25 +15,25 @@ public class FileHandling {
     public static void writeScore (int lvl, int  minMoves, int score) {
         // où ecrire
         FileHandle file = Gdx.files.local("save/score" + lvl+".json");
-        PlayerScore playerScore = new PlayerScore();
+        PlayerScoreDTO playerScoreDTO = new PlayerScoreDTO();
         Json json = new Json();
 
-        playerScore.setLvl(lvl);
-        playerScore.setMinMove(minMoves);
-        playerScore.setScore(score);
+        playerScoreDTO.setLvl(lvl);
+        playerScoreDTO.setMinMove(minMoves);
+        playerScoreDTO.setScore(score);
 
-        String playerScores = json.toJson(playerScore);
+        String playerScores = json.toJson(playerScoreDTO);
         System.out.println(playerScores);
         file.writeString(playerScores,false);
     }
 
-    public static PlayerScore readScore(int numLvl) {
+    public static PlayerScoreDTO readScore(int numLvl) {
         // où lire
         FileHandle file = Gdx.files.local("save/score" + numLvl +".json");
         String scores = file.readString();
         Json json = new Json();
 
-        return json.fromJson(PlayerScore.class, scores);
+        return json.fromJson(PlayerScoreDTO.class, scores);
     }
 
     public static void writePreferences (IQNPreferences pref) {

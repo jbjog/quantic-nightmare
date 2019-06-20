@@ -7,7 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
-import com.noname.qn.utils.QNPreferences;
+import com.noname.qn.parameters.QNPreferences;
 
 public abstract class QNMenuHud extends QNHud implements InputProcessor {
     public static Music effectSound = Gdx.audio.newMusic(Gdx.files.internal("effects/pop.mp3"));

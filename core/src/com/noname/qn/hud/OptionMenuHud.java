@@ -3,6 +3,8 @@ package com.noname.qn.hud;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.noname.qn.parameters.QNPreferences;
+import com.noname.qn.parameters.TextValues;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
@@ -23,7 +25,7 @@ public class OptionMenuHud extends QNMenuHud {
 
     public OptionMenuHud(Gamer screen) {
         super(screen);
-        table = new FocusableTable(TextValues.OPTION[QNPreferences.getPref().getLanguage()]);
+        table = new FocusableTable(TextValues.OPTION[QNPreferences.getPref().getLanguage().ordinal()]);
         stage.addActor(table);
         table.getCell(table.getTitleLabel()).colspan(2);
         labelSound = (Label)table.addLabel("music",new ClickListener() {
@@ -50,7 +52,8 @@ public class OptionMenuHud extends QNMenuHud {
         labelLanguage = (Label)table.addLabel("language",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                QNPreferences.getPref().setLanguage((QNPreferences.getPref().getLanguage()+1)%TextValues.LANGUAGE_COUNT);
+                int newLanguageIndex = (QNPreferences.getPref().getLanguage().ordinal()+1)%TextValues.Language.values().length;
+                QNPreferences.getPref().setLanguage(TextValues.Language.values()[newLanguageIndex]);
                 updateTexts();
             }
         }).padRight(30).getActor();
@@ -66,21 +69,21 @@ public class OptionMenuHud extends QNMenuHud {
     }
 
     private void updateTexts(){
-        labelSound.setText(TextValues.SOUND[QNPreferences.getPref().getLanguage()]);
+        labelSound.setText(TextValues.SOUND[QNPreferences.getPref().getLanguage().ordinal()]);
         if(QNPreferences.getPref().isEnableMusic()){
-            labelSoundValue.setText(TextValues.ENABLE[QNPreferences.getPref().getLanguage()]);
+            labelSoundValue.setText(TextValues.ENABLE[QNPreferences.getPref().getLanguage().ordinal()]);
         }else{
-            labelSoundValue.setText(TextValues.DISABLE[QNPreferences.getPref().getLanguage()]);
+            labelSoundValue.setText(TextValues.DISABLE[QNPreferences.getPref().getLanguage().ordinal()]);
         }
-        labelEffect.setText(TextValues.EFFECT[QNPreferences.getPref().getLanguage()]);
+        labelEffect.setText(TextValues.EFFECT[QNPreferences.getPref().getLanguage().ordinal()]);
         if(QNPreferences.getPref().isEnableEffects()){
-            labelEffectValue.setText(TextValues.ENABLE[QNPreferences.getPref().getLanguage()]);
+            labelEffectValue.setText(TextValues.ENABLE[QNPreferences.getPref().getLanguage().ordinal()]);
         }else{
-            labelEffectValue.setText(TextValues.DISABLE[QNPreferences.getPref().getLanguage()]);
+            labelEffectValue.setText(TextValues.DISABLE[QNPreferences.getPref().getLanguage().ordinal()]);
         }
-        labelLanguage.setText(TextValues.LANGUAGE[QNPreferences.getPref().getLanguage()]);
-        labelLanguageValue.setText(TextValues.LANGUAGE_NAME[QNPreferences.getPref().getLanguage()]);
-        labelBack.setText(TextValues.BACK[QNPreferences.getPref().getLanguage()]);
+        labelLanguage.setText(TextValues.LANGUAGE[QNPreferences.getPref().getLanguage().ordinal()]);
+        labelLanguageValue.setText(TextValues.LANGUAGE_NAME[QNPreferences.getPref().getLanguage().ordinal()]);
+        labelBack.setText(TextValues.BACK[QNPreferences.getPref().getLanguage().ordinal()]);
         //
         // TextValues.EFFECT[QNPreferences.getPref().getLanguage()]
         // TextValues.LANGUAGE[QNPreferences.getPref().getLanguage()]

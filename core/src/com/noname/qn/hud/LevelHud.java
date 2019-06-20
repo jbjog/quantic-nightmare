@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Timer;
 import com.noname.qn.entity.Position;
 import com.noname.qn.entity.Turn;
+import com.noname.qn.parameters.PlayerScoreDTO;
+import com.noname.qn.parameters.QNPreferences;
+import com.noname.qn.parameters.TextValues;
 import com.noname.qn.service.domain.Enterable;
 import com.noname.qn.service.domain.Levelable;
 import com.noname.qn.service.domain.Movable;
@@ -81,13 +84,13 @@ public class LevelHud extends QNMenuHud{
 
         String lastScores="";
         try{
-            PlayerScore ps = FileHandling.readScore(level.getLevelNumber());
-            lastScores = " - "+TextValues.BEST_TRY[QNPreferences.getPref().getLanguage()]+" : "+ ps.getScore()+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage()];
+            PlayerScoreDTO ps = FileHandling.readScore(level.getLevelNumber());
+            lastScores = " - "+ TextValues.BEST_TRY[QNPreferences.getPref().getLanguage().ordinal()]+" : "+ ps.getScore()+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage().ordinal()];
         }catch (GdxRuntimeException e){
             //default lastScores is already define above
         }
         Table introTable = new Table();
-        introLabel= new Label(level.getName()+" - "+level.getMinimumMoves()+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage()]+lastScores,new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
+        introLabel= new Label(level.getName()+" - "+level.getMinimumMoves()+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage().ordinal()]+lastScores,new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         introTable.add(introLabel);
         boardTable = new Table();
         arrowTable = new Table();
@@ -101,12 +104,12 @@ public class LevelHud extends QNMenuHud{
     }
     //construction de l'ecran gameOver
     private void buildGameOverTable(){
-        gameOverTable = new FocusableTable(TextValues.GAMEOVER[QNPreferences.getPref().getLanguage()],100);
+        gameOverTable = new FocusableTable(TextValues.GAMEOVER[QNPreferences.getPref().getLanguage().ordinal()],100);
         gameOverTable.getTitleLabel().setStyle(Fonts.getBigRedStyle());
 
         //ajout du message
         gameOverTable.row();
-        Label gameOverMessage = new Label(TextValues.GAMEOVER_MESSAGE[QNPreferences.getPref().getLanguage()],new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
+        Label gameOverMessage = new Label(TextValues.GAMEOVER_MESSAGE[QNPreferences.getPref().getLanguage().ordinal()],new Label.LabelStyle(Fonts.getDefaultFont(),Color.WHITE));
         gameOverTable.add(gameOverMessage).height(100).padBottom(20);
         //ajout de l'etat final'
         gameOverTable.row();
@@ -118,14 +121,14 @@ public class LevelHud extends QNMenuHud{
         bgTable.fill();
         gameOverTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgTable))));
 
-        gameOverTable.addLabel(TextValues.RETRY[QNPreferences.getPref().getLanguage()],new ClickListener(){
+        gameOverTable.addLabel(TextValues.RETRY[QNPreferences.getPref().getLanguage().ordinal()],new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 level.reset();
                 hideGameOverTable();
             }
         },true,true);
-        bonusLabel = gameOverTable.addLabel(TextValues.BONUS[QNPreferences.getPref().getLanguage()]+" ("+bonusNumber+")",new ClickListener(){
+        bonusLabel = gameOverTable.addLabel(TextValues.BONUS[QNPreferences.getPref().getLanguage().ordinal()]+" ("+bonusNumber+")",new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 level.reset();
@@ -136,7 +139,7 @@ public class LevelHud extends QNMenuHud{
             }
         },true,false);
 
-        gameOverTable.addLabel(TextValues.QUIT[QNPreferences.getPref().getLanguage()],new ClickListener(){
+        gameOverTable.addLabel(TextValues.QUIT[QNPreferences.getPref().getLanguage().ordinal()],new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 musicLevel.dispose();
@@ -182,7 +185,7 @@ public class LevelHud extends QNMenuHud{
             }
         }, 2);
         bonusNumber--;
-        ((FocusableLabel)bonusLabel.getActor()).setText(TextValues.BONUS[QNPreferences.getPref().getLanguage()]+" ("+bonusNumber+")");
+        ((FocusableLabel)bonusLabel.getActor()).setText(TextValues.BONUS[QNPreferences.getPref().getLanguage().ordinal()]+" ("+bonusNumber+")");
     }
 
 
@@ -195,7 +198,7 @@ public class LevelHud extends QNMenuHud{
         gameOverState.setAlignment(Align.center);
 
         Playable.State lastState = level.getLastState();
-        gameOverState.setText(TextValues.getStateString(lastState));
+        gameOverState.setText(TextValues.getStateString(lastState,QNPreferences.getPref().getLanguage().ordinal()));
         switch (lastState){
             case WIN:
                 int moves = level.getTracker().size();
@@ -204,8 +207,9 @@ public class LevelHud extends QNMenuHud{
                     level.setBestResult(moves);
                     FileHandling.writeScore(level.getLevelNumber(),level.getMinimumMoves(),level.getBestResult());
                     introLabel.setText(level.getName()+" - "+level.getMinimumMoves()+" "+
-                            TextValues.MOVES[QNPreferences.getPref().getLanguage()]+" - "+TextValues.BEST_TRY[QNPreferences.getPref().getLanguage()]+
-                            " : "+moves+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage()]);
+                            TextValues.MOVES[QNPreferences.getPref().getLanguage().ordinal()]+" - "+
+                            TextValues.BEST_TRY[QNPreferences.getPref().getLanguage().ordinal()]+
+                            " : "+moves+" "+TextValues.MOVES[QNPreferences.getPref().getLanguage().ordinal()]);
                 }
                 //calcul du niveau de résultat
                 double percent = (double)level.getMinimumMoves()/moves;

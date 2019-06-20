@@ -2,6 +2,8 @@ package com.noname.qn.utils;
 
 import com.noname.qn.entity.*;
 import com.noname.qn.entity.square.*;
+import com.noname.qn.parameters.QNPreferences;
+import com.noname.qn.parameters.TextValues;
 import com.noname.qn.service.domain.Conditionable;
 import com.noname.qn.service.domain.Enterable;
 import com.noname.qn.service.domain.Levelable;
@@ -36,7 +38,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(1,3,4,startParticule,endConditions);
-        level.setName(TextValues.LEVEL1_NAME[QNPreferences.getPref().getLanguage()]);
+        level.setName(TextValues.LEVEL1_NAME[QNPreferences.getPref().getLanguage().ordinal()]);
         level.setMinimumMoves(4);
 
         //add line 1
@@ -77,7 +79,7 @@ public class LevelFactory {
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(2,5,5,startParticule,endConditions);
         level.setMinimumMoves(13);
-        level.setName(TextValues.LEVEL2_NAME[QNPreferences.getPref().getLanguage()]);
+        level.setName(TextValues.LEVEL2_NAME[QNPreferences.getPref().getLanguage().ordinal()]);
         //add line 1
         level.addSquare(new HoleSquare(0,0));
         level.addSquare(new BasicSquare(1,0));
@@ -127,7 +129,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(3,11,11,startParticule,endConditions);
-        level.setName(TextValues.LEVEL3_NAME[QNPreferences.getPref().getLanguage()]);
+        level.setName(TextValues.LEVEL3_NAME[QNPreferences.getPref().getLanguage().ordinal()]);
         level.setMinimumMoves(38);
 
         //add line 1
@@ -265,7 +267,7 @@ public class LevelFactory {
 
         //create level with 3 rows 4 columns with above conditions
         Level level = new Level(4,5, 17, startParticule, endConditions);
-        level.setName(TextValues.LEVEL4_NAME[QNPreferences.getPref().getLanguage()]);
+        level.setName(TextValues.LEVEL4_NAME[QNPreferences.getPref().getLanguage().ordinal()]);
         level.setMinimumMoves(18);
 
         //arrival TP

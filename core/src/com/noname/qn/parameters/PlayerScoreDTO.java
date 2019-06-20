@@ -1,6 +1,6 @@
-package com.noname.qn.utils;
+package com.noname.qn.parameters;
 
-public class PlayerScore {
+public class PlayerScoreDTO {
     private int lvl;
     private int score;
     private int minMove;
