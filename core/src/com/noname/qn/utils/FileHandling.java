@@ -23,7 +23,6 @@ public class FileHandling {
         playerScoreDTO.setScore(score);
 
         String playerScores = json.toJson(playerScoreDTO);
-        System.out.println(playerScores);
         file.writeString(playerScores,false);
     }
 
@@ -54,7 +53,6 @@ public class FileHandling {
         String preferences = json.toJson(prefDTO);
 
         file.writeString(preferences,false);
-        System.out.println("ecrit!");
     }
 
     public static IQNPreferences readPreferences() {

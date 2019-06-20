@@ -15,15 +15,15 @@ import com.noname.qn.utils.*;
 public class OptionMenuHud extends QNMenuHud {
     private FocusableTable table;
     //store label for translation
-    private Label labelSound;
+    private FocusableLabel labelSound;
     private Label labelSoundValue;
-    private Label labelEffect;
+    private FocusableLabel labelEffect;
     private Label labelEffectValue;
-    private Label labelLanguage;
+    private FocusableLabel labelLanguage;
     private Label labelLanguageValue;
-    private Label labelDifficulty;
+    private FocusableLabel labelDifficulty;
     private Label labelDifficultyValue;
-    private Label labelBack;
+    private FocusableLabel labelBack;
 
 
     public OptionMenuHud(Gamer screen) {
@@ -31,7 +31,7 @@ public class OptionMenuHud extends QNMenuHud {
         table = new FocusableTable(TextValues.OPTION[QNPreferences.getPref().getLanguage().ordinal()]);
         stage.addActor(table);
         table.getCell(table.getTitleLabel()).colspan(2);
-        labelSound = (Label)table.addLabel("",new ClickListener() {
+        labelSound = (FocusableLabel)table.addLabel("",new ClickListener() {
           @Override
           public void clicked(InputEvent event, float x, float y) {
               if (QNPreferences.getPref().isEnableMusic()) {
@@ -44,7 +44,7 @@ public class OptionMenuHud extends QNMenuHud {
           }
         }).padRight(30).getActor();
         labelSoundValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
-        labelEffect = (Label)table.addLabel("",new ClickListener() {
+        labelEffect = (FocusableLabel)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 QNPreferences.getPref().setEnableEffects(!QNPreferences.getPref().isEnableEffects());
@@ -52,7 +52,7 @@ public class OptionMenuHud extends QNMenuHud {
             }
         }).padRight(30).getActor();
         labelEffectValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
-        labelLanguage = (Label)table.addLabel("",new ClickListener() {
+        labelLanguage = (FocusableLabel)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 int newLanguageIndex = (QNPreferences.getPref().getLanguage().ordinal()+1)%TextValues.Language.values().length;
@@ -61,7 +61,7 @@ public class OptionMenuHud extends QNMenuHud {
             }
         }).padRight(30).getActor();
         labelLanguageValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
-        labelDifficulty = (Label)table.addLabel("",new ClickListener() {
+        labelDifficulty = (FocusableLabel)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 int newDifficultyIndex = (QNPreferences.getPref().getDifficulty().ordinal()+1)% Gamable.Difficulty.values().length;
@@ -70,11 +70,10 @@ public class OptionMenuHud extends QNMenuHud {
             }
         }).padRight(30).getActor();
         labelDifficultyValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
-        labelBack = (Label)table.addLabel("",new ClickListener() {
+        labelBack = (FocusableLabel)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                QNPreferences.getPref().save();
-                screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
+                escaped();
             }
         }).colspan(2).getActor();
         updateTexts();
@@ -128,6 +127,7 @@ public class OptionMenuHud extends QNMenuHud {
 
     @Override
     void escaped() {
+        QNPreferences.getPref().save();
         screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
     }
 
