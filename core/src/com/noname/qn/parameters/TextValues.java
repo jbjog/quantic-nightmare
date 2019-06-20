@@ -9,8 +9,6 @@ public class TextValues {
         ENGLISH,FRENCH,SPANISH
     }
 
-    public static final String[] LANGUAGE = new String[]{"Language", "Langue","Idioma"};
-    public static final String[] LANGUAGE_NAME = new String[]{"English", "Français","Español"};
     public static final String[] APP_NAME = new String[]{"Quantic Nightmare", "Quantic Nightmare", "Quantic Nightmare"};
 
     public static final String[] ILLEGAL_LEVEL_INSERTION_EXCEPTION_MESSAGE =
@@ -61,6 +59,9 @@ public class TextValues {
     public static final String[] EFFECT = new String[]{"Effects", "Effets", "Efectos"};
     public static final String[] ENABLE = new String[]{"Enable", "Activé", "Activado"};
     public static final String[] DISABLE = new String[]{"Disable", "Désactivé", "Desactivado"};
+    public static final String[] LANGUAGE = new String[]{"Language", "Langue","Idioma"};
+    public static final String[] LANGUAGE_NAME = new String[]{"English", "Français","Español"};
+    public static final String[] DIFFICULTY = new String[]{"Difficulty", "Difficulté","Dificultad"};
 
     //Stage
     public static final String[] CHOOSE = new String[]{"Choose your Nightmare",
@@ -91,14 +92,14 @@ public class TextValues {
             new String[]{"Normal", "Normal","Normal"};
     public static final String[] NIGHTMARE =
             new String[]{"Nightmare", "Cauchemar","Pesadilla"};
-    public static String getDifficultyString(Gamable.Difficulty d,int language){
+    public static String getDifficultyString(Gamable.Difficulty d,Language language){
         switch (d){
             case EASY:
-                return TextValues.EASY[language];
+                return TextValues.EASY[language.ordinal()];
             case NORMAL:
-                return TextValues.NORMAL[language];
+                return TextValues.NORMAL[language.ordinal()];
             case NIGHTMARE:
-                return TextValues.NIGHTMARE[language];
+                return TextValues.NIGHTMARE[language.ordinal()];
         }
         return "";
     }

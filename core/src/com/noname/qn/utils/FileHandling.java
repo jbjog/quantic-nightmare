@@ -44,6 +44,7 @@ public class FileHandling {
         prefDTO.setLanguage(pref.getLanguage());
         prefDTO.setEnableEffects(pref.isEnableEffects());
         prefDTO.setEnableMusic(pref.isEnableMusic());
+        prefDTO.setDifficulty(pref.getDifficulty());
 
         Json json = new Json();
         json.setTypeName(null);

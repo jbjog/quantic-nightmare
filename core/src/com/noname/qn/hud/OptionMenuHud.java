@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.parameters.QNPreferences;
 import com.noname.qn.parameters.TextValues;
 import com.noname.qn.service.gui.Focusable;
+import com.noname.qn.service.gui.Gamable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.*;
@@ -20,6 +21,8 @@ public class OptionMenuHud extends QNMenuHud {
     private Label labelEffectValue;
     private Label labelLanguage;
     private Label labelLanguageValue;
+    private Label labelDifficulty;
+    private Label labelDifficultyValue;
     private Label labelBack;
 
 
@@ -28,7 +31,7 @@ public class OptionMenuHud extends QNMenuHud {
         table = new FocusableTable(TextValues.OPTION[QNPreferences.getPref().getLanguage().ordinal()]);
         stage.addActor(table);
         table.getCell(table.getTitleLabel()).colspan(2);
-        labelSound = (Label)table.addLabel("music",new ClickListener() {
+        labelSound = (Label)table.addLabel("",new ClickListener() {
           @Override
           public void clicked(InputEvent event, float x, float y) {
               if (QNPreferences.getPref().isEnableMusic()) {
@@ -40,16 +43,16 @@ public class OptionMenuHud extends QNMenuHud {
               updateTexts();
           }
         }).padRight(30).getActor();
-        labelSoundValue = table.add(new Label("ac", Fonts.getUnFocusStyle())).getActor();
-        labelEffect = (Label)table.addLabel("effects",new ClickListener() {
+        labelSoundValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
+        labelEffect = (Label)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 QNPreferences.getPref().setEnableEffects(!QNPreferences.getPref().isEnableEffects());
                 updateTexts();
             }
         }).padRight(30).getActor();
-        labelEffectValue = table.add(new Label("de", Fonts.getUnFocusStyle())).getActor();
-        labelLanguage = (Label)table.addLabel("language",new ClickListener() {
+        labelEffectValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
+        labelLanguage = (Label)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 int newLanguageIndex = (QNPreferences.getPref().getLanguage().ordinal()+1)%TextValues.Language.values().length;
@@ -57,8 +60,17 @@ public class OptionMenuHud extends QNMenuHud {
                 updateTexts();
             }
         }).padRight(30).getActor();
-        labelLanguageValue = table.add(new Label("fr", Fonts.getUnFocusStyle())).getActor();
-        labelBack = (Label)table.addLabel("back",new ClickListener() {
+        labelLanguageValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
+        labelDifficulty = (Label)table.addLabel("",new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                int newDifficultyIndex = (QNPreferences.getPref().getDifficulty().ordinal()+1)% Gamable.Difficulty.values().length;
+                QNPreferences.getPref().setDifficulty(Gamable.Difficulty.values()[newDifficultyIndex]);
+                updateTexts();
+            }
+        }).padRight(30).getActor();
+        labelDifficultyValue = table.add(new Label("", Fonts.getUnFocusStyle())).getActor();
+        labelBack = (Label)table.addLabel("",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 QNPreferences.getPref().save();
@@ -83,6 +95,11 @@ public class OptionMenuHud extends QNMenuHud {
         }
         labelLanguage.setText(TextValues.LANGUAGE[QNPreferences.getPref().getLanguage().ordinal()]);
         labelLanguageValue.setText(TextValues.LANGUAGE_NAME[QNPreferences.getPref().getLanguage().ordinal()]);
+        labelDifficulty.setText(TextValues.DIFFICULTY[QNPreferences.getPref().getLanguage().ordinal()]);
+        labelDifficultyValue.setText(
+                TextValues.getDifficultyString(
+                        QNPreferences.getPref().getDifficulty(),QNPreferences.getPref().getLanguage())
+        );
         labelBack.setText(TextValues.BACK[QNPreferences.getPref().getLanguage().ordinal()]);
         //
         // TextValues.EFFECT[QNPreferences.getPref().getLanguage()]
