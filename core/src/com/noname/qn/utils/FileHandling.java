@@ -54,7 +54,6 @@ public class FileHandling {
         String preferences = json.toJson(prefDTO);
 
         file.writeString(preferences,false);
-        System.out.println("ecrit!");
     }
 
     public static IQNPreferences readPreferences() {
