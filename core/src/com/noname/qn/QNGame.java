@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.noname.qn.screen.*;
 import com.noname.qn.service.domain.IQNPreferences;
 import com.noname.qn.service.domain.Levelable;
@@ -19,10 +18,9 @@ public class QNGame extends Game implements Gamable {
 	private StageMenuScreen sms;
 	private OptionMenuScreen oms;
 	private LevelScreen ls;
-	private SplashScreen ss;
-	private static int SPLASH_MINIMUM_MILLIS = 1000;
-	private boolean bChange;
-	private Timer time;
+    private boolean bChange;
+    private boolean bChange2 = false;
+    private Timer time;
 
 	public QNGame(){super();}
 
@@ -31,8 +29,6 @@ public class QNGame extends Game implements Gamable {
 		batch = new SpriteBatch();
 		time = new Timer();
 		setScreen(new SplashScreen(this));
-		final int splash_start_time = (int)System.currentTimeMillis();
-		int splash_elapsed_time = (int)System.currentTimeMillis() - splash_start_time;
 		IQNPreferences prefDTO = FileHandling.readPreferences();
 		QNPreferences.getPref().setLanguage(prefDTO.getLanguage());
 		QNPreferences.getPref().setEnableEffects(prefDTO.isEnableEffects());
@@ -41,18 +37,26 @@ public class QNGame extends Game implements Gamable {
 		time.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				bChange = true;
+				if (!bChange){
+					bChange = true;
+				}
 			}
-		}, (QNGame.SPLASH_MINIMUM_MILLIS - splash_elapsed_time), 1000);
+		}, 1200, 1200);
 	}
 
 	@Override
 	public void render () {
 		super.render();
-		if (bChange){
-			QNGame.this.setScreen(new MainMenuScreen(this));
-			bChange = false;
+		if (bChange && bChange2){
 			time.cancel();
+			bChange = false;
+			bChange2 = false;
+			QNGame.this.setScreen(new MainMenuScreen(this));
+		}
+		if (bChange && !bChange2){
+			setScreen(new SocietyScreen(this));
+			bChange2 = true;
+			bChange = false;
 		}
 	}
 
@@ -64,10 +68,6 @@ public class QNGame extends Game implements Gamable {
 	@Override
 	public void changeScreen(Type screen){
 		switch(screen){
-			case SPLASH:
-				ss = new SplashScreen(this);
-				this.setScreen(ss);
-				break;
 			case HOME:
 				mms = new MainMenuScreen(this);
 				this.setScreen(mms);

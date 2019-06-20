@@ -22,7 +22,7 @@ public class SocietyScreen implements Screen {
     public void show() {
         batch = new SpriteBatch();
 
-        Texture splashtexture = new Texture("data/teleportation.jpg");
+        Texture splashtexture = new Texture("QNNameLogo.jpg");
         splash = new Sprite(splashtexture);
         splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
