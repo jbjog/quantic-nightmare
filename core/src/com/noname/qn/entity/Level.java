@@ -1,5 +1,6 @@
 package com.noname.qn.entity;
 
+import com.noname.qn.parameters.QNPreferences;
 import com.noname.qn.service.domain.*;
 import com.noname.qn.service.domain.Movable.Direction;
 
@@ -27,7 +28,6 @@ public class Level implements Levelable {
         minMoves=0;
         name="";
         bestResult = 0;
-        reset();
     }
 
     @Override
@@ -115,10 +115,22 @@ public class Level implements Levelable {
         tracker.clear();
         player.setPosition(startCondition.getPosition());
         player.switchDuality(startCondition.getDuality());
-        /*for (Enterable e: getSquares()) {
-            if(!e.getPosition().equals(startCondition.getPosition()))
-                    e.hide();
-        }*/
+        switch (QNPreferences.getPref().getDifficulty()){
+            case EASY:
+                for (Enterable e: getSquares()) {
+                    if(!e.getPosition().equals(startCondition.getPosition()))
+                        e.reveal();
+                }
+                break;
+            case NORMAL:
+                break;
+            case NIGHTMARE:
+                for (Enterable e: getSquares()) {
+                    if(!e.getPosition().equals(startCondition.getPosition()))
+                        e.hide();
+                }
+                break;
+        }
     }
 
     @Override

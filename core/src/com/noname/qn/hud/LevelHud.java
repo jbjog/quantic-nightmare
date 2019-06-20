@@ -25,6 +25,7 @@ import com.noname.qn.service.domain.Levelable;
 import com.noname.qn.service.domain.Movable;
 import com.noname.qn.service.domain.Playable;
 import com.noname.qn.service.gui.Focusable;
+import com.noname.qn.service.gui.Gamable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
 import com.noname.qn.utils.*;
@@ -49,23 +50,22 @@ public class LevelHud extends QNMenuHud{
     private Table arrowTable;
     private FocusableTable gameOverTable;
     private Label gameOverState;
-    private FocusableTable successTable;
     private boolean paused = false;
     private List<Movable.Direction> moves = new ArrayList<>();
-    private Cell<Actor> bonusLabel;
+    private FocusableLabel bonusLabel;
+    private FocusableLabel retryLabel;
 
     private Label introLabel;
 
     private Music musicLevel;
     private static List<String> songs = Arrays.asList("music/diptera_sonata.mp3","music/the_exorcist.mp3","music/griffes_de_la_nuit.mp3","music/halloween_theme.mp3","music/scary_song.mp3","music/lavanville.mp3");
-    private static int rand;
 
     private int bonusNumber=3;
 
     public LevelHud(Gamer screen, Levelable level) {
         super(screen);
         MainMenuHud.musicMenu.dispose();
-        rand = (int)(Math.random() * songs.size()) ;
+        int rand = (int) (Math.random() * songs.size());
         musicLevel = Gdx.audio.newMusic(Gdx.files.internal(songs.get(rand)));
 
         if (QNPreferences.getPref().isEnableMusic()) musicLevel.play();
@@ -100,6 +100,7 @@ public class LevelHud extends QNMenuHud{
         main.row();
         main.add(arrowTable);
         stage.addActor(main);
+        level.reset();
         display();
     }
     //construction de l'ecran gameOver
@@ -121,24 +122,28 @@ public class LevelHud extends QNMenuHud{
         bgTable.fill();
         gameOverTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgTable))));
 
-        gameOverTable.addLabel(TextValues.RETRY[QNPreferences.getPref().getLanguage().ordinal()],new ClickListener(){
+        retryLabel = (FocusableLabel)gameOverTable.addLabel(TextValues.RETRY[QNPreferences.getPref().getLanguage().ordinal()],new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 level.reset();
                 hideGameOverTable();
             }
-        },true,true);
-        bonusLabel = gameOverTable.addLabel(TextValues.BONUS[QNPreferences.getPref().getLanguage().ordinal()]+" ("+bonusNumber+")",new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                level.reset();
-                displayBoard();
-                hideGameOverTable();
-                if(bonusNumber>0)
-                    showRandomSquare();
-            }
-        },true,false);
-
+        },true,true).getActor();
+        if(QNPreferences.getPref().getDifficulty()!= Gamable.Difficulty.EASY) {
+            bonusLabel = (FocusableLabel) gameOverTable.addLabel(TextValues.BONUS[QNPreferences.getPref().getLanguage().ordinal()] + " (" + bonusNumber + ")", new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    paused = true;
+                    level.reset();
+                    displayBoard();
+                    hideGameOverTable();
+                    if (bonusNumber > 0)
+                        showRandomSquare();
+                    else
+                        paused = false;
+                }
+            }, true, false).getActor();
+        }
         gameOverTable.addLabel(TextValues.QUIT[QNPreferences.getPref().getLanguage().ordinal()],new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -182,10 +187,11 @@ public class LevelHud extends QNMenuHud{
                     e.hide();
                 }
                 displayBoard();
+                paused = false;
             }
         }, 2);
         bonusNumber--;
-        ((FocusableLabel)bonusLabel.getActor()).setText(TextValues.BONUS[QNPreferences.getPref().getLanguage().ordinal()]+" ("+bonusNumber+")");
+        bonusLabel.setText(TextValues.BONUS[QNPreferences.getPref().getLanguage().ordinal()]+" ("+bonusNumber+")");
     }
 
 
@@ -236,6 +242,7 @@ public class LevelHud extends QNMenuHud{
     private void hideGameOverTable(){
         stage.clear();
         stage.addActor(main);
+        gameOverTable.setFocus(retryLabel);
         displayedTable=main;
         display();
 

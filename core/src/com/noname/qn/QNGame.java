@@ -37,7 +37,7 @@ public class QNGame extends Game implements Gamable {
 		QNPreferences.getPref().setLanguage(prefDTO.getLanguage());
 		QNPreferences.getPref().setEnableEffects(prefDTO.isEnableEffects());
 		QNPreferences.getPref().setEnableMusic(prefDTO.isEnableMusic());
-		Difficulty[] difs = Difficulty.values();
+		QNPreferences.getPref().setDifficulty(prefDTO.getDifficulty());
 		time.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {

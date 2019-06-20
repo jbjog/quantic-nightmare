@@ -47,7 +47,7 @@ public class TextValues {
     public static final String[] BACK = new String[]{"Back", "Retour", "Atrás"};
 
     //Main Menu
-    public static final String[] WELCOME = new String[]{"Welcome to ", "Bienvenu à ", "Bienvenido a "};
+    public static final String[] WELCOME = new String[]{"Welcome to ", "Bienvenue à ", "Bienvenido a "};
     public static final String[] PLAY = new String[]{"Play", "Jouer", "Jugar"};
     public static final String[] OPTION = new String[]{"Options", "Options", "Opciones"};
     public static final String[] CONFIRM = new String[]{"Are you Sure?", "Etes-vous sûr?", "Seguro?"};
