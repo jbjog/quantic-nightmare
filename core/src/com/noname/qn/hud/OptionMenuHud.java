@@ -6,14 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;
 import com.noname.qn.service.gui.Gamer;
 import com.noname.qn.service.gui.ScreenChanger;
-import com.noname.qn.utils.FocusableTable;
-import com.noname.qn.utils.Fonts;
-import com.noname.qn.utils.QNPreferences;
-import com.noname.qn.utils.TextValues;
+import com.noname.qn.utils.*;
 
 
 public class OptionMenuHud extends QNMenuHud {
     private FocusableTable table;
+    //store label for translation
     private Label labelSound;
     private Label labelSoundValue;
     private Label labelEffect;
@@ -40,7 +38,7 @@ public class OptionMenuHud extends QNMenuHud {
               updateTexts();
           }
         }).padRight(30).getActor();
-        labelSoundValue = (Label)table.add(new Label("ac", Fonts.getUnFocusStyle())).getActor();
+        labelSoundValue = table.add(new Label("ac", Fonts.getUnFocusStyle())).getActor();
         labelEffect = (Label)table.addLabel("effects",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -48,7 +46,7 @@ public class OptionMenuHud extends QNMenuHud {
                 updateTexts();
             }
         }).padRight(30).getActor();
-        labelEffectValue = (Label)table.add(new Label("de", Fonts.getUnFocusStyle())).getActor();
+        labelEffectValue = table.add(new Label("de", Fonts.getUnFocusStyle())).getActor();
         labelLanguage = (Label)table.addLabel("language",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -56,12 +54,11 @@ public class OptionMenuHud extends QNMenuHud {
                 updateTexts();
             }
         }).padRight(30).getActor();
-        labelLanguageValue = (Label)table.add(new Label("fr", Fonts.getUnFocusStyle())).getActor();
+        labelLanguageValue = table.add(new Label("fr", Fonts.getUnFocusStyle())).getActor();
         labelBack = (Label)table.addLabel("back",new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                fileHandling.writePreferences(Preferences.isEnableMusic(),Preferences.isEnableEffects());
-                fileHandling.readPreferences();
+                QNPreferences.getPref().save();
                 screen.getGamable().changeScreen(ScreenChanger.Type.HOME);
             }
         }).colspan(2).getActor();

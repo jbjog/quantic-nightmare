@@ -33,7 +33,7 @@ public class StageMenuHud extends QNMenuHud {
             }
         });
 
-        stagesTable = new FocusableTable("Choose your Nightmare");
+        stagesTable = new FocusableTable(TextValues.CHOOSE[QNPreferences.getPref().getLanguage()]);
         setDisplayedTable(stagesTable);
         int nbLevel = 20;
         for (int i = 0; i < nbLevel; i++) {

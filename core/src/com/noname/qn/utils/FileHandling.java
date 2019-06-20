@@ -3,6 +3,9 @@ package com.noname.qn.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.SerializationException;
+import com.noname.qn.service.domain.IQNPreferences;
 
 
 public class FileHandling {
@@ -18,6 +21,7 @@ public class FileHandling {
         playerScore.setScore(score);
 
         String playerScores = json.toJson(playerScore);
+        System.out.println(playerScores);
         file.writeString(playerScores,false);
     }
 
@@ -30,29 +34,40 @@ public class FileHandling {
         return json.fromJson(PlayerScore.class, scores);
     }
 
-    public static void writePreferences (boolean enableSound, boolean enableEffects) {
+    public static void writePreferences (IQNPreferences pref) {
         // où ecrire
         FileHandle file = Gdx.files.local("preferences/pref.json");
 
-        Preferences.setEnableMusic(enableSound);
-        Preferences.setEnableEffects(enableEffects);
+        QNPreferencesDTO prefDTO = new QNPreferencesDTO();
+        prefDTO.setLanguage(pref.getLanguage());
+        prefDTO.setEnableEffects(pref.isEnableEffects());
+        prefDTO.setEnableMusic(pref.isEnableMusic());
 
         Json json = new Json();
+        json.setTypeName(null);
+        json.setUsePrototypes(false);
+        json.setIgnoreUnknownFields(true);
+        json.setOutputType(JsonWriter.OutputType.json);
+        String preferences = json.toJson(prefDTO);
 
-        String preferences = "{ enableSound: " + json.toJson(Preferences.isEnableMusic()) + ",enableEffects: " + json.toJson(Preferences.isEnableEffects()) + "}";
         file.writeString(preferences,false);
     }
 
-    public static Preferences readPreferences() {
+    public static IQNPreferences readPreferences() {
         // où lire
         FileHandle file = Gdx.files.local("preferences/pref.json");
+        if (!file.exists()){
+            return new QNPreferencesDTO();
+        }
         String prefs = file.readString();
         Json json = new Json();
-
-        return json.fromJson(Preferences.class, prefs);
-
-
+        try {
+            return json.fromJson(QNPreferencesDTO.class, prefs);
+        }catch (SerializationException e){
+            return new QNPreferencesDTO();
+        }
     }
+
 }
 
 // exemple

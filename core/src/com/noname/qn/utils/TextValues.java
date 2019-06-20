@@ -61,7 +61,9 @@ public class TextValues {
     public static final String[] ENABLE = new String[]{"Enable", "Activé", "Activado"};
     public static final String[] DISABLE = new String[]{"Disable", "Désactivé", "Desactivado"};
 
-    //Stage Menu
+    //Stage
+    public static final String[] CHOOSE = new String[]{"Choose your Nightmare",
+             "Choisis ton Cauchemar", "Elije tu Pesadilla"};
     public static final String[] LEVEL_BROKEN = new String[]{"This level is broken !!!",
             "Ce niveau a un problème", "Este nivel tiene un problema"};
     public static final String[] LEVEL_NOT_AVAILABLE = new String[]{"This level will be soon available !!!",
