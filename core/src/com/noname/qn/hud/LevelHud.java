@@ -345,10 +345,8 @@ public class LevelHud extends QNMenuHud{
                             endTry();
                         }
                     } else if (lastState == Playable.State.LOOSE || lastState == Playable.State.WIN) {
-                        endTry();
-                        effectSound.dispose();
-                        if (lastState == Playable.State.LOOSE && QNPreferences.getPref().isEnableEffects() ) effectSoundLose.play();
                         Timer.instance().clear();
+                        endTry();
                     }
                     displayBoard();
                 }
@@ -359,6 +357,8 @@ public class LevelHud extends QNMenuHud{
     private void endTry(){
         moves.clear();
         paused = false;
+        effectSound.dispose();
+        if (level.getLastState() == Playable.State.LOOSE && QNPreferences.getPref().isEnableEffects() ) effectSoundLose.play();
         //affichages des cases
         displayBoard();
         arrowTable.clearChildren();
