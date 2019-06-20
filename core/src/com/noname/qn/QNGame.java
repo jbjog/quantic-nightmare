@@ -39,7 +39,7 @@ public class QNGame extends Game implements Gamable {
 					bChange = true;
 				}
 			}
-		}, 800, 800);
+		}, 1200, 1200);
 	}
 
 	@Override
