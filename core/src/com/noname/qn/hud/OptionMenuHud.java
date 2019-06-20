@@ -100,10 +100,6 @@ public class OptionMenuHud extends QNMenuHud {
                         QNPreferences.getPref().getDifficulty(),QNPreferences.getPref().getLanguage())
         );
         labelBack.setText(TextValues.BACK[QNPreferences.getPref().getLanguage().ordinal()]);
-        //
-        // TextValues.EFFECT[QNPreferences.getPref().getLanguage()]
-        // TextValues.LANGUAGE[QNPreferences.getPref().getLanguage()]
-        // TextValues.BACK[QNPreferences.getPref().getLanguage()]
     }
     @Override
     protected void setFocus(Focusable actor) {

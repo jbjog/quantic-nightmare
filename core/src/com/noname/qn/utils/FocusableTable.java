@@ -1,6 +1,7 @@
 package com.noname.qn.utils;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -33,6 +34,13 @@ public class FocusableTable extends Table {
         FocusableLabel l = new FocusableLabel(text,event);
         buildCommon(l,newLine,focus);
         l.addListener(event);
+        l.addListener(new ClickListener(){
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                FocusableTable.this.setFocus(l);
+                return true;
+            }
+        });
         return add(l);
     }
 
@@ -47,6 +55,13 @@ public class FocusableTable extends Table {
         FocusableImageButton i = new FocusableImageButton(focusFilePath,unFocusFilePath,event);
         buildCommon(i,newLine,false);
         i.addListener(event);
+        i.addListener(new ClickListener(){
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                FocusableTable.this.setFocus(i);
+                return true;
+            }
+        });
         return add(i);
     }
 
@@ -69,11 +84,24 @@ public class FocusableTable extends Table {
         int i = focusables.indexOf(focused);
         if(i!=focusables.size()-1)
             setFocus(focusables.get(i+1));
+        else if(!focusables.isEmpty())
+            setFocus(focusables.get(0));
     }
 
     public void setPreviousFocus(){
         int i = focusables.indexOf(focused);
         if(i>0)
             setFocus(focusables.get(i-1));
+        else if(!focusables.isEmpty())
+            setFocus(focusables.get(focusables.size()-1));
     }
+
+    public boolean isFirstFocusable(Focusable f){
+        return !focusables.isEmpty()&&f.equals(focusables.get(0));
+    }
+
+    public boolean isLastFocusable(Focusable f){
+        return !focusables.isEmpty()&&f.equals(focusables.get(focusables.size()-1));
+    }
+
 }

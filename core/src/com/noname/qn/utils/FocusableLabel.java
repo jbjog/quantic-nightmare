@@ -1,6 +1,5 @@
 package com.noname.qn.utils;
 
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.noname.qn.service.gui.Focusable;

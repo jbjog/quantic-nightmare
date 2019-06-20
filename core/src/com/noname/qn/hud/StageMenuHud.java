@@ -114,19 +114,24 @@ public class StageMenuHud extends QNMenuHud {
 
     @Override
     public boolean keyUp(int keycode) {
-        boolean result = super.keyUp(keycode);
         switch (keycode) {
             case Input.Keys.UP:
                 if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
-                for (int i = 0; i < 4 ; i++) {
+                int i =0;
+                do {
                     setPreviousFocus();
-                }
+                    i++;
+                }while (i<5 && !displayedTable.isFirstFocusable(getFocused())
+                                && !displayedTable.isLastFocusable(getFocused()));
                 return true;
             case Input.Keys.DOWN:
                 if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
-                for (int i = 0; i < 4 ; i++) {
+                i =0;
+                do{
                     setNextFocus();
-                }
+                    i++;
+                }while (i<5 && !displayedTable.isFirstFocusable(getFocused())
+                        && !displayedTable.isLastFocusable(getFocused()));
                 return true;
             case Input.Keys.LEFT:
                 if (QNPreferences.getPref().isEnableEffects()) effectSound.play();
@@ -137,7 +142,7 @@ public class StageMenuHud extends QNMenuHud {
                 setNextFocus();
                 return true;
         }
-        return result;
+        return super.keyUp(keycode);
     }
 
     private static String getLevelImagePath(int levelNumber){
